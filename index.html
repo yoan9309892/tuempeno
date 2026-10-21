@@ -93,33 +93,56 @@ a{color:inherit}
 .tab:hover{border-color:var(--pri)}
 .tab.on{background:var(--pri);border-color:var(--pri);color:var(--onpri);transform:translateY(-2px)}
 .filt{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+.grid{display:grid;grid-template-columns:1fr;gap:18px}
 .card{position:relative;background:var(--card);border-radius:var(--r);display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;box-shadow:0 2px 0 var(--line)}
-.card:hover{transform:translateY(-5px);box-shadow:0 16px 34px rgba(0,0,0,.28)}
-.ph{position:relative;aspect-ratio:4/3;border-radius:var(--r) var(--r) 0 0;overflow:hidden;background:var(--bg2);cursor:pointer;display:grid;place-items:center}
+.card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(0,0,0,.28)}
+.ph{position:relative;aspect-ratio:16/9;max-height:260px;width:100%;border-radius:var(--r) var(--r) 0 0;overflow:hidden;background:var(--bg2);cursor:pointer;display:grid;place-items:center}
 .ph img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
 .card:hover .ph img{transform:scale(1.05)}
 .ph-i{font-size:3.4rem;opacity:.8}.ph-i.big{font-size:6rem}
 .tipo{position:absolute;left:10px;top:10px;padding:4px 11px;border-radius:8px;font-size:.78rem;font-weight:700;background:var(--pri);color:var(--onpri);transform:rotate(-3deg);box-shadow:0 3px 8px rgba(0,0,0,.3)}
 .tipo.t-empeno{background:var(--acc);color:#04231d}.tipo.t-servicio{background:#9b8cff;color:#160b4d}
 .off{position:absolute;right:10px;top:10px;padding:4px 9px;border-radius:8px;font-weight:800;font-size:.84rem;background:var(--danger);color:#fff}
-.cb{padding:14px 14px 10px;flex:1}
-.cb h3{font-family:var(--fd);font-size:1.08rem;line-height:1.2;margin-bottom:8px;cursor:pointer}
+.cb{padding:14px 14px 10px;flex:1;min-width:0}
+.cb h3{font-family:var(--fd);font-size:1.18rem;line-height:1.2;margin-bottom:8px;cursor:pointer}
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
 .chip{font-size:.74rem;padding:2px 8px;border-radius:999px;background:color-mix(in srgb,var(--txt) 11%,transparent);color:var(--mut)}
 .chip.bad{background:color-mix(in srgb,var(--danger) 25%,transparent);color:var(--danger);font-weight:700}
 .chip.good{background:color-mix(in srgb,var(--acc) 22%,transparent);color:var(--acc)}
-.desc{color:var(--mut);font-size:.88rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.tk{position:relative;margin:0 12px;padding:12px 4px 8px;border-top:2px dashed var(--line2);display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.tk::before,.tk::after{content:'';position:absolute;top:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg)}
-.tk::before{left:-22px}.tk::after{right:-22px}
+.desc{color:var(--mut);font-size:.92rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.side{position:relative;margin:0 12px;border-top:2px dashed var(--line2);padding:12px 4px 12px;display:flex;flex-direction:column;gap:8px}
+.side::before,.side::after{content:'';position:absolute;top:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg)}
+.side::before{left:-22px}.side::after{right:-22px}
+.tk{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .pr{font-family:var(--fd);font-weight:800;font-size:1.4rem;color:var(--pri)}
 .pr small{font-size:.75rem;font-weight:600;color:var(--mut);margin-left:3px}
+.usd{font-size:.85rem;color:var(--mut)}
 .old{color:var(--mut);text-decoration:line-through;font-size:.92rem}
-.stk{width:100%;font-size:.78rem;color:var(--mut)}
+.stk{font-size:.8rem;color:var(--mut)}
 .stk.low{color:var(--danger);font-weight:700}
-.acts{display:flex;gap:8px;padding:6px 12px 14px}
-.acts .btn{flex:1;padding:10px 8px;font-size:.9rem}
+.acts{display:flex;gap:8px}
+.acts .btn{flex:1;padding:10px 8px;font-size:.92rem}
+@media(min-width:720px){
+  .card{flex-direction:row;align-items:stretch}
+  .ph{width:270px;flex:none;aspect-ratio:auto;max-height:none;min-height:200px;border-radius:var(--r) 0 0 var(--r)}
+  .cb{padding:18px}
+  .side{width:250px;flex:none;margin:12px 0;border-top:0;border-left:2px dashed var(--line2);padding:6px 18px;justify-content:center}
+  .side::before{left:-11px;right:auto;top:-22px}
+  .side::after{left:-11px;right:auto;top:auto;bottom:-22px}
+}
+body.fondo-x .side::before,body.fondo-x .side::after,body.fondo-x .tk::before,body.fondo-x .tk::after{display:none}
+.rainbow{color:var(--pri);animation:hue 9s linear infinite;text-shadow:0 0 22px color-mix(in srgb,currentColor 35%,transparent)}
+@keyframes hue{to{filter:hue-rotate(360deg)}}
+.wave span{display:inline-block;animation:wave 2.6s ease-in-out infinite}
+.wave .sp{display:inline;animation:none}
+@keyframes wave{0%,55%,100%{transform:translateY(0)}25%{transform:translateY(-.12em)}}
+.cur{height:44px;padding:0 12px;border-radius:13px;background:color-mix(in srgb,var(--txt) 9%,transparent);font-weight:700;font-size:.85rem;transition:background .2s,transform .15s}
+.cur:hover{background:color-mix(in srgb,var(--pri) 25%,transparent);transform:translateY(-2px)}
+.bub{position:fixed;right:14px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:60;max-width:min(320px,calc(100vw - 28px));background:var(--acc);color:#03241d;border-radius:22px 22px 6px 22px;padding:14px 40px 14px 16px;box-shadow:0 12px 30px rgba(0,0,0,.4);animation:bpop .5s cubic-bezier(.2,1.4,.4,1),bfl 4s ease-in-out .5s infinite}
+.bub p{margin-top:2px;font-weight:500;white-space:pre-line}
+.bx{position:absolute;right:8px;top:8px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.15);font-size:.8rem;color:inherit}
+@keyframes bpop{from{transform:scale(.4) translateY(30px);opacity:0}}
+@keyframes bfl{50%{transform:translateY(-5px)}}
 .empty{grid-column:1/-1;text-align:center;padding:50px 16px;color:var(--mut)}
 .empty b{display:block;font-family:var(--fd);font-size:1.4rem;color:var(--txt);margin-bottom:8px}
 
@@ -236,9 +259,7 @@ pre{background:var(--bg2);padding:12px;border-radius:12px;overflow:auto}
   .hero{grid-template-columns:1fr;padding-top:26px}
   .sign{order:-1;transform:scale(.72);transform-origin:top center;margin-bottom:-45px}
   .logo{font-size:1.02rem}
-  .grid{grid-template-columns:repeat(2,1fr);gap:12px}
   .cb h3{font-size:.96rem}
-  .acts{flex-direction:column}
   .how,.det-g,.row3{grid-template-columns:1fr}
   .ed,.ed.b{grid-template-columns:56px 1fr auto}
   .ed.b input:nth-child(3){grid-column:2/-1}
@@ -248,6 +269,7 @@ pre{background:var(--bg2);padding:12px;border-radius:12px;overflow:auto}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
+<style id="bgStyle"></style>
 <style id="cssExtra"></style>
 </head>
 <body>
@@ -255,6 +277,7 @@ pre{background:var(--bg2);padding:12px;border-radius:12px;overflow:auto}
   <div class="wrap hd-in">
     <a class="logo" href="#top" aria-label="Inicio"><span class="logo-b"><i></i><i></i><i></i></span><span id="hdNombre">Tu Empeño Meneses</span></a>
     <div class="hd-act">
+      <button class="cur" id="bVista" data-act="vista" aria-label="Cambiar moneda">CUP</button>
       <button class="ib" id="bBuscar" data-act="buscar" aria-label="Buscar">🔍</button>
       <button class="ib" data-act="carrito" aria-label="Abrir carrito">🛒<b id="cartN" class="cn">0</b></button>
     </div>
@@ -272,6 +295,7 @@ pre{background:var(--bg2);padding:12px;border-radius:12px;overflow:auto}
         <a class="btn pri" href="#catalogo">Ver catálogo</a>
         <button class="btn line" id="bVender" data-act="vender">Quiero vender o empeñar</button>
         <button class="btn line" id="bEncargo" data-act="encargo">Pedido a gusto</button>
+        <a class="btn line" id="apkBtn" href="#" download hidden>📲 Descargar la app</a>
       </div>
       <div class="custom-btns" id="cbtns"></div>
     </div>
@@ -334,6 +358,7 @@ pre{background:var(--bg2);padding:12px;border-radius:12px;overflow:auto}
 </footer>
 
 <a class="fab" id="fab" href="#" target="_blank" rel="noopener" aria-label="Ayuda por WhatsApp" title="Ayuda por WhatsApp">?</a>
+<div class="bub" id="bub" hidden role="status"></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 'use strict';
@@ -346,14 +371,16 @@ const CFG = {
   GH_REPO: '',
   GH_BRANCH: 'main',
   // Supabase (opcional, recomendado): actualización cada 3 s y borrado automático al comprar.
-  SB_URL: '',
-  SB_KEY: '',          // anon public key
+  SB_URL: 'https://gbosalsnsgyzfkwwvatp.supabase.co',
+  SB_KEY: 'sb_publishable_u_VQ8LnvD98LiZZCrQ1khQ_u30tFQbd',          // clave pública (publishable/anon)
   WA: '5355483286',
   ADMIN_HASH: '2c90e8588f5fddf7b4594aa71dda97e762d7e330f60ad0d76562969723bf9d27', // solo modo sin Supabase
   REFRESH_SB: 3000,
   REFRESH_GH: 10000
 };
-const SBM = !!(CFG.SB_URL && CFG.SB_KEY);
+const SB = { url: CFG.SB_URL, key: CFG.SB_KEY };
+let SBM = !!(SB.url && SB.key);
+let GHPUB = {};
 
 /* ---------- utilidades ---------- */
 const $ = (s, r = document) => r.querySelector(s);
@@ -399,7 +426,14 @@ const DEF = {
     tema: 'noche', colorPri: '', colorAcc: '', colorBg: '',
     tabs: { todo: 'Todo', nuevos: 'Últimos agregados', vendidos: 'Más vendidos', rebajas: 'Rebajas' },
     secciones: { aviso: true, botones: true, vender: true, encargo: true, buscar: true },
-    css: '', html: ''
+    css: '', html: '',
+    tituloAnim: true,
+    notifWA: true,
+    monedas: { tasa: 320, vista: 'ambas' },
+    pagos: { efectivo: true, transferencia: true, tarjeta: '', titular: '', instrucciones: '' },
+    nota: { activa: false, texto: '', id: '' },
+    fondo: { tipo: 'tema', imagen: '', c1: '#0b1a30', c2: '#1d3a6e', oscuridad: 70 },
+    apk: { ruta: '', version: '', tam: 0, fecha: '' }
   },
   categorias: [
     { id: 'servicios', nombre: 'Servicios', icono: '🛠️' },
@@ -426,7 +460,7 @@ let D = norm(clone(DEF));
 let ADMIN = null, REG = [];
 let CART = jget('tem_cart', []);
 let RES = jget('tem_res', {});
-let CF = jget('tem_cf', { nombre: '', tel: '', entrega: 'recoger', dir: '', nota: '' });
+let CF = jget('tem_cf', { nombre: '', tel: '', entrega: 'recoger', dir: '', nota: '', pago: 'efectivo' });
 let LOADED = false;
 let tab = 'todo', fTipo = '', fOrden = 'nuevo', q = '';
 const prod = id => D.productos.find(p => p.id === id);
@@ -437,6 +471,11 @@ const esServ = p => p.tipo === 'servicio';
 const precioAct = p => { const r = +p.rebaja || 0; return r > 0 ? Math.round((+p.precio || 0) * (1 - r / 100)) : (+p.precio || 0); };
 const precioTach = p => { if ((+p.rebaja || 0) > 0) return +p.precio || 0; if ((+p.precioAnterior || 0) > (+p.precio || 0)) return +p.precioAnterior; return 0; };
 const precioLinea = (p, c) => { let pu = precioAct(p); if (p.mayor && p.mayor.activo && c >= (+p.mayor.minimo || Infinity) && +p.mayor.precio) pu = +p.mayor.precio; return pu; };
+const tasa = () => Math.max(0.0001, +D.config.monedas.tasa || 320);
+let VISTA = localStorage.getItem('tem_vista') || '';
+const vista = () => VISTA || D.config.monedas.vista || 'ambas';
+const fmtUsd = n => (n / tasa()).toFixed(2).replace(/\.00$/, '');
+const mon = n => { const v = vista(), c = fmt(n) + ' CUP', u = '$' + fmtUsd(n) + ' USD'; return v === 'cup' ? c : v === 'usd' ? u : c + ' · ' + u; };
 function stock(p) {
   if (esServ(p)) return Infinity;
   let s = Math.max(0, +p.cantidad || 0);
@@ -448,7 +487,7 @@ const disponible = p => !p.oculto && stock(p) > 0;
 /* ---------- GitHub ---------- */
 function ghInfo() {
   const s = jget('tem_conn', {});
-  let u = s.user || CFG.GH_USER, r = s.repo || CFG.GH_REPO, b = s.branch || CFG.GH_BRANCH || 'main';
+  let u = s.user || GHPUB.user || CFG.GH_USER, r = s.repo || GHPUB.repo || CFG.GH_REPO, b = s.branch || GHPUB.branch || CFG.GH_BRANCH || 'main';
   if (!u && location.hostname.endsWith('.github.io')) { u = location.hostname.split('.')[0]; r = location.pathname.split('/')[1] || (u + '.github.io'); }
   return { u, r, b, token: localStorage.getItem('tem_gh_token') || '' };
 }
@@ -466,6 +505,10 @@ async function ghSubir(b64) {
   const path = 'imagenes/' + uid() + '.jpg';
   await gh('PUT', path, { message: 'Subir imagen', content: b64 });
   return path;
+}
+async function ghPutB64(path, b64, msg) {
+  const f = await gh('GET', path);
+  return gh('PUT', path, { message: msg, content: b64, ...(f && f.sha ? { sha: f.sha } : {}) });
 }
 async function ghBorrar(path) {
   if (!path || /^(https?:|data:)/.test(path)) return;
@@ -492,15 +535,15 @@ function comprimir(file, max = 1280, calidad = .82) {
 }
 
 /* ---------- Supabase ---------- */
-const sbH = { apikey: CFG.SB_KEY, Authorization: 'Bearer ' + CFG.SB_KEY, 'Content-Type': 'application/json' };
+const sbH = () => { const h = { apikey: SB.key, 'Content-Type': 'application/json' }; if (!SB.key.startsWith('sb_')) h.Authorization = 'Bearer ' + SB.key; return h; };
 async function rpc(fn, args) {
-  const r = await fetch(CFG.SB_URL + '/rest/v1/rpc/' + fn, { method: 'POST', headers: sbH, body: JSON.stringify(args || {}) });
+  const r = await fetch(SB.url + '/rest/v1/rpc/' + fn, { method: 'POST', headers: sbH(), body: JSON.stringify(args || {}) });
   const t = await r.text();
   if (!r.ok) { let m = t; try { m = JSON.parse(t).message || t; } catch { } throw new Error(m); }
   return t ? JSON.parse(t) : null;
 }
 async function sbLoad() {
-  const r = await fetch(CFG.SB_URL + '/rest/v1/tienda?id=eq.1&select=datos,updated_at', { headers: sbH, cache: 'no-store' });
+  const r = await fetch(SB.url + '/rest/v1/tienda?id=eq.1&select=datos,updated_at', { headers: sbH(), cache: 'no-store' });
   if (!r.ok) throw new Error('Supabase ' + r.status);
   const j = await r.json(); return j[0] || null;
 }
@@ -521,13 +564,26 @@ function mutar(fn) {
 }
 async function acc(fn, msg) { try { await mutar(fn); if (msg) toast(msg, 'ok'); return true; } catch (e) { toast(e.message, 'err'); return false; } }
 
+async function cargarConexion() {
+  try {
+    const r = await fetch('conexion.json?t=' + Date.now(), { cache: 'no-store' });
+    if (r.ok) {
+      const c = await r.json();
+      if (c.sb) { SB.url = String(c.sb.url || '').trim().replace(/\/+$/, ''); SB.key = String(c.sb.key || '').trim(); }
+      if (c.gh) GHPUB = c.gh;
+    }
+  } catch (e) { }
+  SBM = !!(SB.url && SB.key);
+}
+async function sbRefresh() { try { const f = await sbLoad(); if (f) { lastUpd = f.updated_at; setData(norm(f.datos)); } } catch (e) { } }
+
 /* ---------- sincronización ---------- */
 let lastUpd = null;
 function setData(d) { D = d; renderAll(); if (typeof admOnData === 'function') admOnData(); }
 async function tick() {
   try {
     if (SBM) {
-      const r = await fetch(CFG.SB_URL + '/rest/v1/tienda?id=eq.1&select=updated_at', { headers: sbH, cache: 'no-store' });
+      const r = await fetch(SB.url + '/rest/v1/tienda?id=eq.1&select=updated_at', { headers: sbH(), cache: 'no-store' });
       if (r.ok) { const j = await r.json(); if (j[0] && j[0].updated_at !== lastUpd) { const f = await sbLoad(); if (f) { lastUpd = f.updated_at; setData(norm(f.datos)); } } }
     } else {
       const r = await fetch('datos.json?t=' + Date.now(), { cache: 'no-store' });
@@ -542,7 +598,9 @@ async function tick() {
    INTERFAZ PÚBLICA
    ===================================================================== */
 let toastT;
-function toast(m, t = '') { const e = $('#toast'); e.textContent = m; e.className = 'toast on ' + t; clearTimeout(toastT); toastT = setTimeout(() => e.className = 'toast ' + t, 3200); }
+function toast(m, t = '') { const e = $('#toast'); e.textContent = m; e.className = 'toast on ' + t; clearTimeout(toastT); toastT = setTimeout(() => e.className = 'toast ' + t, 3400); }
+let MIS = jget('tem_mis', []);
+const saveMis = () => localStorage.setItem('tem_mis', JSON.stringify(MIS.slice(0, 20)));
 
 /* ---------- modales ---------- */
 function openModal(html, cls = '', boxCls = '') {
@@ -553,11 +611,11 @@ function openModal(html, cls = '', boxCls = '') {
   const f = $('input:not([type=hidden]),textarea', o); if (f && !cls.includes('drawer') && matchMedia('(min-width:761px)').matches) f.focus();
   return o;
 }
-function closeModal(o) { if (!o) return; o.remove(); if (!$('.ov')) document.body.style.overflow = ''; if (o === DM) DM = null; if (o === CM) CM = null; if (o === PM) { PM = null; } }
+function closeModal(o) { if (!o) return; o.remove(); if (!$('.ov')) document.body.style.overflow = ''; if (o === DM) DM = null; if (o === CM) CM = null; if (o === PM) PM = null; }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { const l = $$('.ov'); const t = l[l.length - 1]; if (t && !t.classList.contains('full')) closeModal(t); } });
 let DM = null, CM = null, PM = null, AM = null;
 
-/* ---------- tema y textos ---------- */
+/* ---------- tema, fondo y textos ---------- */
 function applyTheme() {
   const c = D.config, t = TEMAS[c.tema] || TEMAS.noche, r = document.documentElement.style;
   const v = { bg: t.bg, bg2: t.bg2, card: t.card, txt: t.txt, mut: t.mut, pri: t.pri, pri2: t.pri2, acc: t.acc, onpri: t.onpri, line: t.line, line2: t.line2 };
@@ -567,14 +625,27 @@ function applyTheme() {
   if (c.colorBg) { r.setProperty('--bg', c.colorBg); r.setProperty('--bg2', `color-mix(in srgb,${c.colorBg} 88%,#7f8fb0)`); r.setProperty('--card', `color-mix(in srgb,${c.colorBg} 80%,#7f8fb0)`); }
   document.querySelector('meta[name=theme-color]').content = c.colorBg || t.bg;
 }
+function renderFondo() {
+  const f = D.config.fondo, ov = Math.min(95, Math.max(0, +f.oscuridad || 70)); let css = '';
+  document.body.classList.toggle('fondo-x', f.tipo !== 'tema');
+  if (f.tipo === 'degradado') css = `body{background:linear-gradient(160deg,${f.c1},${f.c2}) fixed}`;
+  else if (f.tipo === 'imagen' && f.imagen) css = `body{background:linear-gradient(color-mix(in srgb,var(--bg) ${ov}%,transparent),color-mix(in srgb,var(--bg) ${ov}%,transparent)),url("${String(f.imagen).replace(/["\\\n]/g, '')}") center/cover fixed}`;
+  else if (f.tipo === 'puntos') css = `body{background:radial-gradient(color-mix(in srgb,var(--txt) 9%,transparent) 1.5px,transparent 1.5px) 0 0/22px 22px,var(--bg)}`;
+  else if (f.tipo === 'lineas') css = `body{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--txt) 5%,transparent) 0 2px,transparent 2px 18px),var(--bg)}`;
+  $('#bgStyle').textContent = css;
+}
+const letras = t => [...String(t)].map((ch, i) => ch === ' ' ? '<span class="sp"> </span>' : `<span aria-hidden="true" style="animation-delay:${(i * .09).toFixed(2)}s">${esc(ch)}</span>`).join('');
 function renderStatic() {
   const c = D.config, S = c.secciones;
   document.title = c.nombre + ' · ' + c.lema;
-  $('#hdNombre').textContent = c.nombre; $('#hTitulo').textContent = c.heroTitulo; $('#hTexto').textContent = c.heroTexto;
+  const logo = $('#hdNombre'); logo.textContent = c.nombre; logo.className = c.tituloAnim ? 'rainbow' : '';
+  const h1 = $('#hTitulo'); h1.setAttribute('aria-label', c.heroTitulo);
+  if (c.tituloAnim) { h1.className = 'rainbow wave'; h1.innerHTML = letras(c.heroTitulo); } else { h1.className = ''; h1.textContent = c.heroTitulo; }
+  $('#hTexto').textContent = c.heroTexto;
   $('#stamp').innerHTML = `<b>${esc(c.comision)}%</b>de comisión<br>para el administrador`;
   $('#comiNote').textContent = `Por cada venta realizada a través de la tienda, el administrador cobra ${c.comision}% de comisión.`;
   $('#fNombre').textContent = c.nombre; $('#fLema').textContent = c.lema; $('#fTexto').textContent = c.footer;
-  $('#fComi').textContent = `${c.comision}% de comisión para el administrador · Precios en ${c.moneda}`;
+  $('#fComi').textContent = `${c.comision}% de comisión para el administrador · Precios en CUP y USD`;
   const tk = $('#ticker');
   if (S.aviso && c.aviso) { tk.hidden = false; tk.innerHTML = `<div class="tk-in">${Array(8).fill(`<span>${esc(c.aviso)}</span>`).join('')}</div>`; } else tk.hidden = true;
   $('#bVender').hidden = !S.vender; $('#bEncargo').hidden = !S.encargo; $('#bBuscar').hidden = !S.buscar; if (!S.buscar) $('#sbar').hidden = true;
@@ -582,7 +653,23 @@ function renderStatic() {
   $('#htmlExtra').innerHTML = c.html || '';
   $('#cssExtra').textContent = c.css || '';
   $('#fab').href = waLink(c.ayudaTexto);
+  const ap = $('#apkBtn'); if (c.apk && c.apk.ruta) { ap.hidden = false; ap.href = c.apk.ruta + '?v=' + encodeURIComponent(c.apk.fecha || ''); ap.textContent = '📲 Descargar la app' + (c.apk.version ? ' (v' + c.apk.version + ')' : ''); } else ap.hidden = true;
+  const v = vista(); $('#bVista').textContent = v === 'cup' ? 'CUP' : v === 'usd' ? 'USD' : 'CUP·USD';
 }
+function renderNota() {
+  const n = D.config.nota, el = $('#bub');
+  if (n.activa && n.texto && localStorage.getItem('tem_nota') !== n.id) { const nuevo = el.dataset.id !== n.id; el.dataset.id = n.id; el.hidden = false; if (nuevo || !el.innerHTML) el.innerHTML = `<button class="bx" data-act="nota-x" aria-label="Quitar aviso">✕</button><b>📢 Aviso</b><p>${esc(n.texto)}</p>`; }
+  else { el.hidden = true; el.dataset.id = ''; el.innerHTML = ''; }
+}
+
+/* ---------- precios en pantalla ---------- */
+function precioHTML(n) {
+  const v = vista(), c = `<span class="pr">${fmt(n)}<small>CUP</small></span>`, u = `<span class="pr">$${fmtUsd(n)}<small>USD</small></span>`;
+  return v === 'cup' ? c : v === 'usd' ? u : c + `<span class="usd">≈ $${fmtUsd(n)} USD</span>`;
+}
+const tachHTML = n => `<span class="old">${vista() === 'usd' ? '$' + fmtUsd(n) : fmt(n)}</span>`;
+
+/* ---------- catálogo (uno debajo del otro) ---------- */
 function renderTabs() {
   const t = D.config.tabs;
   const base = [['todo', t.todo, '✨'], ['nuevos', t.nuevos, '🆕'], ['vendidos', t.vendidos, '🔥'], ['rebajas', t.rebajas, '🏷️']];
@@ -616,15 +703,15 @@ function chipsDe(p) {
   return c.join('');
 }
 function card(p) {
-  const cat = catDe(p.categoria) || {}, pa = precioAct(p), pt = precioTach(p), st = stock(p);
+  const cat = catDe(p.categoria) || {}, pa = precioAct(p), pt = precioTach(p), st = stock(p), id = esc(p.id);
   const off = pt > pa ? `-${Math.round((1 - pa / pt) * 100)}%` : '';
   const stTxt = esServ(p) ? 'Servicio disponible' : st === 1 ? '¡Última unidad!' : `Disponibles: ${st}`;
   return `<article class="card">
-    <div class="ph" data-act="ver" data-id="${esc(p.id)}">${p.imagenes && p.imagenes[0] ? imgTag(p.imagenes[0], p.nombre) : `<span class="ph-i">${esc(cat.icono || '📦')}</span>`}
+    <div class="ph" data-act="ver" data-id="${id}">${p.imagenes && p.imagenes[0] ? imgTag(p.imagenes[0], p.nombre) : `<span class="ph-i">${esc(cat.icono || '📦')}</span>`}
       <span class="tipo t-${esc(p.tipo)}">${TIPOS[p.tipo] || ''}</span>${off ? `<span class="off">${off}</span>` : ''}</div>
-    <div class="cb"><h3 data-act="ver" data-id="${esc(p.id)}">${esc(p.nombre)}</h3><div class="chips">${chipsDe(p)}</div><p class="desc">${esc(p.descripcion)}</p></div>
-    <div class="tk"><span class="pr">${fmt(pa)}<small>${esc(D.config.moneda)}</small></span>${pt > pa ? `<span class="old">${fmt(pt)}</span>` : ''}<span class="stk${st === 1 ? ' low' : ''}">${stTxt}</span></div>
-    <div class="acts"><button class="btn ghost" data-act="ver" data-id="${esc(p.id)}">Ver</button><button class="btn pri" data-act="add" data-id="${esc(p.id)}">Agregar</button></div>
+    <div class="cb"><h3 data-act="ver" data-id="${id}">${esc(p.nombre)}</h3><div class="chips">${chipsDe(p)}</div><p class="desc">${esc(p.descripcion)}</p></div>
+    <div class="side"><div class="tk">${precioHTML(pa)}${pt > pa ? tachHTML(pt) : ''}</div><span class="stk${st === 1 ? ' low' : ''}">${stTxt}</span>
+      <div class="acts"><button class="btn ghost" data-act="ver" data-id="${id}">Ver</button><button class="btn pri" data-act="add" data-id="${id}">Agregar</button></div></div>
   </article>`;
 }
 function renderCatalog() {
@@ -633,7 +720,7 @@ function renderCatalog() {
   $('#grid').innerHTML = L.length ? L.map(card).join('') : `<div class="empty"><b>${q ? 'No encontramos eso' : 'Aquí no hay nada por ahora'}</b>¿Buscas algo en especial? Haz un pedido a gusto y te avisamos cuando lo tengamos.<br><br><button class="btn pri" data-act="encargo">Hacer pedido a gusto</button></div>`;
 }
 function renderAll() {
-  applyTheme(); renderStatic(); renderTabs(); renderCatalog(); cartClean(); saveCart();
+  applyTheme(); renderFondo(); renderStatic(); renderNota(); renderTabs(); renderCatalog(); cartClean(); saveCart();
   if (CM && CM.isConnected) $('.box', CM).innerHTML = cartHTML();
 }
 
@@ -648,34 +735,44 @@ function addCart(id, n = 1) {
   if (CM) $('.box', CM).innerHTML = cartHTML();
   return true;
 }
+function opcionesPago() { const p = D.config.pagos, o = []; if (p.efectivo) o.push('efectivo'); if (p.transferencia) o.push('transferencia'); return o.length ? o : ['efectivo']; }
+function tarjetaHTML() {
+  const p = D.config.pagos;
+  return `<div class="info"><b>Transferencia a tarjeta</b><br>${p.tarjeta ? `<span style="font-size:1.1rem;letter-spacing:.05em"><b>${esc(p.tarjeta)}</b></span> <button class="btn sm ghost" data-act="copiar" data-txt="${esc(p.tarjeta)}">Copiar</button>` : 'El administrador te dará los datos por WhatsApp.'}${p.titular ? `<br>Titular: ${esc(p.titular)}` : ''}${p.instrucciones ? `<br>${esc(p.instrucciones)}` : ''}</div>`;
+}
 function cartHTML() {
-  cartClean(); let tot = 0; const m = D.config.moneda;
+  cartClean(); let tot = 0;
+  const op = opcionesPago(); if (!op.includes(CF.pago)) CF.pago = op[0];
+  const mis = SBM ? `<button class="btn ghost block" data-act="mis" style="margin-top:10px">📋 Mis pedidos / cancelar</button>` : '';
   const rows = CART.map(c => {
     const p = prod(c.id), pu = precioLinea(p, c.n), sub = pu * c.n; tot += sub;
     const cat = catDe(p.categoria) || {};
     return `<div class="crow"><div class="th">${p.imagenes && p.imagenes[0] ? imgTag(p.imagenes[0], p.nombre) : esc(cat.icono || '📦')}</div>
-      <div><b>${esc(p.nombre)}</b><small>${fmt(pu)} ${esc(m)} c/u${p.mayor && p.mayor.activo && pu === +p.mayor.precio && pu !== precioAct(p) ? ' · precio por mayor' : ''}</small>
+      <div><b>${esc(p.nombre)}</b><small>${mon(pu)} c/u${p.mayor && p.mayor.activo && pu === +p.mayor.precio && pu !== precioAct(p) ? ' · precio por mayor' : ''}</small>
       <div class="qty"><button data-act="cmenos" data-id="${esc(p.id)}" aria-label="Menos">−</button><b>${c.n}</b><button data-act="cmas" data-id="${esc(p.id)}" aria-label="Más">+</button></div></div>
       <div style="text-align:right"><b>${fmt(sub)}</b><br><button class="btn sm ghost" data-act="cquitar" data-id="${esc(p.id)}" aria-label="Quitar">🗑</button></div></div>`;
   }).join('');
-  if (!CART.length) return `<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><h2>Tu carrito</h2><div class="empty" style="padding:40px 0"><b>Está vacío</b>Agrega artículos desde el catálogo.</div>`;
+  if (!CART.length) return `<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><h2>Tu carrito</h2><div class="empty" style="padding:40px 0"><b>Está vacío</b>Agrega artículos desde el catálogo.</div>${mis}`;
   return `<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><h2>Tu carrito</h2>${rows}
-    <div class="tot"><span>Total</span><span>${fmt(tot)} ${esc(m)}</span></div>
+    <div class="tot"><span>Total</span><span>${mon(tot)}</span></div>
     <label class="fld"><span>Tu nombre (opcional)</span><input id="cf-nombre" value="${esc(CF.nombre)}" autocomplete="name"></label>
     <label class="fld"><span>Tu teléfono (opcional)</span><input id="cf-tel" type="tel" value="${esc(CF.tel)}" autocomplete="tel"></label>
     <div class="fld"><span>Entrega</span>
       <label class="chk"><input type="radio" name="cf-ent" value="recoger" ${CF.entrega !== 'domicilio' ? 'checked' : ''}> Recoger en persona</label>
       <label class="chk"><input type="radio" name="cf-ent" value="domicilio" ${CF.entrega === 'domicilio' ? 'checked' : ''}> A domicilio</label></div>
     <label class="fld" ${CF.entrega === 'domicilio' ? '' : 'hidden'} id="cf-dirw"><span>Dirección</span><input id="cf-dir" value="${esc(CF.dir)}" autocomplete="street-address"></label>
+    <div class="fld"><span>Forma de pago</span>${op.map(o => `<label class="chk"><input type="radio" name="cf-pago" value="${o}" ${CF.pago === o ? 'checked' : ''}> ${o === 'efectivo' ? 'Efectivo' : 'Transferencia a tarjeta'}</label>`).join('')}</div>
+    <div id="cf-tarj">${CF.pago === 'transferencia' ? tarjetaHTML() : ''}</div>
     <label class="fld"><span>Nota para el administrador (opcional)</span><textarea id="cf-nota" style="min-height:60px">${esc(CF.nota)}</textarea></label>
-    <p class="note">${esc(D.config.comision)}% de comisión para el administrador. El pago y la entrega se coordinan por WhatsApp.</p>
-    <button class="btn wa block" data-act="comprar">Comprar por WhatsApp</button>`;
+    <p class="note">${esc(D.config.comision)}% de comisión para el administrador. La entrega y el pago se coordinan por WhatsApp.</p>
+    <button class="btn wa block" data-act="comprar">Comprar por WhatsApp</button>${mis}`;
 }
 function abrirCarrito() { if (CM) return; CM = openModal(cartHTML(), 'drawer'); }
 function msgPedido(res, cli) {
   const c = D.config; let t = `Hola, quiero comprar en *${c.nombre}*` + (res.id ? ` (pedido #${res.id})` : '') + ':\n\n';
-  res.ok.forEach(i => { t += `• ${i.cant} x ${i.nombre} — ${fmt(i.precio)} ${c.moneda} c/u = ${fmt(i.precio * i.cant)} ${c.moneda}\n`; });
-  t += `\n*Total: ${fmt(res.total)} ${c.moneda}*\n`;
+  res.ok.forEach(i => { t += `• ${i.cant} x ${i.nombre} — ${fmt(i.precio)} CUP c/u = ${fmt(i.precio * i.cant)} CUP\n`; });
+  t += `\n*Total: ${fmt(res.total)} CUP (≈ $${fmtUsd(res.total)} USD)*\n`;
+  t += `Pago: ${cli.pago === 'transferencia' ? 'transferencia a tarjeta' : 'efectivo'}\n`;
   t += cli.entrega === 'domicilio' ? `Entrega: a domicilio — ${cli.dir}\n` : 'Entrega: la recojo en persona\n';
   if (cli.nombre) t += `Nombre: ${cli.nombre}\n`; if (cli.tel) t += `Teléfono: ${cli.tel}\n`; if (cli.nota) t += `Nota: ${cli.nota}\n`;
   return t;
@@ -683,7 +780,7 @@ function msgPedido(res, cli) {
 async function comprar(btn) {
   cartClean(); if (!CART.length) return;
   if (CF.entrega === 'domicilio' && !CF.dir.trim()) return toast('Escribe la dirección para el domicilio', 'err');
-  const cli = { nombre: CF.nombre.trim(), tel: CF.tel.trim(), entrega: CF.entrega, dir: CF.dir.trim(), nota: CF.nota.trim() };
+  const cli = { nombre: CF.nombre.trim(), tel: CF.tel.trim(), entrega: CF.entrega, dir: CF.dir.trim(), nota: CF.nota.trim(), pago: CF.pago };
   btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Apartando…';
   let res;
   try {
@@ -695,31 +792,51 @@ async function comprar(btn) {
       res = { ok, falta: [], total: ok.reduce((s, i) => s + i.precio * i.cant, 0), id: null };
     }
   } catch (e) { btn.disabled = false; btn.textContent = 'Comprar por WhatsApp'; return toast('No se pudo apartar: ' + e.message, 'err'); }
-  if (SBM) { try { const f = await sbLoad(); if (f) { lastUpd = f.updated_at; D = norm(f.datos); } } catch { } }
+  if (SBM) await sbRefresh();
   if (res.falta && res.falta.length) toast('Algunos artículos ya se habían vendido', 'err');
   CART = CART.filter(c => !res.ok.some(o => o.id === c.id)); saveCart();
   if (CM) closeModal(CM);
   renderAll();
   if (!res.ok.length) return;
+  if (res.id && res.codigo) { MIS.unshift({ id: res.id, codigo: res.codigo, fecha: Date.now(), total: res.total }); saveMis(); }
   const url = waLink(msgPedido(res, cli));
-  const m = openModal(`<h2>✅ Pedido apartado</h2><p class="note" style="font-size:1rem">Tus artículos ya no aparecen en el catálogo. Toca el botón para enviarle el pedido al administrador por WhatsApp.</p><a class="btn wa block" href="${esc(url)}" target="_blank" rel="noopener" data-act="cerrar">Abrir WhatsApp</a>`);
+  openModal(`<h2>✅ Pedido apartado</h2><p class="note" style="font-size:1rem">Tus artículos ya no aparecen en el catálogo. Toca el botón para enviarle el pedido al administrador por WhatsApp.</p>
+    ${cli.pago === 'transferencia' ? tarjetaHTML() : ''}
+    ${res.codigo ? `<div class="info">Pedido <b>#${esc(res.id)}</b> · código para cancelar: <b>${esc(res.codigo)}</b><br>Queda guardado en «Mis pedidos» de este dispositivo.</div>` : ''}
+    <a class="btn wa block" href="${esc(url)}" target="_blank" rel="noopener" data-act="cerrar">Abrir WhatsApp</a>`);
   try { window.open(url, '_blank'); } catch { }
-  return m;
+}
+
+/* ---------- mis pedidos / cancelar ---------- */
+function misHTML() {
+  return `<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><h2>Mis pedidos</h2><p class="note">Puedes cancelar un pedido mientras el administrador no lo haya atendido. Los artículos vuelven al catálogo.</p>` +
+    (MIS.length ? MIS.map((m, i) => `<div class="reg"><header><span>#${esc(m.id)} · ${new Date(m.fecha).toLocaleDateString('es')}</span><span class="pill ${m.canc ? 'cancelado' : 'pendiente'}">${m.canc ? 'cancelado' : 'enviado'}</span></header><b>${mon(m.total)}</b><div class="note">Código: <b>${esc(m.codigo)}</b></div>
+      <div class="pa" style="margin-top:8px">${m.canc ? `<a class="btn sm wa" target="_blank" rel="noopener" href="${esc(waLink('Hola, cancelé mi pedido #' + m.id + ' en ' + D.config.nombre + '.'))}">Avisar al administrador</a>` : `<button class="del" data-act="mis-cancel" data-i="${i}">Cancelar pedido</button>`}</div></div>`).join('') : '<p class="note">No tienes pedidos guardados en este dispositivo.</p>');
+}
+async function cancelarMio(el) {
+  const m = MIS[+el.dataset.i]; if (!m || !confirm('¿Cancelar el pedido #' + m.id + '?')) return;
+  const box = $('.box', el.closest('.ov'));
+  try {
+    const ok = await rpc('cancelar_pedido', { p_id: +m.id, p_codigo: m.codigo });
+    if (ok) { m.canc = true; saveMis(); toast('Pedido cancelado. Los artículos volvieron al catálogo', 'ok'); await sbRefresh(); }
+    else toast('Ese pedido ya no se puede cancelar desde aquí. Escríbele al administrador.', 'err');
+    box.innerHTML = misHTML();
+  } catch (e) { toast(e.message, 'err'); }
 }
 
 /* ---------- detalle del producto ---------- */
 let DQ = 1;
 function verProducto(id) {
   const p = prod(id); if (!p) return; DQ = 1;
-  const cat = catDe(p.categoria) || {}, pa = precioAct(p), pt = precioTach(p), imgs = p.imagenes || [], st = stock(p), m = D.config.moneda;
-  const mayor = p.mayor && p.mayor.activo ? `<div class="info"><b>Por mayor:</b> ${fmt(p.mayor.precio)} ${esc(m)} cada uno desde ${esc(p.mayor.minimo)} unidades. <b>Por unidad:</b> ${fmt(pa)} ${esc(m)}.</div>` : '';
-  const dom = p.domicilio && p.domicilio.activo ? `<div class="info"><b>Domicilio disponible</b>${p.domicilio.tiempo ? ' · entrega: ' + esc(p.domicilio.tiempo) : ''}${+p.domicilio.costo ? ' · costo: ' + fmt(p.domicilio.costo) + ' ' + esc(m) : ''}</div>` : `<div class="info">Sin domicilio: se recoge en persona.</div>`;
+  const cat = catDe(p.categoria) || {}, pa = precioAct(p), pt = precioTach(p), imgs = p.imagenes || [], st = stock(p);
+  const mayor = p.mayor && p.mayor.activo ? `<div class="info"><b>Por mayor:</b> ${mon(+p.mayor.precio)} cada uno desde ${esc(p.mayor.minimo)} unidades.<br><b>Por unidad:</b> ${mon(pa)}.</div>` : '';
+  const dom = p.domicilio && p.domicilio.activo ? `<div class="info"><b>Domicilio disponible</b>${p.domicilio.tiempo ? ' · entrega: ' + esc(p.domicilio.tiempo) : ''}${+p.domicilio.costo ? ' · costo: ' + mon(+p.domicilio.costo) : ''}</div>` : `<div class="info">Sin domicilio: se recoge en persona.</div>`;
   DM = openModal(`<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><div class="det-g">
     <div><div class="det-main">${imgs[0] ? imgTag(imgs[0], p.nombre).replace('<img ', '<img id="dmain" ') : `<span class="ph-i big">${esc(cat.icono || '📦')}</span>`}</div>
       ${imgs.length > 1 ? `<div class="thumbs">${imgs.map(s => `<img src="${esc(imgSrc(s))}" data-raw="${esc(rawSrc(s))}" data-act="dimg" data-src="${esc(imgSrc(s))}" alt="">`).join('')}</div>` : ''}</div>
     <div class="det-i"><span class="chip">${TIPOS[p.tipo] || ''}${cat.nombre ? ' · ' + esc(cat.nombre) : ''}</span><h2 style="margin-top:8px">${esc(p.nombre)}</h2>
       <div class="chips">${chipsDe(p)}</div>
-      <div><span class="pr">${fmt(pa)}<small>${esc(m)}</small></span> ${pt > pa ? `<span class="old">${fmt(pt)} ${esc(m)}</span>` : ''}</div>
+      <div class="tk">${precioHTML(pa)}${pt > pa ? tachHTML(pt) : ''}</div>
       <p style="margin:10px 0;white-space:pre-line">${esc(p.descripcion)}</p>${mayor}${dom}
       <p class="note">${esc(esServ(p) ? 'Servicio disponible' : st === 1 ? '¡Última unidad!' : 'Disponibles: ' + st)}</p>
       <div class="qty" style="margin:6px 0 14px"><button data-act="dq-" aria-label="Menos">−</button><b id="dq">1</b><button data-act="dq+" data-max="${st === Infinity ? 99 : st}" aria-label="Más">+</button></div>
@@ -728,40 +845,49 @@ function verProducto(id) {
       <a class="btn line block" target="_blank" rel="noopener" href="${esc(waLink('Hola, tengo una pregunta sobre: ' + p.nombre))}">Preguntar por WhatsApp</a></div></div></div>`, '', 'wide');
 }
 
-/* ---------- vender / pedido a gusto ---------- */
+/* ---------- vender o empeñar (llega al panel del administrador) ---------- */
 function formVender() {
   const c = D.config;
   openModal(`<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><h2>Quiero vender o empeñar</h2>
-    <p class="note">Llena los datos y se abrirá WhatsApp con tu mensaje listo. Después puedes enviar las fotos en el mismo chat. Por cada venta, el administrador cobra ${esc(c.comision)}% de comisión.</p>
+    <p class="note">${SBM ? 'Tu solicitud le llega al administrador, que la revisa y te contacta por WhatsApp.' : 'Se abrirá WhatsApp con tu mensaje listo.'} Las fotos puedes enviarlas por WhatsApp. Por cada venta, el administrador cobra ${esc(c.comision)}% de comisión.</p>
     <div class="row2"><label class="fld"><span>¿Qué quieres hacer?</span><select id="v-tipo"><option value="vender">Vender</option><option value="empeñar">Empeñar</option></select></label>
     <label class="fld"><span>Cantidad</span><input id="v-cant" type="number" min="1" value="1"></label></div>
     <label class="fld"><span>Artículo</span><input id="v-nom" placeholder="Ej: Ventilador de pedestal"></label>
     <label class="fld"><span>Descripción</span><textarea id="v-desc" placeholder="Marca, modelo, tamaño, detalles…"></textarea></label>
     <div class="row2"><label class="fld"><span>Estado</span><select id="v-cal">${Object.entries(CALIDADES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></label>
-    <label class="fld"><span>Precio que pides (${esc(c.moneda)})</span><input id="v-pre" type="number" min="0" inputmode="numeric"></label></div>
+    <label class="fld"><span>Precio que pides (CUP)</span><input id="v-pre" type="number" min="0" inputmode="numeric"></label></div>
     <label class="chk"><input type="checkbox" id="v-uso"> Es de uso</label>
     <label class="chk"><input type="checkbox" id="v-dan"> Está dañado o tiene defectos</label>
     <label class="fld"><span>Defectos (si tiene)</span><input id="v-def"></label>
-    <div class="row2"><label class="fld"><span>Tu nombre</span><input id="v-nm"></label><label class="fld"><span>Tu teléfono</span><input id="v-tel" type="tel"></label></div>
-    <button class="btn wa block" data-act="vender-ok">Enviar por WhatsApp</button>`);
+    <div class="row2"><label class="fld"><span>Tu nombre</span><input id="v-nm"></label><label class="fld"><span>Tu teléfono / WhatsApp ${SBM ? '(obligatorio)' : ''}</span><input id="v-tel" type="tel" value="${esc(CF.tel)}"></label></div>
+    <button class="btn wa block" data-act="vender-ok">${SBM ? 'Enviar solicitud' : 'Enviar por WhatsApp'}</button>`);
 }
-function enviarVender() {
+async function enviarVender(btn) {
   const g = id => $('#' + id).value.trim(), c = D.config;
   if (!g('v-nom')) return toast('Escribe qué artículo es', 'err');
-  let t = `Hola, quiero *${g('v-tipo')}* un artículo en *${c.nombre}*:\n\n• Artículo: ${g('v-nom')}\n`;
-  if (g('v-desc')) t += `• Descripción: ${g('v-desc')}\n`;
-  t += `• Cantidad: ${g('v-cant') || 1}\n• Estado: ${CALIDADES[g('v-cal')]}${$('#v-uso').checked ? ' (de uso)' : ''}\n`;
-  if ($('#v-dan').checked) t += `• Dañado/defectuoso: ${g('v-def') || 'sí'}\n`;
-  if (g('v-pre')) t += `• Precio que pido: ${fmt(g('v-pre'))} ${c.moneda}\n`;
-  if (g('v-nm')) t += `• Nombre: ${g('v-nm')}\n`; if (g('v-tel')) t += `• Teléfono: ${g('v-tel')}\n`;
+  const d = { accion: g('v-tipo'), nombre: g('v-nom'), descripcion: g('v-desc'), cantidad: Math.max(1, +g('v-cant') || 1), calidad: g('v-cal'), usado: $('#v-uso').checked, danado: $('#v-dan').checked, defecto: g('v-def'), precio: +g('v-pre') || 0, vendedor: g('v-nm'), tel: g('v-tel') };
+  if (SBM && d.tel.replace(/\D/g, '').length < 8) return toast('Escribe tu teléfono para que el administrador te contacte', 'err');
+  let t = `Hola, quiero *${d.accion}* un artículo en *${c.nombre}*:\n\n• Artículo: ${d.nombre}\n`;
+  if (d.descripcion) t += `• Descripción: ${d.descripcion}\n`;
+  t += `• Cantidad: ${d.cantidad}\n• Estado: ${CALIDADES[d.calidad]}${d.usado ? ' (de uso)' : ''}\n`;
+  if (d.danado) t += `• Dañado/defectuoso: ${d.defecto || 'sí'}\n`;
+  if (d.precio) t += `• Precio que pido: ${fmt(d.precio)} CUP\n`;
+  if (d.vendedor) t += `• Nombre: ${d.vendedor}\n`; if (d.tel) t += `• Teléfono: ${d.tel}\n`;
   t += `\nEntiendo que el administrador cobra ${c.comision}% de comisión. Te mando las fotos por aquí.`;
-  const u = waLink(t); closeModal($$('.ov').pop()); window.open(u, '_blank') || (location.href = u);
+  const ov = btn.closest('.ov');
+  if (!SBM) { closeModal(ov); const u = waLink(t); window.open(u, '_blank') || (location.href = u); return; }
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Enviando…';
+  try { await rpc('registrar_solicitud', { p_datos: d }); }
+  catch (e) { btn.disabled = false; btn.textContent = 'Enviar solicitud'; return toast('No se pudo enviar: ' + e.message, 'err'); }
+  const aviso = waLink(`Hola, acabo de enviar una solicitud para ${d.accion} «${d.nombre}» desde la tienda. Por favor revísala. Te mando las fotos por aquí.`);
+  $('.box', ov).innerHTML = `<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><h2>✅ Solicitud enviada</h2><p class="note" style="font-size:1rem">El administrador la revisará y te contactará al ${esc(d.tel)}.</p>
+    ${c.notifWA ? `<a class="btn wa block" href="${esc(aviso)}" target="_blank" rel="noopener" data-act="cerrar">Avisar al administrador por WhatsApp (y enviar fotos)</a>` : '<button class="btn pri block" data-act="cerrar">Listo</button>'}`;
 }
 function formEncargo() {
   openModal(`<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><h2>Pedido a gusto</h2>
     <p class="note">¿No encuentras lo que buscas? Cuéntanos qué necesitas y te avisamos por WhatsApp cuando lo tengamos disponible.</p>
     <label class="fld"><span>¿Qué estás buscando?</span><textarea id="e-txt" placeholder="Ej: Refrigerador de 9 pies, en buen estado"></textarea></label>
-    <div class="row2"><label class="fld"><span>Presupuesto (${esc(D.config.moneda)})</span><input id="e-pre" type="number" min="0" inputmode="numeric"></label>
+    <div class="row2"><label class="fld"><span>Presupuesto (CUP)</span><input id="e-pre" type="number" min="0" inputmode="numeric"></label>
     <label class="fld"><span>Tu nombre</span><input id="e-nm"></label></div>
     <label class="fld"><span>Tu teléfono (para avisarte)</span><input id="e-tel" type="tel" value="${esc(CF.tel)}"></label>
     <button class="btn wa block" data-act="encargo-ok">Enviar pedido</button>`);
@@ -772,7 +898,7 @@ function enviarEncargo() {
   const datos = { texto: g('e-txt'), presupuesto: g('e-pre'), nombre: g('e-nm'), tel: g('e-tel') };
   if (SBM) rpc('registrar_encargo', { p_datos: datos }).catch(() => { });
   let t = `Hola, quiero hacer un *pedido a gusto* en *${c.nombre}*:\n\n• Busco: ${datos.texto}\n`;
-  if (datos.presupuesto) t += `• Presupuesto: ${fmt(datos.presupuesto)} ${c.moneda}\n`;
+  if (datos.presupuesto) t += `• Presupuesto: ${fmt(datos.presupuesto)} CUP\n`;
   if (datos.nombre) t += `• Nombre: ${datos.nombre}\n`; if (datos.tel) t += `• Teléfono: ${datos.tel}\n`;
   t += '\nAvísame cuando lo tengas disponible, por favor.';
   const u = waLink(t); closeModal($$('.ov').pop()); window.open(u, '_blank') || (location.href = u);
@@ -785,6 +911,9 @@ document.addEventListener('click', e => {
   switch (a) {
     case 'buscar': { const s = $('#sbar'); s.hidden = !s.hidden; if (!s.hidden) $('#q').focus(); break; }
     case 'carrito': abrirCarrito(); break;
+    case 'vista': VISTA = ({ ambas: 'cup', cup: 'usd', usd: 'ambas' })[vista()]; localStorage.setItem('tem_vista', VISTA); renderAll(); break;
+    case 'nota-x': localStorage.setItem('tem_nota', D.config.nota.id); renderNota(); break;
+    case 'copiar': (navigator.clipboard ? navigator.clipboard.writeText(el.dataset.txt) : Promise.reject()).then(() => toast('Copiado', 'ok')).catch(() => toast(el.dataset.txt)); break;
     case 'tab': tab = id; renderTabs(); renderCatalog(); break;
     case 'ver': verProducto(id); break;
     case 'add': if (addCart(id)) { el.textContent = '✓ Agregado'; el.classList.add('ok-anim'); setTimeout(() => { el.textContent = 'Agregar'; el.classList.remove('ok-anim'); }, 1100); } break;
@@ -792,6 +921,8 @@ document.addEventListener('click', e => {
     case 'cmenos': { const x = CART.find(c => c.id === id); if (x) { x.n--; if (x.n <= 0) CART = CART.filter(c => c !== x); saveCart(); $('.box', CM).innerHTML = cartHTML(); } break; }
     case 'cquitar': CART = CART.filter(c => c.id !== id); saveCart(); $('.box', CM).innerHTML = cartHTML(); break;
     case 'comprar': comprar(el); break;
+    case 'mis': openModal(misHTML()); break;
+    case 'mis-cancel': cancelarMio(el); break;
     case 'cerrar': closeModal(el.closest('.ov')); break;
     case 'dimg': $('#dmain').src = el.dataset.src; break;
     case 'dq-': DQ = Math.max(1, DQ - 1); $('#dq').textContent = DQ; break;
@@ -799,25 +930,31 @@ document.addEventListener('click', e => {
     case 'dadd': if (addCart(id, DQ)) { toast('Agregado al carrito', 'ok'); closeModal(DM); } break;
     case 'dbuy': if (addCart(id, DQ)) { closeModal(DM); abrirCarrito(); } break;
     case 'vender': formVender(); break;
-    case 'vender-ok': enviarVender(); break;
+    case 'vender-ok': enviarVender(el); break;
     case 'encargo': formEncargo(); break;
     case 'encargo-ok': enviarEncargo(); break;
     case 'admin': abrirAdmin(); break;
-    default: if (typeof admClick === 'function') admClick(a, el, id, e);
+    default:
+      if (typeof admClick === 'function') admClick(a, el, id, e);
+      if (typeof admClick2 === 'function') admClick2(a, el, id, e);
   }
 });
 document.addEventListener('input', e => {
   const t = e.target;
   if (t.id === 'q') { q = t.value; renderCatalog(); }
-  else if (t.id && t.id.startsWith('cf-')) { const k = t.id.slice(3); if (k !== 'dirw') { CF[k] = t.value; localStorage.setItem('tem_cf', JSON.stringify(CF)); } }
+  else if (t.id && t.id.startsWith('cf-')) { const k = t.id.slice(3); if (k !== 'dirw' && k !== 'tarj') { CF[k] = t.value; localStorage.setItem('tem_cf', JSON.stringify(CF)); } }
   else if (t.name === 'cf-ent') { CF.entrega = t.value; localStorage.setItem('tem_cf', JSON.stringify(CF)); const w = $('#cf-dirw'); if (w) w.hidden = CF.entrega !== 'domicilio'; }
+  else if (t.name === 'cf-pago') { CF.pago = t.value; localStorage.setItem('tem_cf', JSON.stringify(CF)); const w = $('#cf-tarj'); if (w) w.innerHTML = CF.pago === 'transferencia' ? tarjetaHTML() : ''; }
   else if (typeof admInput === 'function') admInput(t, e);
 });
 document.addEventListener('change', e => {
   const t = e.target;
   if (t.id === 'fTipo') { fTipo = t.value; renderCatalog(); }
   else if (t.id === 'fOrden') { fOrden = t.value; renderCatalog(); }
-  else if (typeof admChange === 'function') admChange(t, e);
+  else {
+    if (typeof admChange === 'function') admChange(t, e);
+    if (typeof admChange2 === 'function') admChange2(t, e);
+  }
 });
 $('#sign').addEventListener('click', e => { const s = e.currentTarget; s.classList.remove('re'); void s.offsetWidth; s.classList.add('re'); });
 
@@ -825,7 +962,7 @@ $('#sign').addEventListener('click', e => { const s = e.currentTarget; s.classLi
    PANEL DE ADMINISTRADOR (oculto: botón casi invisible al final de la página, a la derecha)
    ===================================================================== */
 let admTab = 'resumen', admPF = null, admTimer = null, admQ = '', admFiltro = '', admPedF = 'pendiente';
-const ADM_TABS = [['resumen', '📊 Resumen'], ['productos', '📦 Productos'], ['pedidos', '🧾 Pedidos'], ['encargos', '🔔 Encargos'], ['catalogos', '🗂️ Catálogos'], ['pagina', '🎨 Página'], ['botones', '🔗 Botones'], ['conexion', '⚙️ Conexión']];
+const ADM_TABS = [['resumen', '📊 Resumen'], ['productos', '📦 Productos'], ['pedidos', '🧾 Pedidos'], ['solicitudes', '📥 Solicitudes'], ['encargos', '🔔 Encargos'], ['catalogos', '🗂️ Catálogos'], ['pagina', '🎨 Página'], ['avisos', '💬 Avisos'], ['pagos', '💳 Pagos'], ['botones', '🔗 Botones'], ['app', '📲 App'], ['conexion', '⚙️ Conexión']];
 
 async function login(pass) {
   if (SBM) { const n = await rpc('admin_entrar', { p_clave: pass }); if (!n) return false; ADMIN = { clave: pass, nombre: n }; }
@@ -855,7 +992,7 @@ async function mostrarAdmin() {
   clearInterval(admTimer);
   admTimer = setInterval(() => {
     if (!AM || !AM.isConnected) { clearInterval(admTimer); return; }
-    if (['resumen', 'pedidos', 'encargos'].includes(admTab) && !$('.ov.top')) cargarReg().then(admRender).catch(() => { });
+    if (['resumen', 'pedidos', 'solicitudes', 'encargos'].includes(admTab) && !$('.ov.top')) cargarReg().then(admRender).catch(() => { });
   }, 6000);
 }
 async function cargarReg() {
@@ -863,13 +1000,13 @@ async function cargarReg() {
 }
 function admRender() {
   if (!AM || !AM.isConnected) return;
-  const pend = REG.filter(r => r.tipo === 'pedido' && r.estado === 'pendiente').length, enc = REG.filter(r => r.tipo === 'encargo' && r.estado === 'pendiente').length;
-  $('#admNav').innerHTML = ADM_TABS.map(([k, n]) => `<button class="${admTab === k ? 'on' : ''}" data-act="adm-tab" data-id="${k}">${n}${k === 'pedidos' && pend ? `<b class="cn">${pend}</b>` : ''}${k === 'encargos' && enc ? `<b class="cn">${enc}</b>` : ''}</button>`).join('');
+  const sol = REG.filter(r => r.tipo === 'solicitud' && r.estado === 'pendiente').length, pend = REG.filter(r => r.tipo === 'pedido' && r.estado === 'pendiente').length, enc = REG.filter(r => r.tipo === 'encargo' && r.estado === 'pendiente').length;
+  $('#admNav').innerHTML = ADM_TABS.map(([k, n]) => `<button class="${admTab === k ? 'on' : ''}" data-act="adm-tab" data-id="${k}">${n}${k === 'pedidos' && pend ? `<b class="cn">${pend}</b>` : ''}${k === 'encargos' && enc ? `<b class="cn">${enc}</b>` : ''}${k === 'solicitudes' && sol ? `<b class="cn">${sol}</b>` : ''}</button>`).join('');
   $('#admBody').innerHTML = VIEWS[admTab]();
   if (admTab === 'conexion' && SBM) cargarAdmins();
 }
 function admOnData() {
-  if (AM && AM.isConnected && ['resumen', 'productos', 'pedidos', 'encargos'].includes(admTab) && !$('.ov.top')) { if (!SBM) REG = D.ventas; admRender(); }
+  if (AM && AM.isConnected && ['resumen', 'productos', 'pedidos', 'solicitudes', 'encargos'].includes(admTab) && !$('.ov.top')) { if (!SBM) REG = D.ventas; admRender(); }
 }
 
 /* ---------- vistas ---------- */
@@ -893,14 +1030,15 @@ const VIEWS = {
     const top = Object.entries(tp).sort((a, b) => b[1] - a[1]).slice(0, 5), tmx = top.length ? top[0][1] : 1;
     const cats = Object.entries(tc).sort((a, b) => b[1] - a[1]).slice(0, 6), cmx = cats.length ? cats[0][1] : 1;
     return `<div class="stats">
-      <div class="st hi"><small>Tu ganancia (${esc(c.comision)}%)</small><b>${fmt(gan)} ${m}</b></div>
+      <div class="st hi"><small>Tu ganancia (${esc(c.comision)}%)</small><b>${fmt(gan)} ${m}</b><small>≈ $${fmtUsd(gan)} USD</small></div>
       <div class="st"><small>Ventas confirmadas</small><b>${fmt(vend)} ${m}</b></div>
       <div class="st"><small>Por confirmar</small><b>${fmt(sum(pen))} ${m}</b></div>
       <div class="st"><small>Pedidos (${pen.length} pendientes)</small><b>${ped.length}</b></div>
       <div class="st"><small>Artículos en venta</small><b>${activos}</b></div>
       <div class="st"><small>Agotados</small><b>${agot}</b></div>
       <div class="st"><small>Valor del inventario</small><b>${fmt(inv)} ${m}</b></div>
-      <div class="st"><small>Pedidos a gusto sin avisar</small><b>${enc}</b></div></div>
+      <div class="st"><small>Pedidos a gusto sin avisar</small><b>${enc}</b></div>
+      <div class="st"><small>Solicitudes de venta por aprobar</small><b>${REG.filter(r => r.tipo === 'solicitud' && r.estado === 'pendiente').length}</b></div></div>
     ${SBM ? '' : '<p class="note">Sin Supabase solo se cuentan las ventas que registres tú con «Registrar venta en persona».</p>'}
     <h3>Ventas de los últimos 7 días</h3>
     <div class="bars">${dias.map(d => `<div class="bar"><em>${d.v ? fmt(d.v) : ''}</em><i style="height:${Math.round(d.v / mx * 100)}%"></i><span>${esc(d.l)}</span></div>`).join('')}</div>
@@ -950,13 +1088,19 @@ const VIEWS = {
       <label class="fld"><span>Título principal</span><input id="pg-ht" value="${esc(c.heroTitulo)}"></label><label class="fld"><span>Pie de página</span><input id="pg-footer" value="${esc(c.footer)}"></label></div>
       <label class="fld"><span>Texto principal</span><textarea id="pg-htx">${esc(c.heroTexto)}</textarea></label>
       <label class="fld"><span>Letrero que se desplaza (déjalo vacío para quitarlo)</span><input id="pg-aviso" value="${esc(c.aviso)}"></label>
-      <div class="row3"><label class="fld"><span>WhatsApp (con código 53)</span><input id="pg-wa" value="${esc(c.whatsapp)}" inputmode="numeric"></label><label class="fld"><span>Comisión (%)</span><input id="pg-com" type="number" min="0" max="100" value="${esc(c.comision)}"></label><label class="fld"><span>Moneda</span><input id="pg-mon" value="${esc(c.moneda)}"></label></div>
+      <div class="row3"><label class="fld"><span>WhatsApp (con código 53)</span><input id="pg-wa" value="${esc(c.whatsapp)}" inputmode="numeric"></label><label class="fld"><span>Comisión (%)</span><input id="pg-com" type="number" min="0" max="100" value="${esc(c.comision)}"></label></div>
       <label class="fld"><span>Mensaje del botón de ayuda</span><input id="pg-ayuda" value="${esc(c.ayudaTexto)}"></label>
       <h3>Qué se muestra</h3>${ck('pg-s-aviso', S.aviso, 'Letrero que se desplaza')}${ck('pg-s-botones', S.botones, 'Botones personalizados')}${ck('pg-s-vender', S.vender, 'Botón «Quiero vender o empeñar»')}${ck('pg-s-encargo', S.encargo, 'Botón «Pedido a gusto»')}${ck('pg-s-buscar', S.buscar, 'Botón de búsqueda')}
       <h3>Tema y colores</h3>
       <label class="fld"><span>Tema</span><select id="pg-tema">${Object.entries(TEMAS).map(([k, v]) => `<option value="${k}" ${sel(k, c.tema)}>${v.name}</option>`).join('')}</select></label>
       ${ck('pg-ccust', custom, 'Usar colores personalizados')}
       <div class="row3"><label class="fld"><span>Color principal</span><input type="color" id="pg-cpri" value="${c.colorPri || T.pri}"></label><label class="fld"><span>Color de acento</span><input type="color" id="pg-cacc" value="${c.colorAcc || T.acc}"></label><label class="fld"><span>Color de fondo</span><input type="color" id="pg-cbg" value="${c.colorBg || T.bg}"></label></div>
+      ${ck('pg-anim', c.tituloAnim, 'Título animado que cambia de color solo')}
+      <h3>Fondo de la página</h3>
+      <label class="fld"><span>Tipo de fondo</span><select id="pg-ft">${[['tema', 'Color del tema'], ['degradado', 'Degradado'], ['puntos', 'Puntos'], ['lineas', 'Líneas'], ['imagen', 'Imagen']].map(([k, n]) => `<option value="${k}" ${sel(k, c.fondo.tipo)}>${n}</option>`).join('')}</select></label>
+      <div class="row2"><label class="fld"><span>Degradado: color 1</span><input type="color" id="pg-fc1" value="${esc(c.fondo.c1)}"></label><label class="fld"><span>Degradado: color 2</span><input type="color" id="pg-fc2" value="${esc(c.fondo.c2)}"></label></div>
+      <label class="fld"><span>Imagen de fondo: oscurecer (%)</span><input type="range" id="pg-fos" min="0" max="95" value="${esc(c.fondo.oscuridad)}"></label>
+      <div class="fld"><span>Subir imagen de fondo (se guarda en tu GitHub)</span><input type="file" id="pg-fondo-file" accept="image/*">${c.fondo.imagen ? '<button class="btn sm danger" data-act="fondo-quitar" style="margin-top:8px">Quitar imagen</button>' : ''}</div>
       <h3>Avanzado: editar la página a tu gusto</h3>
       <label class="fld"><span>Bloque HTML propio (aparece arriba del catálogo)</span><textarea id="pg-html" placeholder="<div>…</div>">${esc(c.html)}</textarea></label>
       <label class="fld"><span>CSS propio (cambia cualquier estilo)</span><textarea id="pg-css" placeholder=".hero h1{font-size:3rem}">${esc(c.css)}</textarea></label>
@@ -973,7 +1117,7 @@ const VIEWS = {
       <p class="note">Las fotos se guardan en la carpeta <code>imagenes/</code> de tu repositorio y se quedan ahí hasta que las borres. ${SBM ? '' : 'Los datos van en <code>datos.json</code>.'}</p>
       <div class="row3"><label class="fld"><span>Usuario</span><input id="cx-user" value="${esc(g.u || '')}" placeholder="tu-usuario"></label><label class="fld"><span>Repositorio</span><input id="cx-repo" value="${esc(g.r || '')}" placeholder="mi-tienda"></label><label class="fld"><span>Rama</span><input id="cx-branch" value="${esc(g.b || 'main')}"></label></div>
       <label class="fld"><span>Token de GitHub (queda solo en este navegador)</span><input id="cx-token" type="password" value="${esc(g.token)}" placeholder="github_pat_…" autocomplete="off"></label>
-      <div class="tb"><button class="btn pri" data-act="cx-save">Guardar conexión</button><button class="btn ghost" data-act="cx-test">Probar conexión</button></div><p id="cx-res" class="note"></p>
+      <div class="tb"><button class="btn pri" data-act="cx-save">Guardar conexión</button><button class="btn ghost" data-act="cx-test">Probar conexión</button><button class="btn ghost" data-act="cx-tok-del">Quitar token</button></div><p id="cx-res" class="note"></p>${sbBlock()}
       ${SBM ? `<h3>Administradores</h3><p class="note">Cada administrador entra con su propia contraseña. Las contraseñas se guardan cifradas en Supabase.</p><div id="admsList"><span class="spin"></span></div>
         <div class="row2"><label class="fld"><span>Nombre</span><input id="ad-n"></label><label class="fld"><span>Contraseña</span><input id="ad-p" type="password" autocomplete="new-password"></label></div><button class="btn sm ghost" data-act="adm-add">➕ Agregar administrador</button>`
         : '<h3>Administradores</h3><p class="note">Sin Supabase solo hay una contraseña, y está en el código de la página. Lo que realmente protege tus datos es el token de GitHub. Con Supabase puedes tener varios administradores con contraseña segura.</p>'}
@@ -997,11 +1141,11 @@ function pList() {
   if (admFiltro === 'oculto') L = L.filter(p => p.oculto); else if (admFiltro === 'agotado') L = L.filter(p => !esServ(p) && (+p.cantidad || 0) <= 0); else if (admFiltro === 'rebaja') L = L.filter(p => precioTach(p) > 0);
   return L.length ? L.map(pRow).join('') : '<p class="note">No hay productos aquí. Toca «Nuevo producto».</p>';
 }
-function formProd(id) {
+function formProd(id, pre) {
   const p = id ? prod(id) : null;
-  const x = p ? clone(p) : { nombre: '', descripcion: '', categoria: D.categorias[0] ? D.categorias[0].id : '', tipo: 'venta', calidad: 'bueno', usado: false, danado: false, defecto: '', cantidad: 1, precio: '', precioAnterior: '', rebaja: 0, mayor: { activo: false, precio: '', minimo: 5 }, domicilio: { activo: false, tiempo: '', costo: '' }, imagenes: [], oculto: false };
+  const x = p ? clone(p) : Object.assign({ nombre: '', descripcion: '', categoria: D.categorias[0] ? D.categorias[0].id : '', tipo: 'venta', calidad: 'bueno', usado: false, danado: false, defecto: '', cantidad: 1, precio: '', precioAnterior: '', rebaja: 0, mayor: { activo: false, precio: '', minimo: 5 }, domicilio: { activo: false, tiempo: '', costo: '' }, imagenes: [], oculto: false }, pre || {});
   x.mayor = x.mayor || { activo: false, precio: '', minimo: 5 }; x.domicilio = x.domicilio || { activo: false, tiempo: '', costo: '' };
-  admPF = { id: id || null, imgs: (x.imagenes || []).map(s => ({ path: s, preview: imgSrc(s) })), borrar: [] };
+  admPF = { id: id || null, solId: pre && pre.__sol || null, imgs: (x.imagenes || []).map(s => ({ path: s, preview: imgSrc(s) })), borrar: [] };
   const ck = (i, v, t) => `<label class="chk"><input type="checkbox" id="${i}" ${v ? 'checked' : ''}> ${t}</label>`;
   PM = openModal(`<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><h2>${id ? 'Editar' : 'Nuevo'} producto</h2>
     <label class="fld"><span>Nombre</span><input id="pf-nombre" value="${esc(x.nombre)}"></label>
@@ -1040,7 +1184,8 @@ async function pfGuardar(btn) {
     const datos = { nombre: g('pf-nombre'), descripcion: g('pf-desc'), categoria: $('#pf-cat').value, tipo: $('#pf-tipo').value, calidad: $('#pf-cal').value, usado: c('pf-uso'), danado: c('pf-dan'), defecto: g('pf-def'), cantidad: Math.max(0, Math.floor(n('pf-cant'))), precio: n('pf-precio'), precioAnterior: n('pf-ant'), rebaja: Math.min(95, Math.max(0, n('pf-reb'))), mayor: { activo: c('pf-may'), precio: n('pf-mpre'), minimo: Math.max(2, Math.floor(n('pf-mmin')) || 2) }, domicilio: { activo: c('pf-dom'), tiempo: g('pf-dtie'), costo: n('pf-dcos') }, imagenes: paths, oculto: c('pf-oc') };
     await mutar(d => { let p = d.productos.find(x => x.id === id); if (!p) { p = { id, creado: Date.now(), vendidos: 0 }; d.productos.unshift(p); } Object.assign(p, datos); });
     for (const b of admPF.borrar) { if (!D.productos.some(p => (p.imagenes || []).includes(b))) { try { await ghBorrar(b); } catch { } } }
-    toast('Producto guardado', 'ok'); closeModal(PM);
+    if (admPF.solId && SBM) { try { await rpc('admin_estado', { p_clave: ADMIN.clave, p_id: +admPF.solId, p_estado: 'aprobada' }); await cargarReg(); } catch (e) { } }
+    toast('Producto guardado', 'ok'); closeModal(PM); admRender();
   } catch (e) { toast(e.message, 'err'); btn.disabled = false; btn.textContent = 'Guardar producto'; }
 }
 function ventaForm(pid) {
@@ -1137,7 +1282,7 @@ async function admClick(a, el, id, ev) {
     }
     case 'pg-save': {
       const ck = i => $('#' + i).checked, cust = ck('pg-ccust');
-      const cfg = { nombre: val('pg-nombre') || 'Mi tienda', lema: val('pg-lema'), heroTitulo: val('pg-ht'), heroTexto: val('pg-htx'), footer: val('pg-footer'), aviso: val('pg-aviso'), whatsapp: val('pg-wa').replace(/\D/g, '') || CFG.WA, comision: Math.max(0, +val('pg-com') || 0), moneda: val('pg-mon') || 'CUP', ayudaTexto: val('pg-ayuda'), tema: $('#pg-tema').value, colorPri: cust ? $('#pg-cpri').value : '', colorAcc: cust ? $('#pg-cacc').value : '', colorBg: cust ? $('#pg-cbg').value : '', html: $('#pg-html').value, css: $('#pg-css').value, secciones: { aviso: ck('pg-s-aviso'), botones: ck('pg-s-botones'), vender: ck('pg-s-vender'), encargo: ck('pg-s-encargo'), buscar: ck('pg-s-buscar') } };
+      const cfg = { nombre: val('pg-nombre') || 'Mi tienda', lema: val('pg-lema'), heroTitulo: val('pg-ht'), heroTexto: val('pg-htx'), footer: val('pg-footer'), aviso: val('pg-aviso'), whatsapp: val('pg-wa').replace(/\D/g, '') || CFG.WA, comision: Math.max(0, +val('pg-com') || 0), moneda: 'CUP', tituloAnim: ck('pg-anim'), fondo: { ...D.config.fondo, tipo: $('#pg-ft').value, c1: $('#pg-fc1').value, c2: $('#pg-fc2').value, oscuridad: +$('#pg-fos').value || 70 }, ayudaTexto: val('pg-ayuda'), tema: $('#pg-tema').value, colorPri: cust ? $('#pg-cpri').value : '', colorAcc: cust ? $('#pg-cacc').value : '', colorBg: cust ? $('#pg-cbg').value : '', html: $('#pg-html').value, css: $('#pg-css').value, secciones: { aviso: ck('pg-s-aviso'), botones: ck('pg-s-botones'), vender: ck('pg-s-vender'), encargo: ck('pg-s-encargo'), buscar: ck('pg-s-buscar') } };
       await acc(d => { Object.assign(d.config, cfg); }, 'Página guardada'); admRender(); break;
     }
     case 'bt-add': $('#btList').insertAdjacentHTML('beforeend', btRow({ id: 'b' + uid(), icono: '🔗', texto: 'Nuevo botón', url: '', color: '#25d3b0' })); break;
@@ -1181,8 +1326,169 @@ async function admChange(t) {
   }
 }
 
+
+/* =====================================================================
+   PANEL: SOLICITUDES, AVISOS, PAGOS, APP (APK) Y CONEXIÓN CON SUPABASE
+   ===================================================================== */
+const fechaCorta = d => new Date(d).toLocaleString('es', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+
+/* ---------- solicitudes de venta / empeño ---------- */
+VIEWS.solicitudes = function () {
+  if (!SBM) return '<p class="note">Las solicitudes de venta llegan por WhatsApp. Para recibirlas aquí y aprobarlas con un toque, activa Supabase (pestaña Conexión).</p>';
+  const L = REG.filter(r => r.tipo === 'solicitud').sort((a, b) => (a.estado === 'pendiente' ? 0 : 1) - (b.estado === 'pendiente' ? 0 : 1));
+  return `<p class="note">«Aprobar» abre el formulario con los datos del vendedor para que fijes el precio final y publiques el artículo. Las fotos te las manda el vendedor por WhatsApp y tú las subes ahí.</p>` + (L.map(solHTML).join('') || '<p class="note">No hay solicitudes todavía.</p>');
+};
+function solHTML(r) {
+  const d = r.datos || {}, tel = telCuba(d.tel), id = esc(r.id);
+  return `<div class="reg"><header><span>#${id} · ${fechaCorta(r.creado)}</span><span class="pill ${esc(r.estado)}">${esc(r.estado)}</span></header>
+    <div><b>${esc(d.nombre)}</b> · quiere ${esc(d.accion)}${+d.cantidad > 1 ? ' (' + esc(d.cantidad) + ' uds)' : ''}</div>
+    <div class="note">${esc(d.descripcion || '')}<br>Estado: ${esc(CALIDADES[d.calidad] || '')}${d.usado ? ' · de uso' : ''}${d.danado ? ' · dañado: ' + esc(d.defecto || 'sí') : ''}${d.precio ? '<br>💰 Pide: ' + fmt(d.precio) + ' CUP' : ''}<br>👤 ${esc(d.vendedor || '')} 📞 ${esc(d.tel || '')}</div>
+    <div class="pa" style="margin-top:8px">${r.estado === 'pendiente' ? `<button data-act="sol-ap" data-id="${id}">✅ Aprobar / editar</button><button class="del" data-act="sol-re" data-id="${id}">✖ Rechazar</button>` : ''}
+    ${tel ? `<a class="btn sm wa" target="_blank" rel="noopener" href="${esc(waLink('Hola' + (d.vendedor ? ' ' + d.vendedor : '') + ', te escribo de ' + D.config.nombre + ' sobre tu solicitud para ' + d.accion + ': ' + d.nombre, tel))}">💬 Escribir al vendedor</a>` : ''}
+    <button class="del" data-act="reg-del" data-id="${id}">🗑</button></div></div>`;
+}
+function solicitudToProd(r) {
+  const d = r.datos || {};
+  return { nombre: d.nombre || '', descripcion: d.descripcion || '', tipo: d.accion === 'empeñar' ? 'empeno' : 'venta', calidad: d.calidad || 'bueno', usado: !!d.usado, danado: !!d.danado, defecto: d.defecto || '', cantidad: +d.cantidad || 1, precio: +d.precio || '', __sol: r.id };
+}
+
+/* ---------- avisos (burbuja) ---------- */
+VIEWS.avisos = function () {
+  const n = D.config.nota;
+  return `<h3>Aviso en burbuja</h3><p class="note">Aparece en la página de todos los visitantes en pocos segundos. Cada visitante puede cerrarlo; si publicas uno nuevo, vuelve a aparecer.</p>
+    <label class="fld"><span>Texto del aviso</span><textarea id="av-txt">${esc(n.texto)}</textarea></label>
+    <p class="note">Estado: ${n.activa && n.texto ? '🟢 publicado' : '⚪ sin aviso'}</p>
+    <div class="tb"><button class="btn pri" data-act="av-pub">Publicar aviso</button><button class="btn ghost" data-act="av-quitar">Quitar aviso</button></div>
+    <h3>Solicitudes de venta</h3>
+    <label class="chk"><input type="checkbox" id="av-wa" ${D.config.notifWA ? 'checked' : ''}> Mostrar al vendedor un botón para avisarte por WhatsApp</label>
+    <button class="btn sm ghost" data-act="av-opts">Guardar</button>`;
+};
+
+/* ---------- pagos y moneda ---------- */
+VIEWS.pagos = function () {
+  const m = D.config.monedas, p = D.config.pagos;
+  return `<h3>Moneda</h3><p class="note">Los precios se guardan en CUP. El USD se calcula con esta tasa.</p>
+    <div class="row2"><label class="fld"><span>1 USD equivale a (CUP)</span><input id="pg2-tasa" type="number" min="1" step="any" value="${esc(m.tasa)}"></label>
+    <label class="fld"><span>Cómo se muestran los precios</span><select id="pg2-vista"><option value="ambas" ${sel('ambas', m.vista)}>CUP y USD</option><option value="cup" ${sel('cup', m.vista)}>Solo CUP</option><option value="usd" ${sel('usd', m.vista)}>Solo USD</option></select></label></div>
+    <h3>Formas de pago</h3>
+    <label class="chk"><input type="checkbox" id="pg2-ef" ${p.efectivo ? 'checked' : ''}> Efectivo</label>
+    <label class="chk"><input type="checkbox" id="pg2-tr" ${p.transferencia ? 'checked' : ''}> Transferencia a tarjeta</label>
+    <div class="row2"><label class="fld"><span>Número de tarjeta</span><input id="pg2-tar" value="${esc(p.tarjeta)}" inputmode="numeric"></label><label class="fld"><span>Titular</span><input id="pg2-tit" value="${esc(p.titular)}"></label></div>
+    <label class="fld"><span>Instrucciones (opcional)</span><textarea id="pg2-ins">${esc(p.instrucciones)}</textarea></label>
+    <p class="note">Estos datos los ve el cliente cuando elige transferencia.</p>
+    <button class="btn pri" data-act="pay-save">Guardar pagos</button>`;
+};
+
+/* ---------- App (APK) ---------- */
+VIEWS.app = function () {
+  const a = D.config.apk;
+  return `<h3>App (APK)</h3><p class="note">Sube el archivo .apk y aparecerá en la página el botón «Descargar la app». Se guarda en tu GitHub (carpeta <code>apk/</code>). Recomendado: menos de 40 MB. Tarda 1 o 2 minutos en estar disponible para todos.</p>
+    ${a.ruta ? `<div class="info"><b>APK publicada</b> · versión ${esc(a.version || '—')} · ${(a.tam / 1048576).toFixed(1)} MB<br>${esc(fechaCorta(a.fecha))}</div>` : '<p class="note">Todavía no hay APK publicada.</p>'}
+    <label class="fld"><span>Versión (opcional)</span><input id="apk-ver" value="${esc(a.version || '')}" placeholder="1.0"></label>
+    <label class="fld"><span>Archivo APK</span><input type="file" id="apk-file" accept=".apk,application/vnd.android.package-archive"></label>
+    <div class="tb"><button class="btn pri" data-act="apk-up">Subir y publicar</button>${a.ruta ? '<button class="btn ghost" data-act="apk-del">Quitar APK</button>' : ''}</div><p id="apk-res" class="note"></p>`;
+};
+async function apkSubir(btn) {
+  const f = $('#apk-file').files[0], ver = $('#apk-ver').value.trim();
+  if (!f) return toast('Elige el archivo APK', 'err');
+  if (f.size > 60 * 1048576) return toast('El archivo pesa más de 60 MB: es demasiado grande para subirlo desde el panel', 'err');
+  btn.disabled = true; const r = $('#apk-res'); r.innerHTML = '<span class="spin"></span> Subiendo… no cierres esta pantalla';
+  try {
+    const b64 = await new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(',')[1]); fr.onerror = () => rej(new Error('No se pudo leer el archivo')); fr.readAsDataURL(f); });
+    await ghPutB64('apk/tuempeno.apk', b64, 'Subir APK');
+    await mutar(d => { d.config.apk = { ruta: 'apk/tuempeno.apk', version: ver, tam: f.size, fecha: new Date().toISOString() }; });
+    toast('APK publicada', 'ok'); admRender();
+  } catch (e) { r.textContent = '❌ ' + e.message; btn.disabled = false; }
+}
+
+/* ---------- conexión: Supabase ---------- */
+function sbBlock() {
+  return `<h3>Supabase (datos en tiempo real)</h3>
+    <p class="note">${SBM ? '🟢 Conectado.' : '⚪ No conectado: la tienda usa solo GitHub.'} Al guardar, el cambio llega a todos los visitantes en 1 o 2 minutos.</p>
+    <label class="fld"><span>Project URL</span><input id="cx-sburl" value="${esc(SB.url)}" placeholder="https://xxxx.supabase.co" autocomplete="off"></label>
+    <label class="fld"><span>Clave pública (anon / publishable)</span><input id="cx-sbkey" value="${esc(SB.key)}" placeholder="sb_publishable_… o eyJ…" autocomplete="off"></label>
+    <p class="note">Nunca pongas aquí la clave service_role ni la secret.</p>
+    <div class="tb"><button class="btn pri" data-act="cx-sb-save">Guardar para todos</button><button class="btn ghost" data-act="cx-sb-test">Probar</button><button class="btn danger" data-act="cx-sb-del">Quitar Supabase</button></div><p id="cx-sbres" class="note"></p>`;
+}
+function claveInsegura(k) {
+  if (/^sb_secret_/.test(k)) return true;
+  try { const p = JSON.parse(atob(k.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))); return p.role === 'service_role'; } catch { return false; }
+}
+async function guardarConexionPublica(url, key) {
+  const obj = { sb: { url, key }, gh: { user: ghInfo().u || '', repo: ghInfo().r || '', branch: ghInfo().b || 'main' } };
+  await ghPutB64('conexion.json', u8b64(new TextEncoder().encode(JSON.stringify(obj, null, 1))), 'Actualizar conexión');
+  SB.url = url; SB.key = key; SBM = !!(url && key); lastUpd = null;
+  if (!SBM) REG = D.ventas;
+}
+
+/* ---------- acciones ---------- */
+async function subirFondo(f) {
+  toast('Subiendo fondo…');
+  try {
+    const u = await comprimir(f, 1600, .8), path = await ghSubir(u.split(',')[1]), old = D.config.fondo.imagen;
+    await mutar(d => { d.config.fondo.tipo = 'imagen'; d.config.fondo.imagen = path; });
+    if (old && !/^https?:/.test(old)) { try { await ghBorrar(old); } catch { } }
+    toast('Fondo actualizado', 'ok'); admRender();
+  } catch (e) { toast(e.message, 'err'); }
+}
+async function admClick2(a, el, id) {
+  const val = i => $('#' + i).value.trim();
+  switch (a) {
+    case 'sol-ap': { const r = REG.find(x => String(x.id) === String(id)); if (r) formProd(null, solicitudToProd(r)); break; }
+    case 'sol-re': {
+      if (!confirm('¿Rechazar esta solicitud?')) break;
+      try { await rpc('admin_estado', { p_clave: ADMIN.clave, p_id: +id, p_estado: 'rechazada' }); await cargarReg(); admRender(); toast('Solicitud rechazada', 'ok'); } catch (e) { toast(e.message, 'err'); }
+      break;
+    }
+    case 'av-pub': { const t = val('av-txt'); if (!t) { toast('Escribe el aviso', 'err'); break; } await acc(d => { d.config.nota = { activa: true, texto: t, id: uid() }; }, 'Aviso publicado'); admRender(); break; }
+    case 'av-quitar': await acc(d => { d.config.nota.activa = false; }, 'Aviso quitado'); admRender(); break;
+    case 'av-opts': { const v = $('#av-wa').checked; await acc(d => { d.config.notifWA = v; }, 'Guardado'); break; }
+    case 'pay-save': {
+      const tasa = +val('pg2-tasa'); if (!(tasa > 0)) { toast('La tasa debe ser mayor que 0', 'err'); break; }
+      const ef = $('#pg2-ef').checked, tr = $('#pg2-tr').checked; if (!ef && !tr) { toast('Deja al menos una forma de pago', 'err'); break; }
+      const vistaN = $('#pg2-vista').value, tar = val('pg2-tar'), tit = val('pg2-tit'), ins = $('#pg2-ins').value.trim();
+      VISTA = ''; localStorage.removeItem('tem_vista');
+      await acc(d => { d.config.monedas = { tasa, vista: vistaN }; d.config.pagos = { efectivo: ef, transferencia: tr, tarjeta: tar, titular: tit, instrucciones: ins }; }, 'Pagos guardados');
+      break;
+    }
+    case 'apk-up': apkSubir(el); break;
+    case 'apk-del': {
+      if (!confirm('¿Quitar la APK de la página y de GitHub?')) break;
+      try { await ghBorrar('apk/tuempeno.apk'); } catch { }
+      await acc(d => { d.config.apk = { ruta: '', version: '', tam: 0, fecha: '' }; }, 'APK quitada'); admRender(); break;
+    }
+    case 'fondo-quitar': {
+      const old = D.config.fondo.imagen;
+      if (await acc(d => { d.config.fondo.imagen = ''; d.config.fondo.tipo = 'tema'; }, 'Fondo quitado')) { if (old && !/^https?:/.test(old)) { try { await ghBorrar(old); } catch { } } admRender(); }
+      break;
+    }
+    case 'cx-tok-del': localStorage.removeItem('tem_gh_token'); { const t = $('#cx-token'); if (t) t.value = ''; } toast('Token quitado de este navegador', 'ok'); break;
+    case 'cx-sb-test': {
+      const url = val('cx-sburl').replace(/\/+$/, ''), key = val('cx-sbkey'), r = $('#cx-sbres'); r.textContent = 'Probando…';
+      try {
+        const h = { apikey: key }; if (!key.startsWith('sb_')) h.Authorization = 'Bearer ' + key;
+        const x = await fetch(url + '/rest/v1/tienda?select=id&limit=1', { headers: h }); r.textContent = x.ok ? '✅ Conexión correcta' : '❌ Respuesta ' + x.status + (x.status === 404 ? ' (¿ejecutaste el SQL?)' : '');
+      } catch (e) { r.textContent = '❌ No se pudo conectar'; }
+      break;
+    }
+    case 'cx-sb-save':
+    case 'cx-sb-del': {
+      const del = a === 'cx-sb-del', url = del ? '' : val('cx-sburl').replace(/\/+$/, ''), key = del ? '' : val('cx-sbkey');
+      if (!del && (!/^https:\/\/.+\..+/.test(url) || !key)) { toast('Escribe la Project URL (https://…) y la clave pública', 'err'); break; }
+      if (!del && claveInsegura(key)) { toast('Esa clave es secreta (service_role). Usa la anon o publishable', 'err'); break; }
+      if (del && !confirm('¿Quitar Supabase? La tienda volverá al modo solo GitHub (sin borrado automático al comprar).')) break;
+      localStorage.setItem('tem_conn', JSON.stringify({ user: val('cx-user'), repo: val('cx-repo'), branch: val('cx-branch') || 'main' })); localStorage.setItem('tem_gh_token', val('cx-token'));
+      const r = $('#cx-sbres'); r.innerHTML = '<span class="spin"></span> Guardando…';
+      try { await guardarConexionPublica(url, key); toast(del ? 'Supabase quitado' : 'Conexión guardada para todos', 'ok'); admRender(); } catch (e) { r.textContent = '❌ ' + e.message; }
+      break;
+    }
+  }
+}
+async function admChange2(t) {
+  if (t.id === 'pg-fondo-file' && t.files[0]) { const f = t.files[0]; t.value = ''; subirFondo(f); }
+}
+
 /* ---------- arranque ---------- */
-renderAll();
-tick();
+(async () => { await cargarConexion(); renderAll(); tick(); })();
 </script>
 </body></html>
