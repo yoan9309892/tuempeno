@@ -96,11 +96,11 @@ a{color:inherit}
 .cat-h{display:flex;align-items:center;gap:8px;font-family:var(--fd);font-size:1.25rem;line-height:1.2;margin:4px 0 14px}
 .cat-h small{font-family:var(--fb);font-size:.78rem;font-weight:500;color:var(--mut);background:color-mix(in srgb,var(--txt) 10%,transparent);padding:2px 9px;border-radius:99px}
 .cat-h::after{content:'';flex:1;height:2px;border-radius:2px;background:var(--line)}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:row;gap:14px}
 .card{position:relative;background:var(--card);border-radius:var(--r);display:flex;flex-direction:column;min-width:0;transition:transform .2s,box-shadow .2s;box-shadow:0 2px 0 var(--line)}
 .card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(0,0,0,.28)}
 .ph{position:relative;aspect-ratio:4/3;width:100%;border-radius:var(--r) var(--r) 0 0;overflow:hidden;background:var(--bg2);cursor:pointer;display:grid;place-items:center}
-.ph img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.ph img{width:100%;height:100%;object-fit:contain;transition:transform .4s;padding:5px;background:color-mix(in srgb,var(--bg2) 75%,transparent)}
 .card:hover .ph img{transform:scale(1.05)}
 .ph-i{font-size:2.6rem;opacity:.8}.ph-i.big{font-size:6rem}
 .tipo{position:absolute;left:8px;top:8px;padding:3px 8px;border-radius:8px;font-size:.68rem;font-weight:700;background:var(--pri);color:var(--onpri);transform:rotate(-3deg);box-shadow:0 3px 8px rgba(0,0,0,.3)}
@@ -199,7 +199,7 @@ body.fondo-x .side::before,body.fondo-x .side::after,body.fondo-x .tk::before,bo
 .tot span:last-child{color:var(--pri)}
 .det-g{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .det-main{aspect-ratio:4/3;max-height:320px;border-radius:16px;overflow:hidden;background:var(--bg2);display:grid;place-items:center}
-.det-main img{width:100%;height:100%;object-fit:cover}
+.det-main img{width:100%;height:100%;object-fit:contain;cursor:zoom-in;background:var(--bg2)}
 .thumbs{display:flex;gap:8px;margin-top:8px;overflow-x:auto}
 .thumbs img{width:58px;height:58px;object-fit:cover;border-radius:10px;cursor:pointer;border:2px solid transparent}
 .thumbs img:hover{border-color:var(--pri)}
@@ -257,6 +257,33 @@ body.fondo-x .side::before,body.fondo-x .side::after,body.fondo-x .tk::before,bo
 @keyframes rot{to{transform:rotate(360deg)}}
 code,pre{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.82rem}
 pre{background:var(--bg2);padding:12px;border-radius:12px;overflow:auto}
+
+
+.sold-ribbon{position:absolute;z-index:2;top:24px;left:-31px;width:145px;text-align:center;transform:rotate(-35deg);background:#d71920;color:white;font-weight:900;letter-spacing:1px;padding:7px 0;box-shadow:0 4px 12px #0005;font-size:.78rem;pointer-events:none}
+.card.is-soldout .ph img{opacity:.58;filter:grayscale(.6)}
+#logoMap .mapa{filter:drop-shadow(0 3px 2px #0007) drop-shadow(0 8px 10px #0004)}
+#logoMap img{display:block;width:100%;max-width:104px;height:auto;object-fit:contain;filter:drop-shadow(0 4px 8px #0004)}
+.bub.custom-bub{border:2px solid color-mix(in srgb,var(--txt) 15%,transparent);font-family:var(--notice-font,var(--fb));}
+.bub.notice-pill{border-radius:999px}.bub.notice-square{border-radius:12px}.bub.notice-cloud{border-radius:28px 28px 28px 5px}
+.maint-overlay{position:fixed;inset:0;z-index:90;background:rgba(5,10,20,.94);display:grid;place-items:center;padding:24px;text-align:center;color:#fff}
+.maint-overlay .maint-card{max-width:560px;border:1px solid #ffffff30;background:#111d33;border-radius:26px;padding:32px;box-shadow:0 20px 70px #0008}
+.maint-overlay h1{font-size:clamp(2rem,6vw,3.5rem);margin-bottom:12px}.maint-overlay p{color:#d6deec;white-space:pre-line}
+.public-menus{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.public-menus .btn{font-size:.9rem}
+.product-zoom{position:fixed;inset:0;background:#000e;z-index:180;display:grid;place-items:center;padding:18px;cursor:zoom-out}.product-zoom img{max-width:96vw;max-height:92vh;object-fit:contain;border-radius:12px}
+.provider-card{border:1px solid var(--line);background:var(--bg2);border-radius:14px;padding:12px;margin:10px 0}
+
+
+.card.is-soldout .ph img{opacity:.58;filter:grayscale(.6)}
+#logoMap .mapa{filter:drop-shadow(0 3px 2px #0007) drop-shadow(0 8px 10px #0004)}
+#logoMap img{display:block;width:100%;max-width:104px;height:auto;object-fit:contain;filter:drop-shadow(0 4px 8px #0004)}
+.bub.custom-bub{border:2px solid color-mix(in srgb,var(--txt) 15%,transparent);font-family:var(--notice-font,var(--fb));}
+.bub.notice-pill{border-radius:999px}.bub.notice-square{border-radius:12px}.bub.notice-cloud{border-radius:28px 28px 28px 5px}
+.maint-overlay{position:fixed;inset:0;z-index:90;background:rgba(5,10,20,.94);display:grid;place-items:center;padding:24px;text-align:center;color:#fff}
+.maint-overlay .maint-card{max-width:560px;border:1px solid #ffffff30;background:#111d33;border-radius:26px;padding:32px;box-shadow:0 20px 70px #0008}
+.maint-overlay h1{font-size:clamp(2rem,6vw,3.5rem);margin-bottom:12px}.maint-overlay p{color:#d6deec;white-space:pre-line}
+.public-menus{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.public-menus .btn{font-size:.9rem}
+.product-zoom{position:fixed;inset:0;background:#000e;z-index:180;display:grid;place-items:center;padding:18px;cursor:zoom-out}.product-zoom img{max-width:96vw;max-height:92vh;object-fit:contain;border-radius:12px}
+.provider-card{border:1px solid var(--line);background:var(--bg2);border-radius:14px;padding:12px;margin:10px 0}
 
 @media(max-width:760px){
   .hero{grid-template-columns:1fr;padding-top:26px}
@@ -415,6 +442,12 @@ const TEMAS = {
   esmeralda:{ name: 'Esmeralda',      bg: '#071f19', bg2: '#0c2e25', card: '#0f3a2f', txt: '#eafaf3', mut: '#97c4b4', pri: '#e9c46a', pri2: '#f6dc94', acc: '#3ddc97', onpri: '#1a1503', line: 'rgba(255,255,255,.12)', line2: 'rgba(255,255,255,.28)' },
   rubi:     { name: 'Rubí',           bg: '#26091a', bg2: '#3a0f28', card: '#4a1433', txt: '#fdeef4', mut: '#d9a3bb', pri: '#ffb703', pri2: '#ffd166', acc: '#ff5d8f', onpri: '#220f00', line: 'rgba(255,255,255,.12)', line2: 'rgba(255,255,255,.28)' },
   violeta:  { name: 'Violeta',        bg: '#171033', bg2: '#221a4a', card: '#2c2260', txt: '#f1eeff', mut: '#b2a8e6', pri: '#ffc83d', pri2: '#ffe08a', acc: '#5eead4', onpri: '#201500', line: 'rgba(255,255,255,.12)', line2: 'rgba(255,255,255,.28)' },
+  blancoNegro:{ name:'Blanco y negro', bg:'#f5f5f5', bg2:'#e8e8e8', card:'#ffffff', txt:'#111111', mut:'#555555', pri:'#111111', pri2:'#444444', acc:'#777777', onpri:'#ffffff', line:'rgba(0,0,0,.14)', line2:'rgba(0,0,0,.3)' },
+  rojoBlanco:{ name:'Rojo y blanco', bg:'#fff7f7', bg2:'#ffe8e8', card:'#ffffff', txt:'#2b1111', mut:'#7b5555', pri:'#d71920', pri2:'#ff454b', acc:'#8b0000', onpri:'#ffffff', line:'rgba(80,0,0,.14)', line2:'rgba(80,0,0,.3)' },
+  rojoNegro:{ name:'Rojo y negro', bg:'#100b0c', bg2:'#251012', card:'#321317', txt:'#fff0f0', mut:'#d0a5a8', pri:'#ff2738', pri2:'#ff6670', acc:'#ffb3b8', onpri:'#ffffff', line:'rgba(255,255,255,.13)', line2:'rgba(255,255,255,.3)' },
+  blancoNegro:{ name:'Blanco y negro', bg:'#f5f5f5', bg2:'#e8e8e8', card:'#ffffff', txt:'#111111', mut:'#555555', pri:'#111111', pri2:'#444444', acc:'#777777', onpri:'#ffffff', line:'rgba(0,0,0,.14)', line2:'rgba(0,0,0,.3)' },
+  rojoBlanco:{ name:'Rojo y blanco', bg:'#fff7f7', bg2:'#ffe8e8', card:'#ffffff', txt:'#2b1111', mut:'#7b5555', pri:'#d71920', pri2:'#ff454b', acc:'#8b0000', onpri:'#ffffff', line:'rgba(80,0,0,.14)', line2:'rgba(80,0,0,.3)' },
+  rojoNegro:{ name:'Rojo y negro', bg:'#100b0c', bg2:'#251012', card:'#321317', txt:'#fff0f0', mut:'#d0a5a8', pri:'#ff2738', pri2:'#ff6670', acc:'#ffb3b8', onpri:'#ffffff', line:'rgba(255,255,255,.13)', line2:'rgba(255,255,255,.3)' },
   claro:    { name: 'Claro',          bg: '#f3f6fb', bg2: '#e6edf7', card: '#ffffff', txt: '#14213d', mut: '#5b6b88', pri: '#c98500', pri2: '#e6a319', acc: '#0a9d86', onpri: '#ffffff', line: 'rgba(20,33,61,.13)', line2: 'rgba(20,33,61,.3)' }
 };
 
@@ -440,7 +473,11 @@ const DEF = {
     notifWA: true,
     monedas: { tasa: 320, vista: 'ambas' },
     pagos: { efectivo: true, transferencia: true, tarjeta: '', titular: '', instrucciones: '' },
-    nota: { activa: false, texto: '', id: '' },
+    nota: { activa: false, texto: '', id: '', color: '', textoColor: '', forma: 'burbuja', imagen: '', audio: '', enlace: '', emoji: '📢', fuente: 'Outfit' },
+    logoData: '', mantenimiento: { activo: false, texto: 'Estamos realizando mantenimiento. Vuelve pronto.' },
+    compraGrande: { limite: 10000, descuento: 5 },
+    stockBajo: 3, afiliadosTexto: 'Invita clientes a nuestra tienda y gana comisiones por las compras que lleguen mediante tu enlace. Si estás de acuerdo, completa el formulario. Puedes salir si no deseas participar.', proveedoresTexto: 'Los proveedores aprobados pueden publicar productos en la tienda. Cada producto será revisado por un administrador antes de aparecer en el catálogo. La prueba dura 7 días; luego se aplica la cuota mensual que confirme el administrador.', cuotaProveedor: 1000,
+
     fondo: { tipo: 'tema', imagen: '', c1: '#0b1a30', c2: '#1d3a6e', oscuridad: 70 },
     apk: { ruta: '', version: '', tam: 0, fecha: '' }
   },
@@ -682,7 +719,7 @@ window.addEventListener('hashchange', () => { const id = leerEnlace(); if (id) {
 /* ---------- logo: mapa de Cuba con Sancti Spíritus resaltada ---------- */
 const MAPA_CU = 'M2.6,17.5 L4.0,17.0 L5.4,16.3 L6.8,15.5 L8.2,14.6 L9.8,13.6 L11.2,12.4 L12.8,11.2 L14.2,10.0 L15.8,8.6 L17.1,7.5 L18.4,6.7 L19.6,6.1 L20.6,5.7 L21.8,5.3 L23.2,4.9 L24.7,4.5 L26.3,4.0 L27.8,3.7 L29.0,3.4 L29.9,3.1 L30.7,3.0 L31.6,2.9 L32.6,3.0 L33.8,3.1 L35.2,3.3 L36.6,3.4 L38.0,3.4 L39.4,3.4 L40.9,3.2 L42.3,3.1 L43.5,3.0 L44.5,3.0 L45.5,3.0 L46.5,3.1 L47.7,3.2 L49.1,3.4 L50.6,3.7 L52.1,4.0 L53.6,4.3 L55.1,4.6 L56.6,4.9 L58.1,5.4 L59.6,5.9 L61.1,6.5 L62.6,7.3 L63.9,7.9 L65.1,8.4 L66.2,8.8 L67.1,9.1 L68.0,9.4 L69.1,9.6 L70.2,9.8 L71.4,10.0 L72.7,10.2 L74.0,10.4 L75.4,10.6 L76.9,10.9 L78.4,11.4 L79.9,11.9 L81.4,12.5 L82.9,13.3 L84.4,14.2 L85.9,15.3 L87.4,16.6 L88.9,18.1 L90.4,19.4 L91.7,20.5 L93.0,21.3 L94.2,21.9 L95.4,22.5 L96.6,23.2 L97.8,23.9 L99.0,24.7 L100.3,25.3 L101.6,25.9 L102.9,26.5 L104.3,26.9 L105.7,27.3 L107.1,27.7 L108.4,28.0 L109.7,28.3 L110.9,28.7 L112.0,29.1 L112.9,29.5 L113.8,29.9 L114.8,30.4 L115.9,30.8 L117.0,31.3 L118.2,31.7 L119.4,32.3 L120.6,33.0 L121.8,33.8 L123.0,34.6 L124.3,35.5 L125.6,36.2 L126.9,36.8 L128.3,37.3 L129.3,37.7 L129.9,38.2 L130.1,38.5 L129.9,38.9 L129.4,39.2 L128.5,39.7 L127.3,40.1 L125.8,40.6 L124.3,41.1 L122.8,41.4 L121.3,41.6 L119.8,41.8 L118.3,41.8 L116.6,41.8 L114.9,41.8 L113.1,41.6 L111.3,41.5 L109.5,41.4 L107.7,41.3 L105.9,41.2 L104.1,41.3 L102.3,41.3 L100.5,41.5 L98.7,41.7 L97.0,41.9 L95.3,42.1 L93.8,42.2 L92.2,42.4 L91.0,42.5 L89.9,42.6 L89.0,42.6 L88.4,42.6 L88.0,42.4 L88.0,42.0 L88.4,41.5 L89.0,40.7 L89.8,40.0 L90.6,39.3 L91.6,38.7 L92.6,38.1 L93.1,37.4 L93.0,36.6 L92.4,35.8 L91.2,34.8 L90.0,34.0 L88.7,33.4 L87.4,32.9 L86.0,32.6 L84.7,32.1 L83.4,31.3 L82.2,30.2 L81.0,28.9 L79.8,27.6 L78.5,26.3 L77.2,25.0 L75.8,23.6 L74.5,22.6 L73.1,22.0 L71.8,21.8 L70.4,22.0 L69.2,22.0 L68.1,22.0 L67.1,22.0 L66.2,21.8 L65.2,21.6 L64.2,21.2 L63.2,20.8 L62.2,20.2 L61.2,19.8 L60.3,19.3 L59.5,18.9 L58.7,18.5 L58.0,18.2 L57.2,17.9 L56.5,17.5 L55.7,17.2 L54.8,17.0 L53.8,16.8 L52.6,16.6 L51.2,16.4 L49.8,16.3 L48.4,16.2 L46.9,16.2 L45.4,16.2 L44.1,16.1 L42.9,15.9 L41.8,15.5 L40.9,15.1 L40.0,14.6 L39.1,14.2 L38.2,13.7 L37.3,13.3 L36.4,12.7 L35.6,12.0 L34.7,11.1 L33.8,10.1 L32.8,9.4 L31.7,9.0 L30.6,8.8 L29.4,8.9 L28.2,9.0 L27.0,9.3 L25.8,9.7 L24.6,10.1 L23.4,10.6 L22.1,11.1 L20.8,11.7 L19.4,12.3 L18.1,13.0 L16.7,13.8 L15.4,14.8 L14.0,15.8 L12.6,16.7 L11.2,17.4 L9.8,17.8 L8.2,18.1 L6.8,18.4 L5.4,18.5 L4.0,18.5 L2.6,18.4 L1.9,18.3 L1.9,18.0Z', MAPA_SS = 'M69.7,4.2 L72.0,4.2 L72.0,12.6 L71.0,16.2 L69.6,19.2 L68.4,25.2 L58.2,25.2 L58.2,18.6 L60.0,16.8 L62.4,14.4 L64.8,11.4Z';
 function mapaSVG(k) {
-  return `<svg class="mapa" viewBox="-1 0 134 44" ${k === 'logo' ? 'aria-hidden="true"' : 'role="img" aria-label="Mapa de Cuba con la provincia de Sancti Spíritus resaltada"'}><defs><clipPath id="cp-${k}"><path d="${MAPA_CU}"/></clipPath></defs><path class="cu" d="${MAPA_CU}"/><path class="ss" d="${MAPA_SS}" clip-path="url(#cp-${k})"/></svg>`;
+  return `<svg class="mapa" viewBox="-1 0 134 46" ${k === 'logo' ? 'aria-hidden="true"' : 'role="img" aria-label="Mapa de Cuba con la provincia de Sancti Spíritus resaltada"'}><defs><linearGradient id="cug-${k}" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="#f7fbff"/><stop offset=".32" stop-color="#a9bfdc"/><stop offset=".68" stop-color="#607da8"/><stop offset="1" stop-color="#253c62"/></linearGradient><linearGradient id="ssg-${k}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff2a8"/><stop offset=".45" stop-color="#ffc52f"/><stop offset="1" stop-color="#d87500"/></linearGradient><clipPath id="cp-${k}"><path d="${MAPA_CU}"/></clipPath></defs><path d="${MAPA_CU}" transform="translate(0 2.2)" fill="#020817" opacity=".5"/><path class="cu" d="${MAPA_CU}" style="fill:url(#cug-${k});stroke:#d8e5f8;stroke-width:.8;stroke-linejoin:round"/><path class="ss" d="${MAPA_SS}" clip-path="url(#cp-${k})" style="fill:url(#ssg-${k});stroke:#fff0a6;stroke-width:.45"/><path d="${MAPA_CU}" fill="none" stroke="#ffffff" stroke-opacity=".32" stroke-width=".5"/></svg>`;
 }
 $('#logoMap').innerHTML = mapaSVG('logo'); $('#mapaHero').innerHTML = mapaSVG('hero');
 
@@ -749,7 +786,7 @@ function renderTabs() {
   $('#tabs').innerHTML = all.map(([id, n, i]) => `<button class="tab${tab === id ? ' on' : ''}" role="tab" data-act="tab" data-id="${esc(id)}">${i ? esc(i) + ' ' : ''}${esc(n)}</button>`).join('');
 }
 function lista() {
-  let L = D.productos.filter(disponible);
+  let L = D.productos.filter(p => !p.oculto);
   if (q) { const t = sinAc(q); L = L.filter(p => sinAc([p.nombre, p.descripcion, (catDe(p.categoria) || {}).nombre, TIPOS[p.tipo], CALIDADES[p.calidad]].join(' ')).includes(t)); }
   if (fTipo) L = L.filter(p => p.tipo === fTipo);
   if (tab === 'nuevos') L = L.sort((a, b) => b.creado - a.creado).slice(0, 12);
@@ -775,16 +812,17 @@ function chipsDe(p, max) {
   return c.join('');
 }
 function card(p) {
-  const cat = catDe(p.categoria) || {}, pa = precioAct(p), pt = precioTach(p), st = stock(p), id = esc(p.id);
+  const cat = catDe(p.categoria) || {}, pa = precioAct(p), pt = precioTach(p), st = stock(p), id = esc(p.id), agotado = !esServ(p) && st <= 0;
   const off = pt > pa ? `-${Math.round((1 - pa / pt) * 100)}%` : '';
-  const stTxt = esServ(p) ? 'Servicio disponible' : st === 1 ? '¡Última unidad!' : `Disponibles: ${st}`;
-  return `<article class="card">
+  const bajo = !esServ(p) && st > 1 && st <= Math.max(2, +(D.config.stockBajo || 3));
+  const stTxt = esServ(p) ? 'Servicio disponible' : agotado ? 'Agotado' : st === 1 ? '¡Última unidad!' : bajo ? 'Casi agotado · quedan ' + st : `Disponibles: ${st}`;
+  return `<article class="card ${agotado ? 'is-soldout' : ''}">
     <div class="ph" data-act="ver" data-id="${id}">${p.imagenes && p.imagenes[0] ? imgTag(p.imagenes[0], p.nombre) : `<span class="ph-i">${esc(cat.icono || '📦')}</span>`}
-      <span class="tipo t-${esc(p.tipo)}">${TIPOS[p.tipo] || ''}</span>${off ? `<span class="off">${off}</span>` : ''}
+      ${agotado ? '<span class="sold-ribbon">AGOTADO</span>' : ''}<span class="tipo t-${esc(p.tipo)}">${TIPOS[p.tipo] || ''}</span>${off ? `<span class="off">${off}</span>` : ''}
       <button class="shr" data-act="share" data-id="${id}" aria-label="Compartir ${esc(p.nombre)}" title="Compartir">${ICON_SHARE}</button></div>
     <div class="cb"><h3 data-act="ver" data-id="${id}">${esc(p.nombre)}</h3><div class="chips">${chipsDe(p, 3)}</div><p class="desc">${esc(p.descripcion)}</p></div>
-    <div class="side"><div class="tk">${precioHTML(pa)}${pt > pa ? tachHTML(pt) : ''}</div><span class="stk${st === 1 ? ' low' : ''}">${stTxt}</span>
-      <div class="acts"><button class="btn ghost" data-act="ver" data-id="${id}">Ver</button><button class="btn pri" data-act="add" data-id="${id}">Agregar</button></div></div>
+    <div class="side"><div class="tk">${precioHTML(pa)}${pt > pa ? tachHTML(pt) : ''}</div><span class="stk${st === 1 || bajo || agotado ? ' low' : ''}">${stTxt}</span>
+      <div class="acts"><button class="btn ghost" data-act="ver" data-id="${id}">Ver</button><button class="btn pri" data-act="add" data-id="${id}" ${agotado ? 'disabled' : ''}>${agotado ? 'Agotado' : 'Agregar'}</button></div></div>
   </article>`;
 }
 function seccion(id, titulo, icono, items) {
@@ -866,7 +904,7 @@ function msgPedido(res, cli) {
 async function comprar(btn) {
   cartClean(); if (!CART.length) return;
   if (CF.entrega === 'domicilio' && !CF.dir.trim()) return toast('Escribe la dirección para el domicilio', 'err');
-  const cli = { nombre: CF.nombre.trim(), tel: CF.tel.trim(), entrega: CF.entrega, dir: CF.dir.trim(), nota: CF.nota.trim(), pago: CF.pago, ...(REF ? { ref: REF } : {}) };
+  const cli = { nombre: CF.nombre.trim(), tel: CF.tel.trim(), entrega: CF.entrega, dir: CF.dir.trim(), nota: CF.nota.trim(), pago: CF.pago, ...(CF.ubicacion ? { ubicacion: CF.ubicacion } : {}), ...(REF ? { ref: REF } : {}) };
   btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Apartando…';
   let res;
   try {
@@ -926,8 +964,8 @@ function verProducto(id) {
       <p style="margin:10px 0;white-space:pre-line">${esc(p.descripcion)}</p>${mayor}${dom}
       <p class="note">${esc(esServ(p) ? 'Servicio disponible' : st === 1 ? '¡Última unidad!' : 'Disponibles: ' + st)}</p>
       <div class="qty" style="margin:6px 0 14px"><button data-act="dq-" aria-label="Menos">−</button><b id="dq">1</b><button data-act="dq+" data-max="${st === Infinity ? 99 : st}" aria-label="Más">+</button></div>
-      <div style="display:grid;gap:10px"><button class="btn pri block" data-act="dadd" data-id="${esc(p.id)}">Agregar al carrito</button>
-      <button class="btn wa block" data-act="dbuy" data-id="${esc(p.id)}">Comprar ahora</button>
+      <div style="display:grid;gap:10px"><button class="btn pri block" data-act="dadd" data-id="${esc(p.id)}" ${!esServ(p)&&st<=0?'disabled':''}>${!esServ(p)&&st<=0?'Agotado':'Agregar al carrito'}</button>
+      <button class="btn wa block" data-act="dbuy" data-id="${esc(p.id)}" ${!esServ(p)&&st<=0?'disabled':''}>Comprar ahora</button>
       <a class="btn line block" target="_blank" rel="noopener" href="${esc(waLink('Hola, tengo una pregunta sobre: ' + p.nombre))}">Preguntar por WhatsApp</a>
       <button class="btn ghost block" data-act="share" data-id="${esc(p.id)}">${ICON_SHARE} Compartir producto</button></div></div></div>`, '', 'wide');
 }
@@ -1082,7 +1120,7 @@ async function mostrarAdmin() {
   clearInterval(admTimer);
   admTimer = setInterval(() => {
     if (!AM || !AM.isConnected) { clearInterval(admTimer); return; }
-    if (['resumen', 'pedidos', 'solicitudes', 'encargos'].includes(admTab) && !$('.ov.top')) cargarReg().then(admRender).catch(() => { });
+    if (['resumen', 'pedidos', 'solicitudes', 'encargos', 'proveedores'].includes(admTab) && !$('.ov.top')) cargarReg().then(admRender).catch(() => { });
   }, 6000);
 }
 async function cargarReg() {
@@ -1306,7 +1344,7 @@ function regHTML(r) {
   return `<div class="reg"><header><span>#${id} · ${fecha}</span><span class="pill ${esc(r.estado)}">${esc(r.estado)}</span></header><div>${items}</div><b>Total: ${fmt(d.total)} ${m}</b>
     <div class="note">${c.nombre ? '👤 ' + esc(c.nombre) + ' ' : ''}${c.tel ? '📞 ' + esc(c.tel) + ' ' : ''}${c.entrega === 'domicilio' ? '🚚 ' + esc(c.dir) : (c.entrega ? '🏪 Recoge en persona' : '')}${c.nota ? '<br>📝 ' + esc(c.nota) : ''}${c.ref ? '<br>🤝 Afiliado: ' + esc(c.ref) : ''}</div>
     <div class="pa" style="margin-top:8px">${r.estado === 'pendiente' ? `<button data-act="reg-est" data-id="${id}" data-e="confirmado">✅ Confirmar venta</button>` : ''}
-    ${r.estado !== 'cancelado' ? `<button class="del" data-act="reg-est" data-id="${id}" data-e="cancelado">↩ Cancelar y devolver al catálogo</button>` : `<button class="del" data-act="reg-del" data-id="${id}">🗑 Borrar</button>`}
+    ${r.estado !== 'cancelado' ? `<button class="del" data-act="reg-est" data-id="${id}" data-e="cancelado">↩ Cancelar y devolver al catálogo</button>` : ''}<button class="del" data-act="reg-del" data-id="${id}">🗑 Eliminar registro</button>
     ${tel ? `<a class="btn sm ghost" target="_blank" rel="noopener" href="${esc(waLink('Hola' + (c.nombre ? ' ' + c.nombre : '') + ', te escribo de ' + D.config.nombre + ' sobre tu pedido #' + r.id, tel))}">💬 Escribir al cliente</a>` : ''}</div></div>`;
 }
 async function regEstado(id, e) {
@@ -1672,5 +1710,155 @@ async function admClick3(a, el, id) {
 
 /* ---------- arranque ---------- */
 (async () => { await cargarConexion(); renderAll(); tick(); })();
+
+
+/* ===== Mejoras de tienda: afiliados, proveedores, mantenimiento y pedidos ===== */
+const EXT = { affKey:'tem_public_afiliados', provKey:'tem_proveedores', logoKey:'tem_logo_custom', maintId:'tem_maintenance_seen' };
+const extGet = (k, fallback=[]) => { try { return JSON.parse(localStorage.getItem(k)) ?? fallback; } catch { return fallback; } };
+const extPut = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+const extText = (v, fallback='') => String(v ?? fallback);
+function extMenu() {
+  const hb = $('.hero-b'); if (!hb || $('#publicMenus')) return;
+  const m = document.createElement('div'); m.id='publicMenus'; m.className='public-menus';
+  m.innerHTML='<button class="btn line" data-ext="affiliate">🤝 Programa de Afiliados</button><button class="btn line" data-ext="provider">🏪 Menú de Proveedores</button><button class="btn line" data-ext="supplier-login">👤 Soy proveedor</button>';
+  hb.appendChild(m);
+  if(!$('#providerShowcase')){const sec=document.createElement('section');sec.id='providerShowcase';sec.className='wrap';sec.style.marginTop='22px';sec.innerHTML='<h2 style="margin-bottom:10px">🏪 Proveedores destacados</h2><div id="providerShowcaseList"></div>';const cat=$('#catalogo');if(cat)cat.parentNode.insertBefore(sec,cat.nextSibling);}
+  extRenderProviderShowcase();
+}
+function extModal(html, title='') { const el=openModal(`<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button>${title?`<h2>${esc(title)}</h2>`:''}${html}`); return el; }
+function extAffiliateForm() {
+ const text=D.config.afiliadosTexto || 'Invita clientes y gana comisiones por las compras realizadas con tu enlace.';
+ extModal(`<p class="note" style="white-space:pre-line">${esc(text)}</p><p>¿Estás de acuerdo con participar?</p>
+ <div class="tb"><button class="btn pri" data-ext="aff-agree">Sí, estoy de acuerdo</button><button class="btn ghost" data-act="cerrar">No, salir</button></div>`, '🤝 Programa de Afiliados');
+}
+function extAffiliateForm2() {
+ extModal(`<p class="note">Completa tus datos para enviar la solicitud al administrador. Tus datos personales deben tratarse de forma privada y solo para gestionar la solicitud.</p>
+ <label class="fld"><span>Nombre</span><input id="exa-nombre" autocomplete="given-name"></label><label class="fld"><span>Apellidos</span><input id="exa-apellidos" autocomplete="family-name"></label><label class="fld"><span>Teléfono</span><input id="exa-tel" type="tel" autocomplete="tel"></label><label class="fld"><span>Carné de identidad (11 dígitos)</span><input id="exa-ci" inputmode="numeric" maxlength="11"></label><label class="fld"><span>Dirección particular</span><input id="exa-dir" autocomplete="street-address"></label>
+ <label class="chk"><input id="exa-consent" type="checkbox"> Acepto que la tienda use estos datos para evaluar mi solicitud.</label><button class="btn pri block" data-ext="aff-submit">Enviar solicitud</button>`, 'Solicitud de afiliación');
+}
+function extProviderForm() {
+ const text=D.config.proveedoresTexto || 'Los proveedores pueden publicar productos tras la aprobación del administrador. La prueba dura una semana y después puede aplicar una cuota mensual.';
+ extModal(`<p class="note" style="white-space:pre-line">${esc(text)}</p><p>¿Deseas continuar con la solicitud?</p><div class="tb"><button class="btn pri" data-ext="prov-agree">Estoy de acuerdo</button><button class="btn ghost" data-act="cerrar">No, salir</button></div>`, '🏪 Menú de Proveedores');
+}
+function extProviderForm2() {
+ extModal(`<p class="note">Envía tus datos para que el administrador evalúe tu solicitud. No se publicarán en el catálogo.</p><label class="fld"><span>Nombre y apellidos</span><input id="exp-nombre"></label><label class="fld"><span>Carné de identidad (11 dígitos)</span><input id="exp-ci" inputmode="numeric" maxlength="11"></label><label class="fld"><span>Teléfono</span><input id="exp-tel" type="tel"></label><label class="fld"><span>Dirección particular</span><input id="exp-dir"></label><label class="chk"><input id="exp-consent" type="checkbox"> Acepto que se usen mis datos para evaluar y gestionar mi solicitud de proveedor.</label><button class="btn pri block" data-ext="prov-submit">Enviar solicitud</button>`, 'Solicitud de proveedor');
+}
+function extSendWhatsApp(message) { const u=waLink(message); window.open(u,'_blank','noopener') || (location.href=u); }
+function extSaveRequest(kind, d) {
+ const key=kind==='afiliado'?EXT.affKey:EXT.provKey, list=extGet(key,[]);
+ const rec={id:uid(),tipo:kind,estado:'pendiente',creado:Date.now(),...(kind==='afiliado'?{codigo:'AF'+Date.now().toString().slice(-6)}:{}),...d}; list.unshift(rec); extPut(key,list); return rec;
+}
+function extSubmit(kind) {
+ const isA=kind==='afiliado', g=id=>($('#'+id)?.value||'').trim();
+ const d=isA?{nombre:g('exa-nombre'),apellidos:g('exa-apellidos'),tel:g('exa-tel'),ci:g('exa-ci'),dir:g('exa-dir')}:{nombre:g('exp-nombre'),ci:g('exp-ci'),tel:g('exp-tel'),dir:g('exp-dir')};
+ if(!d.nombre || !d.tel || !d.ci || !d.dir || (isA&&!d.apellidos)) return toast('Completa todos los campos requeridos','err');
+ if(!/^\d{11}$/.test(d.ci)) return toast('El carné debe tener 11 dígitos','err');
+ if(!(isA?$('#exa-consent'):$('#exp-consent')).checked) return toast('Debes aceptar para enviar la solicitud','err');
+ const rec=extSaveRequest(kind,d);
+ const msg=`Solicitud de ${isA?'afiliación':'proveedor'} en ${D.config.nombre}\nNombre: ${d.nombre}${d.apellidos?' '+d.apellidos:''}\nCarné: ${d.ci}\nTeléfono: ${d.tel}\nDirección: ${d.dir}\nID local: ${rec.id}\nSolicito que revisen mis datos.`;
+ closeModal($$('.ov').pop()); extSendWhatsApp(msg);
+ toast('Solicitud preparada. Confirma el envío en WhatsApp.','ok');
+}
+function extProviderStatus() { return extGet(EXT.provKey,[]); }
+function extSupplierDashboard() {
+ extModal(`<p class="note">Acceso de proveedor aprobado. Introduce el teléfono y carné con los que solicitaste el registro.</p><label class="fld"><span>Teléfono</span><input id="exs-tel" type="tel"></label><label class="fld"><span>Carné de identidad</span><input id="exs-ci" inputmode="numeric" maxlength="11"></label><button class="btn pri block" data-ext="supplier-enter">Entrar</button>`, '👤 Panel de proveedor');
+}
+function extSupplierProductsForm(provider) {
+ const cats=D.categorias;
+ extModal(`<p class="note">Proveedor: <b>${esc(provider.nombre)}</b>. Los productos se envían para revisión y no aparecen en el catálogo hasta que un administrador los apruebe.</p><label class="fld"><span>URL de foto de perfil (opcional)</span><input id="exsp-profile" value="${esc(provider.foto||'')}" placeholder="https://..."></label><label class="fld"><span>Nombre del producto</span><input id="exsp-name"></label><label class="fld"><span>Descripción</span><textarea id="exsp-desc"></textarea></label><div class="row2"><label class="fld"><span>Precio (CUP)</span><input id="exsp-price" type="number" min="1"></label><label class="fld"><span>Cantidad</span><input id="exsp-qty" type="number" min="1" value="1"></label></div><label class="fld"><span>Catálogo</span><select id="exsp-cat">${cats.map(c=>`<option value="${esc(c.id)}">${esc(c.nombre)}</option>`).join('')}</select></label><label class="fld"><span>URL de foto del producto (opcional)</span><input id="exsp-img" placeholder="https://..."></label><button class="btn pri block" data-ext="supplier-product-send" data-id="${esc(provider.id)}">Enviar a revisión</button><button class="btn ghost block" data-ext="supplier-unregister" data-id="${esc(provider.id)}">Solicitar baja de proveedor</button>`, '📦 Publicar un producto');
+}
+function extPendingProducts(){return extGet('tem_supplier_products',[]);}
+function extRenderProviderShowcase(){
+ const box=$('#providerShowcaseList');if(!box)return;const L=extProviderStatus().filter(x=>x.estado==='aprobado'&&(x.gratis||!x.pruebaHasta||x.pruebaHasta>Date.now()));
+ box.innerHTML=L.length?`<div class="grid">${L.map(x=>`<article class="card"><div class="ph" style="aspect-ratio:16/7">${x.foto?`<img src="${esc(x.foto)}" alt="Foto de ${esc(x.nombre)}" style="width:100%;height:100%;object-fit:contain">`:'<span class="ph-i">🏪</span>'}</div><div class="cb"><h3>${esc(x.nombre)}</h3><p class="desc">Proveedor aprobado</p><button class="btn pri block" data-ext="provider-profile" data-id="${esc(x.id)}">Ver sus productos</button></div></article>`).join('')}</div>`:'<p class="note">Los proveedores aprobados aparecerán aquí.</p>';
+}
+function extProviderProfile(id){const x=extProviderStatus().find(v=>v.id===id);if(!x)return;const products=D.productos.filter(p=>p.proveedorId===id&&!p.oculto);extModal(`<p class="note">Proveedor: <b>${esc(x.nombre)}</b></p>${products.map(p=>`<div class="provider-card"><b>${esc(p.nombre)}</b><p class="note">${esc(p.descripcion)}<br>${fmt(precioAct(p))} CUP · Existencias: ${stock(p)}</p><button class="btn sm pri" data-act="ver" data-id="${esc(p.id)}">Ver producto</button></div>`).join('')||'<p class="note">Este proveedor todavía no tiene productos publicados.</p>'}`,'🏪 Perfil del proveedor');}
+function extAdminViewProviders() {
+ const L=extProviderStatus();
+ return `<h3>Proveedores</h3><p class="note">Las solicitudes guardadas en este navegador se muestran aquí. Para que se sincronicen entre dispositivos se requiere conectar las tablas y permisos del backend.</p>
+ <label class="fld"><span>Texto público de proveedores</span><textarea id="ext-prov-text">${esc(D.config.proveedoresTexto||'')}</textarea></label><label class="fld"><span>Cuota mensual (CUP)</span><input id="ext-prov-fee" type="number" min="0" value="${esc(D.config.cuotaProveedor||0)}"></label><button class="btn pri" data-ext="prov-text-save">Guardar texto y cuota</button>
+ ${L.map(x=>{const expired=x.estado==='aprobado'&&!x.gratis&&x.pruebaHasta&&x.pruebaHasta<Date.now();return `<div class="provider-card"><b>${esc(x.nombre)}</b> · <span class="pill ${esc(x.estado)}">${esc(x.estado)}</span>${expired?'<p style="color:#ff5d6c;font-weight:800">⚠️ Prueba/cuota vencida</p>':''}${x.bajaSolicitada?'<p style="color:#ff5d6c;font-weight:800">⚠️ Solicitó darse de baja</p>':''}<p class="note">🪪 ${esc(x.ci)}<br>📞 ${esc(x.tel)}<br>📍 ${esc(x.dir)}<br>Solicitud: ${new Date(x.creado).toLocaleString('es')}<br>${x.pruebaHasta?`Vence: ${new Date(x.pruebaHasta).toLocaleString('es')}`:'Sin vencimiento'}${x.gratis?' · Gratis':''}</p><div class="tb"><button class="btn sm pri" data-ext="prov-approve" data-id="${esc(x.id)}">Aprobar (7 días de prueba)</button><button class="btn sm ghost" data-ext="prov-free" data-id="${esc(x.id)}">Gratis sin cuota</button><button class="btn sm ghost" data-ext="prov-paid" data-id="${esc(x.id)}">Extender 1 mes</button><button class="btn sm danger" data-ext="prov-delete" data-id="${esc(x.id)}">Eliminar</button></div></div>`;}).join('')||'<p class="note">No hay solicitudes de proveedores en este navegador.</p>'}<h3>Productos enviados por proveedores</h3>${extPendingProducts().map(x=>`<div class="provider-card"><b>${esc(x.nombre)}</b><p class="note">${esc(x.descripcion)}<br>Precio: ${fmt(x.precio)} CUP · Cantidad: ${x.cantidad}<br>Proveedor: ${esc(x.proveedorNombre)}</p><div class="tb"><button class="btn sm pri" data-ext="supplier-product-approve" data-id="${esc(x.id)}">Aprobar y publicar</button><button class="btn sm danger" data-ext="supplier-product-delete" data-id="${esc(x.id)}">Rechazar</button></div></div>`).join('')||'<p class="note">No hay productos pendientes.</p>'}<h3>Solicitudes del programa de afiliados</h3>${extGet(EXT.affKey,[]).map(x=>`<div class="provider-card"><b>${esc(x.nombre)} ${esc(x.apellidos||'')}</b> · <span class="pill">${esc(x.estado)}</span><p class="note">🪪 ${esc(x.ci)}<br>📞 ${esc(x.tel)}<br>📍 ${esc(x.dir)}</p><div class="tb"><button class="btn sm pri" data-ext="aff-approve" data-id="${esc(x.id)}">Aprobar afiliado</button><button class="btn sm danger" data-ext="aff-delete" data-id="${esc(x.id)}">Eliminar</button></div></div>`).join('')||'<p class="note">No hay solicitudes locales de afiliados.</p>'}`;
+}
+function extAdminViewExtra() {
+ const c=D.config;
+ return `<h3>Funciones avanzadas</h3><p class="note">Estas opciones se guardan en la configuración de la tienda. Para sincronizar datos privados entre todos los visitantes se necesita backend con permisos seguros.</p>
+ <label class="fld"><span>Logo personalizado (imagen)</span><input id="ext-logo-file" type="file" accept="image/*"></label><button class="btn sm ghost" data-ext="logo-reset">Usar mapa de Cuba predeterminado</button>
+ <label class="fld"><span>Texto del programa de afiliados</span><textarea id="ext-aff-text">${esc(c.afiliadosTexto||'')}</textarea></label>
+ <div class="row2"><label class="fld"><span>Umbral para descuento (CUP)</span><input id="ext-limit" type="number" min="0" value="${esc(c.compraGrande?.limite??10000)}"></label><label class="fld"><span>Descuento anunciado (%)</span><input id="ext-discount" type="number" min="0" max="100" value="${esc(c.compraGrande?.descuento??5)}"></label></div>
+ <label class="fld"><span>Stock bajo: avisar cuando queden estas unidades</span><input id="ext-stock-low" type="number" min="2" value="${esc(c.stockBajo||3)}"></label>
+ <label class="chk"><input id="ext-maint" type="checkbox" ${c.mantenimiento?.activo?'checked':''}> Pausar la tienda y mostrar cartel de mantenimiento</label><label class="fld"><span>Mensaje de mantenimiento</span><textarea id="ext-maint-text">${esc(c.mantenimiento?.texto||'')}</textarea></label>
+ <h3>Editar el HTML publicado</h3><p class="note">Puedes subir un archivo HTML desde aquí a la raíz del repositorio configurado. Requiere GitHub conectado y un token con permiso de contenido. Esto reemplaza el archivo publicado.</p><label class="fld"><span>Archivo HTML nuevo</span><input id="ext-html-file" type="file" accept="text/html,.html"></label><button class="btn danger" data-ext="html-upload">Subir y reemplazar index.html</button>
+ <button class="btn pri block" style="margin-top:12px" data-ext="settings-save">Guardar funciones avanzadas</button>`;
+}
+// Attach the new views to the existing administrator navigation.
+if (typeof ADM_TABS !== 'undefined') { ADM_TABS.push(['proveedores','🏪 Proveedores'],['funciones','🧩 Funciones']); }
+if (typeof VIEWS !== 'undefined') { VIEWS.proveedores=extAdminViewProviders; VIEWS.funciones=extAdminViewExtra; }
+
+// Re-render existing logo with the editable image when configured.
+const _extRenderStatic = renderStatic;
+renderStatic = function(){ _extRenderStatic(); const c=D.config; const slot=$('#logoMap'); if(slot) slot.innerHTML=c.logoData?`<img src="${esc(c.logoData)}" alt="Logo de ${esc(c.nombre)}">`:mapaSVG('logo'); };
+// Rich notice bubble: editable shape, colors, emoji, image, audio and link.
+const _extRenderNota = renderNota;
+renderNota = function(){
+ const n=D.config.nota||{}, el=$('#bub');
+ if(!el) return;
+ if(!(n.activa&&n.texto) || localStorage.getItem('tem_nota')===n.id){el.hidden=true;el.innerHTML='';return;}
+ el.hidden=false; el.className='bub custom-bub '+(n.forma==='pill'?'notice-pill':n.forma==='square'?'notice-square':'notice-cloud');
+ el.style.background=n.color||'var(--acc)'; el.style.color=n.textoColor||'#03241d'; el.style.setProperty('--notice-font',n.fuente||'Outfit');
+ el.innerHTML=`<button class="bx" data-act="nota-x" aria-label="Quitar aviso">✕</button><b>${esc(n.emoji||'📢')} Aviso</b><p>${esc(n.texto)}</p>${n.imagen?`<img src="${esc(n.imagen)}" alt="Imagen del aviso" style="max-width:100%;max-height:180px;border-radius:10px;margin-top:8px">`:''}${n.audio?`<audio controls preload="none" src="${esc(n.audio)}" style="width:100%;margin-top:8px"></audio>`:''}${n.enlace?`<a href="${esc(safeUrl(n.enlace))}" target="_blank" rel="noopener" style="display:inline-block;margin-top:8px;font-weight:800">🔗 Abrir enlace</a>`:''}`;
+};
+// A maintenance curtain can be dismissed only by an administrator saving the setting.
+const _extRenderAll = renderAll;
+renderAll = function(){ _extRenderAll(); extMenu(); const m=D.config.mantenimiento||{}; let el=$('#maintenanceCurtain'); if(m.activo){ if(!el){el=document.createElement('div');el.id='maintenanceCurtain';el.className='maint-overlay';document.body.appendChild(el);} el.innerHTML=`<div class="maint-card"><div style="font-size:3rem">🛠️</div><h1>${esc(D.config.nombre)}</h1><p>${esc(m.texto||'Estamos realizando mantenimiento. Vuelve pronto.')}</p><button class="btn ghost" data-act="admin" style="margin-top:18px">Acceso del administrador</button></div>`; el.hidden=false;} else if(el) el.remove(); };
+
+// Add the location sharing control to the checkout and append coordinates to the WhatsApp order.
+const _extCartHTML=cartHTML;
+cartHTML=function(){let h=_extCartHTML(); if(CF.entrega==='domicilio') h=h.replace('<label class="fld" hidden id="cf-dirw">','<label class="fld" hidden id="cf-dirw">');
+ if(h.includes('data-act="comprar"')) h=h.replace('<button class="btn wa block" data-act="comprar">Comprar por WhatsApp</button>','<button class="btn ghost block" data-ext="geo">📍 Compartir mi ubicación real</button><p class="note" id="extGeoStatus">'+(CF.ubicacion?'Ubicación adjunta al pedido.':'La ubicación solo se comparte si das permiso.')+'</p><button class="btn wa block" data-act="comprar">Comprar por WhatsApp</button>'); return h;};
+const _extMsgPedido=msgPedido;
+msgPedido=function(res,cli){let t=_extMsgPedido(res,cli); const lim=+(D.config.compraGrande?.limite||0), pct=+(D.config.compraGrande?.descuento||0); if(lim>0&&res.total>=lim) t+=`\n🎉 AVISO PARA EL ADMINISTRADOR: este pedido alcanzó el umbral de ${fmt(lim)} CUP y corresponde revisar/aplicar el descuento configurado (${pct}%).`; if(CF.ubicacion) t+=`\n📍 Ubicación del cliente: https://maps.google.com/?q=${CF.ubicacion.lat},${CF.ubicacion.lon}`; return t;};
+
+// Extra event handling. Public requests open WhatsApp and are kept locally as a fallback.
+document.addEventListener('click', async e=>{
+ const img=e.target.closest('.det-main img'); if(img){const z=document.createElement('div');z.className='product-zoom';z.innerHTML=`<img src="${esc(img.src)}" alt="Ampliación del producto">`;z.addEventListener('click',()=>z.remove());document.body.appendChild(z);return;}
+ const b=e.target.closest('[data-ext]'); if(!b)return; const a=b.dataset.ext, id=b.dataset.id;
+ if(a==='affiliate') return extAffiliateForm(); if(a==='aff-agree') return extAffiliateForm2(); if(a==='provider') return extProviderForm(); if(a==='prov-agree') return extProviderForm2();
+ if(a==='aff-submit') return extSubmit('afiliado'); if(a==='prov-submit') return extSubmit('proveedor');
+ if(a==='provider-profile') return extProviderProfile(id);
+ if(a==='aff-approve'){const L=extGet(EXT.affKey,[]),x=L.find(v=>v.id===id);if(!x)return;x.estado='aprobado';extPut(EXT.affKey,L);admRender();toast('Afiliado aprobado en este navegador','ok');return;}
+ if(a==='aff-delete'){if(!confirm('¿Eliminar solicitud de afiliado?'))return;extPut(EXT.affKey,extGet(EXT.affKey,[]).filter(v=>v.id!==id));admRender();return;}
+ if(a==='supplier-login') return extSupplierDashboard();
+ if(a==='supplier-enter'){const tel=telCuba($('#exs-tel')?.value),ci=($('#exs-ci')?.value||'').trim();const x=extProviderStatus().find(v=>v.estado==='aprobado'&&telCuba(v.tel)===tel&&v.ci===ci);if(!x)return toast('No se encontró un proveedor aprobado con esos datos','err');if(!x.gratis&&x.pruebaHasta&&x.pruebaHasta<Date.now()){extSendWhatsApp(`AVISO: proveedor ${x.nombre} ha intentado acceder y su prueba/cuota venció. Teléfono: ${x.tel}`);return toast('Tu periodo de prueba/cuota ha vencido. Contacta al administrador.','err');}return extSupplierProductsForm(x);}
+ if(a==='supplier-product-send'){const L=extProviderStatus(),x=L.find(v=>v.id===id);if(!x)return toast('No se encontró el proveedor','err');const g=i=>($('#'+i)?.value||'').trim();x.foto=g('exsp-profile');extPut(EXT.provKey,L);const name=g('exsp-name'),desc=g('exsp-desc'),price=+g('exsp-price'),qty=Math.max(1,+g('exsp-qty')||1);if(!name||!price)return toast('Escribe el nombre y precio','err');const P=extPendingProducts();P.unshift({id:uid(),proveedorId:x.id,proveedorNombre:x.nombre,nombre:name,descripcion:desc,precio:price,cantidad:qty,categoria:$('#exsp-cat').value,imagen:g('exsp-img'),creado:Date.now()});extPut('tem_supplier_products',P);closeModal($$('.ov').pop());extSendWhatsApp(`Producto pendiente de aprobación\nProveedor: ${x.nombre}\nProducto: ${name}\nPrecio: ${price} CUP\nCantidad: ${qty}`);toast('Producto enviado a revisión','ok');return;}
+ if(a==='supplier-unregister'){const L=extProviderStatus(),x=L.find(v=>v.id===id);if(!x)return; x.bajaSolicitada=Date.now();extPut(EXT.provKey,L);closeModal($$('.ov').pop());extSendWhatsApp(`Solicitud de baja de proveedor\n${x.nombre}\nTeléfono: ${x.tel}\nCarné: ${x.ci}`);toast('Solicitud de baja enviada para notificar al administrador','ok');return;}
+ if(a==='supplier-product-approve'){const L=extPendingProducts(),x=L.find(v=>v.id===id);if(!x)return;const product={id:uid(),nombre:x.nombre,descripcion:x.descripcion,categoria:x.categoria,tipo:'venta',calidad:'bueno',usado:true,danado:false,defecto:'',cantidad:x.cantidad,precio:x.precio,precioAnterior:0,rebaja:0,mayor:{activo:false,precio:0,minimo:5},domicilio:{activo:false,tiempo:'',costo:0},imagenes:x.imagen?[x.imagen]:[],vendidos:0,creado:Date.now(),oculto:false,proveedorId:x.proveedorId};if(await acc(d=>{d.productos.unshift(product);},'Producto aprobado y publicado')){extPut('tem_supplier_products',L.filter(v=>v.id!==id));admRender();}return;}
+ if(a==='supplier-product-delete'){if(!confirm('¿Rechazar este producto?'))return;extPut('tem_supplier_products',extPendingProducts().filter(v=>v.id!==id));admRender();return;}
+ if(a==='geo') { if(!navigator.geolocation) return toast('Este navegador no permite compartir ubicación','err'); b.disabled=true;b.textContent='Buscando ubicación…'; navigator.geolocation.getCurrentPosition(pos=>{CF.ubicacion={lat:pos.coords.latitude.toFixed(6),lon:pos.coords.longitude.toFixed(6)};localStorage.setItem('tem_cf',JSON.stringify(CF));toast('Ubicación añadida al pedido','ok');if(CM&&CM.isConnected) $('.box',CM).innerHTML=cartHTML();},err=>{b.disabled=false;b.textContent='📍 Compartir mi ubicación real';toast(err.code===1?'No diste permiso para compartir la ubicación':'No se pudo obtener la ubicación','err');},{enableHighAccuracy:true,timeout:12000,maximumAge:0});return; }
+ if(a==='logo-reset'){ if(await acc(d=>{d.config.logoData='';},'Logo de mapa restaurado')) admRender(); return; }
+ if(a==='settings-save'){const val=id=>$('#'+id)?.value??'';const active=$('#ext-maint').checked; if(await acc(d=>{d.config.afiliadosTexto=val('ext-aff-text');d.config.compraGrande={limite:Math.max(0,+val('ext-limit')||0),descuento:Math.min(100,Math.max(0,+val('ext-discount')||0))};d.config.stockBajo=Math.max(2,+val('ext-stock-low')||3);d.config.mantenimiento={activo:active,texto:val('ext-maint-text')||'Estamos realizando mantenimiento. Vuelve pronto.'};},'Funciones guardadas')){admRender();renderAll();} return; }
+ if(a==='prov-text-save'){const text=$('#ext-prov-text').value, fee=Math.max(0,+$('#ext-prov-fee').value||0);if(await acc(d=>{d.config.proveedoresTexto=text;d.config.cuotaProveedor=fee;},'Texto y cuota guardados'))admRender();return;}
+ if(a==='prov-approve'||a==='prov-free'||a==='prov-paid'||a==='prov-delete'){
+  const L=extProviderStatus(),x=L.find(z=>z.id===id);if(!x)return;
+  if(a==='prov-delete'){if(!confirm('¿Eliminar esta solicitud/proveedor?'))return;extPut(EXT.provKey,L.filter(z=>z.id!==id));}
+  else {x.estado='aprobado';x.pruebaHasta=a==='prov-approve'?Date.now()+7*86400000:(a==='prov-free'?0:Date.now()+30*86400000);x.gratis=a==='prov-free';x.cuota=a==='prov-free'?0:+(D.config.cuotaProveedor||0);extPut(EXT.provKey,L);}
+  admRender();extRenderProviderShowcase();toast('Proveedor actualizado en este navegador','ok');return;
+ }
+ if(a==='html-upload'){const f=$('#ext-html-file')?.files?.[0];if(!f)return toast('Selecciona un archivo HTML','err');if(!confirm('Esto reemplazará index.html en el repositorio conectado. ¿Continuar?'))return;try{const text=await f.text();if(!/<!doctype html|<html/i.test(text))return toast('El archivo no parece ser HTML válido','err');const current=await gh('GET','index.html');if(!current?.sha)throw new Error('No se pudo obtener la versión actual de index.html');const bytes=new TextEncoder().encode(text);const b64=u8b64(bytes);await gh('PUT','index.html',{message:'Actualizar tienda desde panel administrador',content:b64,sha:current.sha});toast('HTML enviado a GitHub. La publicación puede tardar unos minutos.','ok');}catch(err){toast('No se pudo publicar: '+err.message,'err');}return;}
+});
+document.addEventListener('change', async e=>{
+ if(e.target.id==='ext-logo-file'&&e.target.files?.[0]){const f=e.target.files[0];if(!f.type.startsWith('image/'))return toast('Selecciona una imagen','err');const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{const c=document.createElement('canvas'),max=360,scale=Math.min(1,max/Math.max(img.width,img.height));c.width=Math.round(img.width*scale);c.height=Math.round(img.height*scale);c.getContext('2d').drawImage(img,0,0,c.width,c.height);const data=c.toDataURL('image/jpeg',.78);acc(d=>{d.config.logoData=data;},'Logo actualizado').then(ok=>{if(ok){renderAll();admRender();}});};img.src=reader.result;};reader.readAsDataURL(f);}
+});
+
+// Add notice design controls to the existing notice tab by wrapping its view.
+const _extAvisosView=VIEWS.avisos;
+VIEWS.avisos=function(){const n=D.config.nota||{};return _extAvisosView()+`<h3>Diseño y contenido del aviso</h3><div class="row2"><label class="fld"><span>Color de burbuja</span><input id="ext-av-color" type="color" value="${esc(n.color||'#25d3b0')}"></label><label class="fld"><span>Color de letra</span><input id="ext-av-textcolor" type="color" value="${esc(n.textoColor||'#03241d')}"></label></div><div class="row2"><label class="fld"><span>Forma</span><select id="ext-av-forma"><option value="cloud" ${sel(n.forma,'cloud')}>Burbuja</option><option value="pill" ${sel(n.forma,'pill')}>Redondeada</option><option value="square" ${sel(n.forma,'square')}>Cuadrada</option></select></label><label class="fld"><span>Emoji</span><input id="ext-av-emoji" value="${esc(n.emoji||'📢')}" maxlength="8"></label></div><label class="fld"><span>Enlace opcional (https://...)</span><input id="ext-av-link" value="${esc(n.enlace||'')}"></label><label class="fld"><span>URL de imagen opcional</span><input id="ext-av-img" value="${esc(n.imagen||'')}"></label><label class="fld"><span>URL de audio/nota de voz opcional</span><input id="ext-av-audio" value="${esc(n.audio||'')}"></label><button class="btn sm pri" data-ext="notice-save">Guardar diseño del aviso</button>`;};
+// Wrap the original publish action so the style/media settings are included.
+const _extAdminClick3=admClick3;
+admClick3=async function(a,el,id){if(a==='av-pub'){const text=$('#av-txt')?.value?.trim();if(!text)return toast('Escribe el aviso','err');const val=i=>$('#'+i)?.value||'';await acc(d=>{d.config.nota={activa:true,texto,id:uid(),color:val('ext-av-color'),textoColor:val('ext-av-textcolor'),forma:val('ext-av-forma')||'cloud',emoji:val('ext-av-emoji')||'📢',enlace:val('ext-av-link'),imagen:val('ext-av-img'),audio:val('ext-av-audio')};},'Aviso publicado');admRender();renderNota();return;}return _extAdminClick3(a,el,id);};
+// Allow saving style without republishing text.
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-ext="notice-save"]');if(!b)return;const val=i=>$('#'+i)?.value||'';await acc(d=>{const n=d.config.nota||{};Object.assign(n,{color:val('ext-av-color'),textoColor:val('ext-av-textcolor'),forma:val('ext-av-forma')||'cloud',emoji:val('ext-av-emoji')||'📢',enlace:val('ext-av-link'),imagen:val('ext-av-img'),audio:val('ext-av-audio')});d.config.nota=n;},'Diseño guardado');admRender();renderNota();});
+
+
+
 </script>
 </body></html>
