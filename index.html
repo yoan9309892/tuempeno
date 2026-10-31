@@ -2290,13 +2290,19 @@ function pvFormProd() {
   ppImgs();
 }
 function ppImgs() { const b = $('#ppImgs'); if (b) b.innerHTML = PVIMG.map((u, i) => `<span class="pfi"><img src="${esc(u)}" alt=""><button data-act="pp-quitar" data-i="${i}" aria-label="Quitar foto">✕</button></span>`).join('') || '<span class="note">Sin fotos todavía.</span>'; }
-async function provEnviar(datos, btn, textoOk, waTxt) {
+async function provEnviar(datos, btn, textoOk, waTxt, silencioso) {
   if (!SBM) return toast('El envío necesita la conexión con Supabase. Escríbele al administrador por WhatsApp.', 'err');
   if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Enviando…'; }
-  try { await rpc('registrar_solicitud', { p_datos: datos }); } catch (e) { if (btn) { btn.disabled = false; btn.textContent = 'Reintentar'; } toast('No se pudo enviar: ' + e.message, 'err'); return false; }
+  try { await rpc('registrar_solicitud', { p_datos: datos }); } catch (e) { if (silencioso && /larg/i.test(e.message || '')) return 'largo'; if (btn) { btn.disabled = false; btn.textContent = 'Reintentar'; } toast('No se pudo enviar: ' + e.message, 'err'); return false; }
   const u = waLink(waTxt, waDestino(D.config.prov.waId));
   if (btn) { const ov = btn.closest('.ov'); $('.box', ov).innerHTML = `<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><h2>✅ Enviado</h2><p class="note" style="font-size:1rem">${textoOk}</p><a class="btn wa block" href="${esc(u)}" target="_blank" rel="noopener" data-act="cerrar">📲 Avisar al administrador por WhatsApp</a>`; }
   return true;
+}
+function reescalar(du, max, q) {
+  return new Promise(res => {
+    const im = new Image(); im.onload = () => { const k = Math.min(1, max / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.max(1, Math.round(im.width * k)); c.height = Math.max(1, Math.round(im.height * k)); const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(im, 0, 0, c.width, c.height); res(c.toDataURL('image/jpeg', q)); };
+    im.onerror = () => res(du); im.src = du;
+  });
 }
 async function provProdOk(btn) {
   const p = PVS && provDe(PVS.id); if (!p || p.pin !== PVS.h) return toast('Entra de nuevo a tu cuenta', 'err');
@@ -2304,7 +2310,17 @@ async function provProdOk(btn) {
   if (!nom) return toast('Escribe el nombre del producto', 'err');
   if (!(pre >= 0) || g('pp-pre') === '') return toast('Escribe el precio', 'err');
   const producto = { nombre: nom, descripcion: g('pp-desc'), categoria: $('#pp-cat').value, tipo: $('#pp-tipo').value, calidad: $('#pp-cal').value, usado: $('#pp-uso').checked, cantidad: Math.max(1, Math.floor(+g('pp-cant') || 1)), precio: pre, domicilio: { activo: $('#pp-dom').checked, tiempo: '', costo: 0 } };
-  const ok = await provEnviar({ kind: 'prov-prod', pv: p.id, codigo: p.codigo, h: p.pin, proveedor: p.nombre, producto, imagenes: PVIMG.slice() }, btn, 'Tu producto quedó pendiente. Cuando el administrador lo apruebe saldrá en el catálogo.', `Hola, soy el proveedor ${p.nombre} (${p.codigo}). Acabo de subir el producto «${nom}» para que lo apruebes.`);
+  const base = { kind: 'prov-prod', pv: p.id, codigo: p.codigo, h: p.pin, proveedor: p.nombre, producto };
+  const wa = `Hola, soy el proveedor ${p.nombre} (${p.codigo}). Acabo de subir el producto «${nom}» para que lo apruebes.`;
+  let ok = false, sinFotos = false;
+  const niveles = [[null, 0], [600, .6], [400, .5], [260, .45], [160, .4]];
+  for (const [m, q] of niveles) {
+    const imgs = m ? await Promise.all(PVIMG.map(u => reescalar(u, m, q))) : PVIMG.slice();
+    ok = await provEnviar({ ...base, imagenes: imgs }, btn, 'Tu producto quedó pendiente. Cuando el administrador lo apruebe saldrá en el catálogo.', wa, true);
+    if (ok !== 'largo') break;
+    if (!PVIMG.length) break;
+  }
+  if (ok === 'largo') { ok = await provEnviar({ ...base, imagenes: [] }, btn, 'Tu producto quedó pendiente, pero <b>sin fotos</b> (el servidor no aceptó fotos tan pesadas). Avísale al administrador para que las agregue.', wa, false); sinFotos = true; }
   if (ok) { const L = jget('tem_pvlog', []); L.unshift({ pv: p.id, nombre: nom, t: Date.now() }); localStorage.setItem('tem_pvlog', JSON.stringify(L.slice(0, 30))); }
 }
 async function adminFotoProv(pid, f) {
@@ -2318,10 +2334,16 @@ async function adminFotoProv(pid, f) {
 async function provFoto(f) {
   const p = PVS && provDe(PVS.id); if (!p || p.pin !== PVS.h) return toast('Entra de nuevo a tu cuenta', 'err');
   if (!SBM) return toast('El envío necesita la conexión con Supabase', 'err');
+  toast('Enviando la foto…');
   try {
-    toast('Enviando la foto…'); const foto = await comprimir(f, 420, .8);
-    await rpc('registrar_solicitud', { p_datos: { kind: 'prov-foto', pv: p.id, codigo: p.codigo, h: p.pin, nombre: p.nombre, foto } });
-    toast('Foto enviada. Se publicará cuando el administrador la apruebe', 'ok');
+    for (const [m, q] of [[260, .7], [180, .6], [130, .55], [96, .5], [72, .45], [56, .4]]) {
+      const foto = await comprimir(f, m, q);
+      try {
+        await rpc('registrar_solicitud', { p_datos: { kind: 'prov-foto', pv: p.id, codigo: p.codigo, h: p.pin, nombre: p.nombre, foto } });
+        return toast('Foto enviada. Se publicará cuando el administrador la apruebe', 'ok');
+      } catch (e) { if (!/larg/i.test(e.message || '')) throw e; }
+    }
+    toast('El servidor no acepta ni una foto muy pequeña. Hay que ampliar el límite de texto en Supabase.', 'err');
   } catch (e) { toast('No se pudo enviar la foto: ' + e.message, 'err'); }
 }
 async function provBaja(btn) {
