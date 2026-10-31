@@ -407,6 +407,10 @@ pre{background:var(--bg2);padding:12px;border-radius:12px;overflow:auto}
 .bt-btn{margin-top:20px;padding:13px 26px;border-radius:14px;background:linear-gradient(145deg,#f5b83d,#ff9a3d);color:#1a1033;font-weight:800;font-size:1rem;box-shadow:0 6px 0 #b8741a,0 10px 24px rgba(0,0,0,.4)}
 .bt-btn:active{transform:translateY(3px);box-shadow:0 3px 0 #b8741a}
 .offbar{position:fixed;left:0;right:0;top:64px;z-index:54;background:#3a2b78;color:#fff;font-weight:700;text-align:center;padding:6px 10px;font-size:.85rem}
+
+/* botones de archivo: el selector va encima del botón (funciona también en navegadores integrados) */
+.fileb{position:relative;overflow:hidden;cursor:pointer}
+.fileb input[type=file]{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0;padding:0;border:0}
 </style>
 <style id="bgStyle"></style>
 <style id="cssExtra"></style>
@@ -1277,7 +1281,7 @@ const VIEWS = {
     const ck = (id, v, t) => `<label class="chk"><input type="checkbox" id="${id}" ${v ? 'checked' : ''}> ${t}</label>`;
     return `<h3>Logo de la página</h3><p class="note">Ahora es el mapa de Cuba en 3D con Sancti Spíritus resaltada. Puedes cambiarlo por tu propia imagen (mejor PNG con fondo transparente).</p>
       <div class="info" style="display:flex;gap:14px;align-items:center"><div style="width:140px">${c.logo ? `<img src="${esc(imgSrc(c.logo))}" data-raw="${esc(rawSrc(c.logo))}" alt="" style="max-height:70px;object-fit:contain">` : mapaSVG('adm')}</div><span>${c.logo ? 'Logo propio' : 'Mapa 3D de Cuba'}</span></div>
-      <div class="tb"><label class="btn ghost">🖼 Cambiar logo<input type="file" id="pg-logo-file" accept="image/*" hidden></label>${c.logo ? '<button class="btn ghost" data-act="logo-mapa">↩ Volver al mapa 3D</button>' : ''}</div>
+      <div class="tb"><label class="btn ghost fileb">🖼 Cambiar logo<input type="file" id="pg-logo-file" accept="image/*"></label>${c.logo ? '<button class="btn ghost" data-act="logo-mapa">↩ Volver al mapa 3D</button>' : ''}</div>
       <h3>Textos de la tienda</h3>
       <div class="row2"><label class="fld"><span>Nombre de la tienda</span><input id="pg-nombre" value="${esc(c.nombre)}"></label><label class="fld"><span>Lema</span><input id="pg-lema" value="${esc(c.lema)}"></label>
       <label class="fld"><span>Título principal</span><input id="pg-ht" value="${esc(c.heroTitulo)}"></label><label class="fld"><span>Pie de página</span><input id="pg-footer" value="${esc(c.footer)}"></label></div>
@@ -2035,7 +2039,7 @@ function msgEditor(p, m) {
    <label class="fld"><span>Forma de la burbuja</span><select id="${p}-for">${FORMAS.map(([k, n]) => `<option value="${k}" ${sel(k, m.forma || 'bocadillo')}>${n}</option>`).join('')}</select></label></div>
    <div class="fld"><span>Imagen (opcional)</span><div id="${p}-imgbox"></div><input type="file" id="${p}-imgf" accept="image/*"></div>
    <div class="fld"><span>Nota de voz (opcional)</span><div id="${p}-audbox"></div>
-     <div class="tb"><button type="button" class="btn sm ghost" data-act="rec" data-p="${p}" id="${p}-rec">🎙 Grabar</button><label class="btn sm ghost">⬆ Subir audio<input type="file" id="${p}-audf" accept="audio/*" hidden></label></div></div>
+     <div class="tb"><button type="button" class="btn sm ghost" data-act="rec" data-p="${p}" id="${p}-rec">🎙 Grabar</button><label class="btn sm ghost fileb">⬆ Subir audio<input type="file" id="${p}-audf" accept="audio/*"></label></div></div>
    <div class="row2"><label class="fld"><span>Enlace (opcional)</span><input id="${p}-url" value="${g('enlace')}" placeholder="https://…"></label><label class="fld"><span>Texto del botón del enlace</span><input id="${p}-urlt" value="${g('enlaceTxt')}" placeholder="Abrir enlace"></label></div>
    <div class="fld"><span>Así se verá</span><div class="bm-prev" id="${p}-prev"></div></div>`;
 }
@@ -2267,7 +2271,7 @@ function panelProv() {
   const h3 = 'style="font-family:var(--fd);margin:16px 0 8px"';
   openModal(`<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><div class="pv-big" style="text-align:center">${avatarProv(p)}<h2 style="padding:0">${esc(p.nombre)}</h2><p class="note">${estTxt}</p></div>
     ${e === 'vencido' ? `<div class="alerta-av">Para seguir en la página paga la cuota mensual de ${fmt(c.cuota)} CUP y avísale al administrador.</div><a class="btn wa block" target="_blank" rel="noopener" href="${esc(waLink('Hola, soy el proveedor ' + p.nombre + ' (' + p.codigo + '). Quiero pagar la cuota mensual para seguir en ' + D.config.nombre + '.', waDestino(c.waId)))}">💬 Avisar al administrador</a>` : ''}
-    ${activo ? `<div style="display:grid;gap:10px;margin:12px 0"><label class="btn ghost block" style="cursor:pointer">📷 Cambiar mi foto de perfil<input id="pv-foto" type="file" accept="image/*" hidden></label><button class="btn pri block" data-act="pv-nuevo">➕ Subir un producto</button></div>` : ''}
+    ${activo ? `<div style="display:grid;gap:10px;margin:12px 0"><label class="btn ghost block fileb">📷 Subir mi foto de perfil<input id="pv-foto" type="file" accept="image/*"></label><button class="btn pri block" data-act="pv-nuevo">➕ Subir un producto</button></div>` : ''}
     <h3 ${h3}>Mis productos publicados (${mis.length})</h3>
     ${mis.map(m => `<div class="crow" style="grid-template-columns:64px 1fr"><div class="th">${m.imagenes && m.imagenes[0] ? imgTag(m.imagenes[0], m.nombre) : '📦'}</div><div><b>${esc(m.nombre)}</b><small>${fmt(precioAct(m))} CUP · ${esServ(m) ? 'servicio' : (+m.cantidad || 0) + ' disponibles'}${m.oculto ? ' · oculto' : ''}</small></div></div>`).join('') || '<p class="note">Todavía no tienes productos publicados.</p>'}
     ${log.length ? `<h3 ${h3}>Enviados, esperando aprobación (${log.length})</h3>${log.map(x => `<p class="note">⏳ ${esc(x.nombre)}</p>`).join('')}` : ''}
@@ -2303,11 +2307,19 @@ async function provProdOk(btn) {
   const ok = await provEnviar({ kind: 'prov-prod', pv: p.id, codigo: p.codigo, h: p.pin, proveedor: p.nombre, producto, imagenes: PVIMG.slice() }, btn, 'Tu producto quedó pendiente. Cuando el administrador lo apruebe saldrá en el catálogo.', `Hola, soy el proveedor ${p.nombre} (${p.codigo}). Acabo de subir el producto «${nom}» para que lo apruebes.`);
   if (ok) { const L = jget('tem_pvlog', []); L.unshift({ pv: p.id, nombre: nom, t: Date.now() }); localStorage.setItem('tem_pvlog', JSON.stringify(L.slice(0, 30))); }
 }
+async function adminFotoProv(pid, f) {
+  try {
+    toast('Subiendo la foto…'); const du = await comprimir(f, 420, .8), path = await subirMedio(du, 'imagenes', 250000), old = (provDe(pid) || {}).foto;
+    await mutar(d => { const x = (d.proveedores || []).find(y => y.id === pid); if (x) x.foto = path; });
+    if (old && !/^(https?:|data:)/.test(old)) { try { await ghBorrar(old); } catch { } }
+    toast('Foto del proveedor guardada', 'ok'); admRender();
+  } catch (e) { toast(e.message, 'err'); }
+}
 async function provFoto(f) {
   const p = PVS && provDe(PVS.id); if (!p || p.pin !== PVS.h) return toast('Entra de nuevo a tu cuenta', 'err');
   if (!SBM) return toast('El envío necesita la conexión con Supabase', 'err');
   try {
-    const foto = await comprimir(f, 420, .8);
+    toast('Enviando la foto…'); const foto = await comprimir(f, 420, .8);
     await rpc('registrar_solicitud', { p_datos: { kind: 'prov-foto', pv: p.id, codigo: p.codigo, h: p.pin, nombre: p.nombre, foto } });
     toast('Foto enviada. Se publicará cuando el administrador la apruebe', 'ok');
   } catch (e) { toast('No se pudo enviar la foto: ' + e.message, 'err'); }
@@ -2352,7 +2364,7 @@ function pvRow(p) {
   return `<div class="reg"><header><span><b>${esc(p.nombre)}</b> · ${esc(p.codigo)}</span><span class="pill ${esc(e)}">${esc(e)}</span></header>
     <div class="note">⏱ ${esc(tiempo)} · 📦 ${n} producto(s)${d.nombre ? '<br>👤 ' + esc(d.nombre) + ' ' + esc(d.apellidos || '') + ' · 📞 ' + esc(d.tel || '') : ''}</div>
     ${e === 'vencido' ? `<div class="alerta-av">⏰ Se le acabó el tiempo. Cóbrale, déjalo gratis o elimínalo.</div>` : ''}
-    <div class="pa" style="margin-top:8px"><button data-act="pv-pago" data-id="${id}">💰 Cobrado (+ meses)</button><button data-act="pv-gratis" data-id="${id}">🆓 Dejar gratis</button><button data-act="pv-pin" data-id="${id}">🔑 Nuevo PIN</button><button data-act="pv-nom" data-id="${id}">✏️ Nombre</button>${tel ? `<a class="btn sm wa" target="_blank" rel="noopener" href="${esc(waLink(msg, tel))}">💬 Avisar</a>` : ''}<button class="del" data-act="pv-del" data-id="${id}">🗑 Eliminar</button></div></div>`;
+    <div class="pa" style="margin-top:8px"><button data-act="pv-pago" data-id="${id}">💰 Cobrado (+ meses)</button><button data-act="pv-gratis" data-id="${id}">🆓 Dejar gratis</button><button data-act="pv-pin" data-id="${id}">🔑 Nuevo PIN</button><button data-act="pv-nom" data-id="${id}">✏️ Nombre</button><label class="btn sm ghost fileb">📷 Foto<input type="file" id="pv-fotoa-${id}" accept="image/*"></label>${p.foto ? `<button class="del" data-act="pv-fotox" data-id="${id}">Quitar foto</button>` : ''}${tel ? `<a class="btn sm wa" target="_blank" rel="noopener" href="${esc(waLink(msg, tel))}">💬 Avisar</a>` : ''}<button class="del" data-act="pv-del" data-id="${id}">🗑 Eliminar</button></div></div>`;
 }
 function pvsHTML(r) {
   const d = r.datos || {}, tel = telCuba(d.tel), id = esc(r.id);
@@ -2531,6 +2543,7 @@ async function nuevoClick(a, el, id, ev) {
     case 'pv-pin': { const p = provDe(id); if (!p) break; const pin = nuevoPin(), h = await sha256(p.codigo + ':' + pin); if (await acc(d => { const x = (d.proveedores || []).find(y => y.id === id); if (x) x.pin = h; }, 'PIN cambiado')) accesoProv(p, pin); break; }
     case 'pv-nom': { const p = provDe(id); if (!p) break; const n = prompt('Nombre que ve el público:', p.nombre); if (n === null || !n.trim()) break; await acc(d => { const x = (d.proveedores || []).find(y => y.id === id); if (x) x.nombre = n.trim(); }, 'Nombre cambiado'); admRender(); break; }
     case 'pv-del': await provEliminar(id); break;
+    case 'pv-fotox': if (confirm('¿Quitar la foto de este proveedor?')) { await acc(d => { const x = (d.proveedores || []).find(y => y.id === id); if (x) x.foto = ''; }, 'Foto quitada'); admRender(); } break;
     case 'pb-ok': { if (await provEliminar(el.dataset.pv)) { try { await rpc('admin_estado', { p_clave: ADMIN.clave, p_id: +id, p_estado: 'cerrado' }); await cargarReg(); admRender(); } catch { } } break; }
     case 'pb-no': try { await rpc('admin_estado', { p_clave: ADMIN.clave, p_id: +id, p_estado: 'cerrado' }); await cargarReg(); admRender(); } catch (e) { toast(e.message, 'err'); } break;
     case 'pp-ap': {
@@ -2574,6 +2587,7 @@ async function nuevoChange(t) {
     t.value = ''; ppImgs();
   }
   else if (t.id === 'pv-foto' && f) { t.value = ''; provFoto(f); }
+  else if (t.id.startsWith('pv-fotoa-') && f) { const pid = t.id.slice(9); t.value = ''; adminFotoProv(pid, f); }
 }
 
 /* =====================================================================
@@ -2598,6 +2612,48 @@ const _nc = nuevoClick;
 nuevoClick = async function (a, el, id, ev) {
   if (a === 'boot-re') { $('#btRe').hidden = true; $('#btTxt').textContent = 'Buscando conexión…'; await leer(); if (!LOADED) LOADED = true; renderAll(); renderBoot(); return; }
   return _nc(a, el, id, ev);
+};
+
+
+/* =====================================================================
+   DATOS DE GITHUB DENTRO DEL HTML (el token NUNCA se incluye)
+   ===================================================================== */
+async function htmlConDatos() {
+  const g = ghInfo(), ok = s => /^[\w.-]+$/.test(s || '');
+  if (!ok(g.u) || !ok(g.r) || !ok(g.b)) throw new Error('Escribe y guarda primero el usuario, el repositorio y la rama de GitHub (arriba)');
+  let txt;
+  try { const r = await fetch(location.href.split('#')[0].split('?')[0], { cache: 'no-store' }); if (!r.ok) throw 0; txt = await r.text(); } catch (e) { throw new Error('No pude leer la página actual. Ábrela desde su dirección de internet (https://…) y vuelve a intentar'); }
+  let n = 0;
+  txt = txt.replace(/GH_USER: '[^']*'/, () => { n++; return `GH_USER: '${g.u}'`; }).replace(/GH_REPO: '[^']*'/, () => { n++; return `GH_REPO: '${g.r}'`; }).replace(/GH_BRANCH: '[^']*'/, () => { n++; return `GH_BRANCH: '${g.b}'`; });
+  if (n !== 3) throw new Error('No encontré dónde poner los datos en la página');
+  return txt;
+}
+async function descargarConDatos() {
+  try { const t = await htmlConDatos(), u = URL.createObjectURL(new Blob([t], { type: 'text/html' })), l = document.createElement('a'); l.href = u; l.download = 'index.html'; l.click(); setTimeout(() => URL.revokeObjectURL(u), 2000); toast('Listo: index.html con tus datos de GitHub', 'ok'); } catch (e) { toast(e.message, 'err'); }
+}
+async function publicarConDatos(btn) {
+  try {
+    const g = ghInfo(); if (!g.token) throw new Error('Falta el token de GitHub (arriba) para publicar. Si no quieres usarlo, descarga el archivo y súbelo tú.');
+    if (!confirm('¿Publicar la página con tu usuario y repositorio de GitHub incluidos? Se guarda copia de la anterior.')) return;
+    btn.disabled = true; const t = await htmlConDatos(), actual = await gh('GET', 'index.html');
+    if (actual && actual.content) { try { await gh('PUT', 'respaldo/' + new Date().toISOString().replace(/[:T]/g, '-').slice(0, 16) + '-index.html', { message: 'Respaldo', content: actual.content.replace(/\s/g, '') }); } catch (e) { } }
+    await gh('PUT', 'index.html', { message: 'Datos de GitHub dentro de la página', content: u8b64(new TextEncoder().encode(t)), ...(actual && actual.sha ? { sha: actual.sha } : {}) });
+    toast('Publicado. En 1 o 2 minutos queda en todas las apps', 'ok');
+  } catch (e) { toast(e.message, 'err'); } finally { btn.disabled = false; }
+}
+const _nc3 = nuevoClick;
+nuevoClick = async function (a, el, id, ev) {
+  if (a === 'fijar-bajar') return descargarConDatos();
+  if (a === 'fijar-pub') return publicarConDatos(el);
+  return _nc3(a, el, id, ev);
+};
+const _vcx = VIEWS.conexion;
+VIEWS.conexion = function () {
+  const g = ghInfo();
+  return _vcx() + `<h3>📌 Datos dentro de la página (para la APK)</h3>
+    <p class="note">Supabase ya viene dentro de la página. Aquí puedes dejar también tu <b>usuario, repositorio y rama de GitHub</b> dentro del HTML, para que las fotos salgan directo en cualquier APK, sin configurar nada. Datos actuales: <b>${esc(g.u || '—')}/${esc(g.r || '—')}</b> (rama ${esc(g.b || '—')}).</p>
+    <div class="alerta-av">🔒 El <b>token</b> de GitHub NO se incluye nunca: quien lo tuviera podría borrar o cambiar tu tienda. El token se queda solo en tu teléfono (pestaña Conexión, arriba).</div>
+    <div class="tb"><button class="btn pri" data-act="fijar-bajar">⬇ Descargar la página con mis datos</button><button class="btn ghost" data-act="fijar-pub">⬆ Publicar la página con mis datos</button></div>`;
 };
 
 /* ---------- arranque ---------- */
