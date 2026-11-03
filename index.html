@@ -707,6 +707,14 @@ function comprimir(file, max = 1280, calidad = .82) {
   });
 }
 
+/* compresión con tope de peso (para que Supabase no rechace el texto por largo) */
+async function comprimirMax(file, maxChars, dim = 640) {
+  let d = dim, q = .7, out = await comprimir(file, d, q);
+  while (out.length > maxChars && d > 160) { d = Math.round(d * .8); q = Math.max(.45, q - .06); out = await comprimir(file, d, q); }
+  if (out.length > maxChars) throw new Error('La foto es demasiado pesada. Prueba con otra.');
+  return out;
+}
+
 /* ---------- Supabase ---------- */
 const sbH = () => { const h = { apikey: SB.key, 'Content-Type': 'application/json' }; if (!SB.key.startsWith('sb_')) h.Authorization = 'Bearer ' + SB.key; return h; };
 async function rpc(fn, args) {
@@ -2309,7 +2317,7 @@ async function provFoto(f) {
   const p = PVS && provDe(PVS.id); if (!p || p.pin !== PVS.h) return toast('Entra de nuevo a tu cuenta', 'err');
   if (!SBM) return toast('El envío necesita la conexión con Supabase', 'err');
   try {
-    const foto = await comprimir(f, 420, .8);
+    const foto = await comprimirMax(f, 35000, 360);
     await rpc('registrar_solicitud', { p_datos: { kind: 'prov-foto', pv: p.id, codigo: p.codigo, h: p.pin, nombre: p.nombre, foto } });
     toast('Foto enviada. Se publicará cuando el administrador la apruebe', 'ok');
   } catch (e) { toast('No se pudo enviar la foto: ' + e.message, 'err'); }
@@ -2573,7 +2581,7 @@ async function nuevoChange(t) {
   }
   else if (t.id === 'pg-logo-file' && f) { t.value = ''; subirLogo(f); }
   else if (t.id === 'pp-file' && t.files.length) {
-    for (const x of [...t.files]) { if (PVIMG.length >= 4) { toast('Máximo 4 fotos', 'err'); break; } try { PVIMG.push(await comprimir(x, 800, .72)); } catch (e) { toast(e.message, 'err'); } }
+    for (const x of [...t.files]) { if (PVIMG.length >= 4) { toast('Máximo 4 fotos', 'err'); break; } try { PVIMG.push(await comprimirMax(x, 45000, 640)); } catch (e) { toast(e.message, 'err'); } }
     t.value = ''; ppImgs();
   }
   else if (t.id === 'pv-foto' && f) { t.value = ''; provFoto(f); }
