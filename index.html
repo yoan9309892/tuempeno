@@ -1350,9 +1350,9 @@ function pList() {
 }
 function formProd(id, pre) {
   const p = id ? prod(id) : null;
-  const x = p ? clone(p) : Object.assign({ nombre: '', descripcion: '', categoria: D.categorias[0] ? D.categorias[0].id : '', tipo: 'venta', calidad: 'bueno', usado: false, danado: false, defecto: '', cantidad: 1, precio: '', precioAnterior: '', rebaja: 0, mayor: { activo: false, precio: '', minimo: 5 }, domicilio: { activo: false, tiempo: '', costo: '' }, imagenes: [], oculto: false }, pre || {});
+  const x = p ? Object.assign(clone(p), pre && pre.__edit ? pre : {}) : Object.assign({ nombre: '', descripcion: '', categoria: D.categorias[0] ? D.categorias[0].id : '', tipo: 'venta', calidad: 'bueno', usado: false, danado: false, defecto: '', cantidad: 1, precio: '', precioAnterior: '', rebaja: 0, mayor: { activo: false, precio: '', minimo: 5 }, domicilio: { activo: false, tiempo: '', costo: '' }, imagenes: [], oculto: false }, pre || {});
   x.mayor = x.mayor || { activo: false, precio: '', minimo: 5 }; x.domicilio = x.domicilio || { activo: false, tiempo: '', costo: '' };
-  admPF = { id: id || null, solId: pre && pre.__sol || null, prov: (pre && pre.proveedor) || (p && p.proveedor) || null, imgs: (x.imagenes || []).map(s => ({ path: s, preview: imgSrc(s) })), borrar: [] };
+  admPF = { id: id || null, solId: pre && pre.__sol || null, prov: (pre && pre.proveedor) || (p && p.proveedor) || null, imgs: (x.imagenes || []).map(s => ({ path: s, preview: imgSrc(s) })), borrar: pre && pre.__edit && pre.imagenes && p ? (p.imagenes || []).slice() : [] };
   const ck = (i, v, t) => `<label class="chk"><input type="checkbox" id="${i}" ${v ? 'checked' : ''}> ${t}</label>`;
   PM = openModal(`<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><h2>${id ? 'Editar' : 'Nuevo'} producto</h2>
     <label class="fld"><span>Nombre</span><input id="pf-nombre" value="${esc(x.nombre)}"></label>
@@ -2200,7 +2200,7 @@ function provEst(p) {
 const provActivo = p => ['prueba', 'activo', 'gratis'].includes(provEst(p));
 const provVisible = p => { const pr = provDe(p.proveedor); return !pr || provActivo(pr); };
 const visible = p => !p.oculto && (!p.proveedor || provVisible(p)) && (D.config.mostrarAgotados !== false || !agotado(p));
-const avatarProv = p => `<span class="pv-av">${p.foto ? imgTag(p.foto, p.nombre) : esc((p.nombre || '?').trim().charAt(0).toUpperCase())}</span>`;
+const avatarProv = (p, z) => `<span class="pv-av"${z && p.foto ? ` data-act="pv-zoom" data-id="${esc(p.id)}" style="cursor:zoom-in" title="Toca para acercar"` : ''}>${p.foto ? imgTag(p.foto, p.nombre) : esc((p.nombre || '?').trim().charAt(0).toUpperCase())}</span>`;
 function renderProvStrip() {
   const sec = $('#provSec'), L = (D.proveedores || []).filter(provActivo);
   if (!L.length || mantActiva() || !(D.config.prov && D.config.prov.activo)) { sec.hidden = true; sec.dataset.sig = ''; sec.innerHTML = ''; return; }
@@ -2211,7 +2211,7 @@ function renderProvStrip() {
 function verProveedor(id) {
   const p = provDe(id); if (!p || !provActivo(p)) return toast('Este proveedor no está disponible', 'err');
   const L = D.productos.filter(x => x.proveedor === p.id && visible(x)).sort((a, b) => b.creado - a.creado);
-  openModal(`<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><div class="pv-big" style="text-align:center">${avatarProv(p)}<h2 style="padding:0">${esc(p.nombre)}</h2><p class="note">${L.length} producto${L.length === 1 ? '' : 's'} a la venta</p></div>
+  openModal(`<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><div class="pv-big" style="text-align:center">${avatarProv(p, 1)}<h2 style="padding:0">${esc(p.nombre)}</h2>${p.desc ? `<p class="note" style="white-space:pre-line">${esc(p.desc)}</p>` : ''}<p class="note">${L.length} producto${L.length === 1 ? '' : 's'} a la venta</p></div>
     <div class="grid rows">${L.map(card).join('') || '<div class="empty">Todavía no tiene productos publicados.</div>'}</div>`, '', 'wide');
 }
 function modalAcuerdo(tipo) {
@@ -2275,11 +2275,11 @@ function panelProv() {
   const mis = D.productos.filter(x => x.proveedor === p.id), log = jget('tem_pvlog', []).filter(x => x.pv === p.id && Date.now() - x.t < 30 * DIA && !mis.some(m => sinAc(m.nombre) === sinAc(x.nombre)));
   const estTxt = e === 'prueba' ? `🟡 Prueba gratis · te quedan ${dias} día(s)` : e === 'activo' ? `🟢 Activo · vence en ${dias} día(s)` : e === 'gratis' ? (p.vence ? `🟢 Gratis · quedan ${dias} día(s)` : '🟢 Gratis, sin límite de tiempo') : e === 'vencido' ? '🔴 Tu tiempo terminó' : '⚪ De baja';
   const h3 = 'style="font-family:var(--fd);margin:16px 0 8px"';
-  openModal(`<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><div class="pv-big" style="text-align:center">${avatarProv(p)}<h2 style="padding:0">${esc(p.nombre)}</h2><p class="note">${estTxt}</p></div>
+  openModal(`<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><div class="pv-big" style="text-align:center">${avatarProv(p, 1)}<h2 style="padding:0">${esc(p.nombre)}</h2>${p.desc ? `<p class="note" style="white-space:pre-line">${esc(p.desc)}</p>` : ''}<p class="note">${estTxt}</p></div>
     ${e === 'vencido' ? `<div class="alerta-av">Para seguir en la página paga la cuota mensual de ${fmt(c.cuota)} CUP y avísale al administrador.</div><a class="btn wa block" target="_blank" rel="noopener" href="${esc(waLink('Hola, soy el proveedor ' + p.nombre + ' (' + p.codigo + '). Quiero pagar la cuota mensual para seguir en ' + D.config.nombre + '.', waDestino(c.waId)))}">💬 Avisar al administrador</a>` : ''}
-    ${activo ? `<div style="display:grid;gap:10px;margin:12px 0"><label class="btn ghost block" style="cursor:pointer">📷 Cambiar mi foto de perfil<input id="pv-foto" type="file" accept="image/*" hidden></label><button class="btn pri block" data-act="pv-nuevo">➕ Subir un producto</button></div>` : ''}
+    ${activo ? `<div style="display:grid;gap:10px;margin:12px 0"><label class="btn ghost block" style="cursor:pointer">📷 Cambiar mi foto de perfil<input id="pv-foto" type="file" accept="image/*" hidden></label><button class="btn ghost block" data-act="pv-perfil">✏️ Editar mi nombre y descripción</button><button class="btn pri block" data-act="pv-nuevo">➕ Subir un producto</button></div>` : ''}
     <h3 ${h3}>Mis productos publicados (${mis.length})</h3>
-    ${mis.map(m => `<div class="crow" style="grid-template-columns:64px 1fr"><div class="th">${m.imagenes && m.imagenes[0] ? imgTag(m.imagenes[0], m.nombre) : '📦'}</div><div><b>${esc(m.nombre)}</b><small>${fmt(precioAct(m))} CUP · ${esServ(m) ? 'servicio' : (+m.cantidad || 0) + ' disponibles'}${m.oculto ? ' · oculto' : ''}</small></div></div>`).join('') || '<p class="note">Todavía no tienes productos publicados.</p>'}
+    ${mis.map(m => `<div class="crow" style="grid-template-columns:64px 1fr"><div class="th">${m.imagenes && m.imagenes[0] ? imgTag(m.imagenes[0], m.nombre) : '📦'}</div><div><b>${esc(m.nombre)}</b><small>${fmt(precioAct(m))} CUP · ${esServ(m) ? 'servicio' : (+m.cantidad || 0) + ' disponibles'}${m.oculto ? ' · oculto' : ''}</small>${activo ? `<button class="btn sm ghost" style="margin-top:6px" data-act="pv-edit" data-id="${esc(m.id)}">✏️ Editar</button>` : ''}</div></div>`).join('') || '<p class="note">Todavía no tienes productos publicados.</p>'}
     ${log.length ? `<h3 ${h3}>Enviados, esperando aprobación (${log.length})</h3>${log.map(x => `<p class="note">⏳ ${esc(x.nombre)}</p>`).join('')}` : ''}
     <div class="tb" style="margin-top:16px"><button class="btn sm ghost" data-act="pv-salir">Salir de mi cuenta</button><button class="btn sm danger" data-act="pv-baja">Darme de baja</button></div>`, '', 'wide');
 }
@@ -2312,6 +2312,47 @@ async function provProdOk(btn) {
   const producto = { nombre: nom, descripcion: g('pp-desc'), categoria: $('#pp-cat').value, tipo: $('#pp-tipo').value, calidad: $('#pp-cal').value, usado: $('#pp-uso').checked, cantidad: Math.max(1, Math.floor(+g('pp-cant') || 1)), precio: pre, domicilio: { activo: $('#pp-dom').checked, tiempo: '', costo: 0 } };
   const ok = await provEnviar({ kind: 'prov-prod', pv: p.id, codigo: p.codigo, h: p.pin, proveedor: p.nombre, producto, imagenes: PVIMG.slice() }, btn, 'Tu producto quedó pendiente. Cuando el administrador lo apruebe saldrá en el catálogo.', `Hola, soy el proveedor ${p.nombre} (${p.codigo}). Acabo de subir el producto «${nom}» para que lo apruebes.`);
   if (ok) { const L = jget('tem_pvlog', []); L.unshift({ pv: p.id, nombre: nom, t: Date.now() }); localStorage.setItem('tem_pvlog', JSON.stringify(L.slice(0, 30))); }
+}
+
+/* ---------- el proveedor edita su perfil y sus productos (el administrador aprueba) ---------- */
+function pvCuenta() { const p = PVS && provDe(PVS.id); if (!p || p.pin !== PVS.h) { toast('Entra de nuevo a tu cuenta', 'err'); return null; } if (!provActivo(p)) { toast('Tu cuenta no está activa. Paga la cuota para editar.', 'err'); return null; } return p; }
+function pvFormPerfil() {
+  const p = pvCuenta(); if (!p) return;
+  openModal(`<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><h2>Editar mi perfil</h2><p class="note">El administrador revisa los cambios antes de que se vean. Para cambiar la foto usa el botón «Cambiar mi foto de perfil».</p>
+    <label class="fld"><span>Nombre que ve el público</span><input id="pe-pnom" maxlength="60" value="${esc(p.nombre)}"></label>
+    <label class="fld"><span>Descripción (qué vendes, dónde estás…)</span><textarea id="pe-pdesc" maxlength="300" style="min-height:110px">${esc(p.desc || '')}</textarea></label>
+    <button class="btn pri block" data-act="pv-perfil-ok">📨 Enviar cambios</button>`, 'top');
+}
+async function provPerfilOk(btn) {
+  const p = pvCuenta(); if (!p) return;
+  const nom = $('#pe-pnom').value.trim().slice(0, 60), desc = $('#pe-pdesc').value.trim().slice(0, 300);
+  if (!nom) return toast('Escribe tu nombre', 'err');
+  if (nom === p.nombre && desc === (p.desc || '')) return toast('No cambiaste nada', 'err');
+  await provEnviar({ kind: 'prov-perfil', pv: p.id, codigo: p.codigo, h: p.pin, actual: p.nombre, nombre: nom, desc }, btn, 'Tus cambios quedaron pendientes. Cuando el administrador los apruebe se verán en tu perfil.', `Hola, soy el proveedor ${p.nombre} (${p.codigo}). Envié cambios de mi perfil para que los apruebes.`);
+}
+function pvFormEdit(id) {
+  const p = pvCuenta(); if (!p) return;
+  const m = D.productos.find(x => x.id === id && x.proveedor === p.id); if (!m) return toast('Producto no encontrado', 'err');
+  PVIMG = [];
+  openModal(`<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><h2>Editar producto</h2><p class="note">El administrador revisa los cambios antes de que se vean en el catálogo.</p>
+    <label class="fld"><span>Nombre del producto</span><input id="pe-nom" value="${esc(m.nombre)}"></label>
+    <label class="fld"><span>Descripción</span><textarea id="pe-desc">${esc(m.descripcion || '')}</textarea></label>
+    <div class="row3"><label class="fld"><span>Precio (CUP)</span><input id="pe-pre" type="number" min="0" inputmode="numeric" value="${esc(m.precio)}"></label>${esServ(m) ? '' : `<label class="fld"><span>Cantidad</span><input id="pe-cant" type="number" min="0" inputmode="numeric" value="${esc(+m.cantidad || 0)}"></label>`}<label class="fld"><span>Estado</span><select id="pe-cal">${Object.entries(CALIDADES).map(([k, v]) => `<option value="${k}" ${m.calidad === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label></div>
+    <label class="chk"><input type="checkbox" id="pe-uso" ${m.usado ? 'checked' : ''}> Es de uso</label><label class="chk"><input type="checkbox" id="pe-dom" ${m.domicilio && m.domicilio.activo ? 'checked' : ''}> Hago domicilio</label>
+    <div class="fld"><span>Fotos actuales</span><div>${(m.imagenes || []).map(u => `<span class="pfi">${imgTag(u, m.nombre)}</span>`).join('') || '<span class="note">Sin fotos.</span>'}</div></div>
+    <div class="fld"><span>Cambiar las fotos (opcional, hasta 4). Si subes fotos nuevas, reemplazan las actuales.</span><div id="ppImgs"></div><input id="pp-file" type="file" accept="image/*" multiple></div>
+    <button class="btn pri block" data-act="pv-edit-ok" data-id="${esc(id)}">📨 Enviar cambios</button>`, 'top');
+  ppImgs();
+}
+async function provEditOk(btn, id) {
+  const p = pvCuenta(); if (!p) return;
+  const m = D.productos.find(x => x.id === id && x.proveedor === p.id); if (!m) return toast('Producto no encontrado', 'err');
+  const g = i => $('#' + i).value.trim(), nom = g('pe-nom'), pre = +g('pe-pre');
+  if (!nom) return toast('Escribe el nombre del producto', 'err');
+  if (!(pre >= 0) || g('pe-pre') === '') return toast('Escribe el precio', 'err');
+  const producto = { nombre: nom, descripcion: g('pe-desc'), calidad: $('#pe-cal').value, usado: $('#pe-uso').checked, precio: pre, domicilio: { activo: $('#pe-dom').checked, tiempo: (m.domicilio && m.domicilio.tiempo) || '', costo: +(m.domicilio && m.domicilio.costo) || 0 } };
+  if (!esServ(m)) producto.cantidad = Math.max(0, Math.floor(+g('pe-cant') || 0));
+  await provEnviar({ kind: 'prov-edit', pv: p.id, codigo: p.codigo, h: p.pin, proveedor: p.nombre, pid: id, producto, imagenes: PVIMG.slice() }, btn, 'Tus cambios quedaron pendientes. Cuando el administrador los apruebe se verán en el catálogo.', `Hola, soy el proveedor ${p.nombre} (${p.codigo}). Envié cambios del producto «${m.nombre}» para que los apruebes.`);
 }
 async function provFoto(f) {
   const p = PVS && provDe(PVS.id); if (!p || p.pin !== PVS.h) return toast('Entra de nuevo a tu cuenta', 'err');
@@ -2362,7 +2403,7 @@ function pvRow(p) {
   return `<div class="reg"><header><span><b>${esc(p.nombre)}</b> · ${esc(p.codigo)}</span><span class="pill ${esc(e)}">${esc(e)}</span></header>
     <div class="note">⏱ ${esc(tiempo)} · 📦 ${n} producto(s)${d.nombre ? '<br>👤 ' + esc(d.nombre) + ' ' + esc(d.apellidos || '') + ' · 📞 ' + esc(d.tel || '') : ''}</div>
     ${e === 'vencido' ? `<div class="alerta-av">⏰ Se le acabó el tiempo. Cóbrale, déjalo gratis o elimínalo.</div>` : ''}
-    <div class="pa" style="margin-top:8px"><button data-act="pv-pago" data-id="${id}">💰 Cobrado (+ meses)</button><button data-act="pv-gratis" data-id="${id}">🆓 Dejar gratis</button><button data-act="pv-pin" data-id="${id}">🔑 Nuevo PIN</button><button data-act="pv-nom" data-id="${id}">✏️ Nombre</button>${tel ? `<a class="btn sm wa" target="_blank" rel="noopener" href="${esc(waLink(msg, tel))}">💬 Avisar</a>` : ''}<button class="del" data-act="pv-del" data-id="${id}">🗑 Eliminar</button></div></div>`;
+    <div class="pa" style="margin-top:8px"><button data-act="pv-pago" data-id="${id}">💰 Cobrado (+ meses)</button>${e === 'gratis' && !p.vence ? `<button data-act="pv-gratis" data-id="${id}">⏱ Poner tiempo límite</button>` : `<button data-act="pv-libre" data-id="${id}">♾️ Quitar límite (gratis)</button>`}<button data-act="pv-pin" data-id="${id}">🔑 Nuevo PIN</button><button data-act="pv-nom" data-id="${id}">✏️ Nombre</button>${tel ? `<a class="btn sm wa" target="_blank" rel="noopener" href="${esc(waLink(msg, tel))}">💬 Avisar</a>` : ''}<button class="del" data-act="pv-del" data-id="${id}">🗑 Eliminar</button></div></div>`;
 }
 function pvsHTML(r) {
   const d = r.datos || {}, tel = telCuba(d.tel), id = esc(r.id);
@@ -2384,6 +2425,22 @@ function pfoHTML(r) {
     <div><b>${esc(d.nombre || '')}</b> quiere cambiar su foto ${ok ? '✔' : '⚠️'}</div>${okImg(d.foto) ? `<span class="pfi"><img src="${esc(d.foto)}" data-act="zoom-src" alt=""></span>` : ''}
     <div class="pa" style="margin-top:8px">${r.estado === 'pendiente' ? `<button data-act="pfo-ap" data-id="${id}">✅ Aprobar foto</button><button class="del" data-act="pfo-re" data-id="${id}">✖ Rechazar</button>` : ''}<button class="del" data-act="reg-del" data-id="${id}">🗑</button></div></div>`;
 }
+function peHTML(r) {
+  const d = r.datos || {}, pr = d.producto || {}, m = D.productos.find(x => x.id === d.pid), p = provDe(d.pv), ok = !!(p && p.pin === d.h && m && m.proveedor === d.pv), id = esc(r.id);
+  const dif = (a, b, t) => String(a ?? '') !== String(b ?? '') ? `<br>• ${t}: ${esc(a ?? '')} → <b>${esc(b ?? '')}</b>` : '';
+  return `<div class="reg"><header><span>#${id} · ${fechaCorta(r.creado)}</span><span class="pill ${esc(r.estado)}">${esc(r.estado)}</span></header>
+    <div><b>${esc(m ? m.nombre : '(producto borrado)')}</b> · 🏪 ${esc(d.proveedor || '')} ${ok ? '✔' : '⚠️'}</div>
+    <div class="note">${m ? dif(m.nombre, pr.nombre, 'Nombre') + dif(m.precio, pr.precio, 'Precio') + (pr.cantidad !== undefined ? dif(+m.cantidad || 0, pr.cantidad, 'Cantidad') : '') + dif(m.descripcion || '', pr.descripcion, 'Descripción') + dif(m.calidad, pr.calidad, 'Estado') + ((d.imagenes || []).length ? '<br>• Fotos nuevas: ' + d.imagenes.length : '') : ''}</div>
+    <div>${(d.imagenes || []).filter(okImg).map(s => `<span class="pfi"><img src="${esc(s)}" data-act="zoom-src" alt=""></span>`).join('')}</div>
+    <div class="pa" style="margin-top:8px">${r.estado === 'pendiente' ? `${ok ? `<button data-act="pe-ap" data-id="${id}">✅ Revisar y aplicar</button>` : ''}<button class="del" data-act="pe-re" data-id="${id}">✖ Rechazar</button>` : ''}<button class="del" data-act="reg-del" data-id="${id}">🗑</button></div></div>`;
+}
+function ppfHTML(r) {
+  const d = r.datos || {}, p = provDe(d.pv), ok = !!(p && p.pin === d.h), id = esc(r.id);
+  return `<div class="reg"><header><span>#${id} · ${fechaCorta(r.creado)}</span><span class="pill ${esc(r.estado)}">${esc(r.estado)}</span></header>
+    <div><b>${esc(d.actual || '')}</b> quiere cambiar su perfil ${ok ? '✔' : '⚠️'}</div>
+    <div class="note">Nombre: <b>${esc(d.nombre || '')}</b><br>Descripción: ${esc(d.desc || '(vacía)')}</div>
+    <div class="pa" style="margin-top:8px">${r.estado === 'pendiente' ? `${ok ? `<button data-act="ppf-ap" data-id="${id}">✅ Aprobar</button>` : ''}<button class="del" data-act="ppf-re" data-id="${id}">✖ Rechazar</button>` : ''}<button class="del" data-act="reg-del" data-id="${id}">🗑</button></div></div>`;
+}
 function pbHTML(r) {
   const d = r.datos || {}, id = esc(r.id), p = provDe(d.pv);
   return `<div class="reg"><header><span>#${id} · ${fechaCorta(r.creado)}</span><span class="pill ${esc(r.estado)}">${esc(r.estado)}</span></header>
@@ -2393,17 +2450,19 @@ function pbHTML(r) {
 VIEWS.proveedores = function () {
   const c = D.config.prov, P = D.proveedores || [], venc = P.filter(p => provEst(p) === 'vencido');
   const S = k => REG.filter(r => solK(r, k)).sort((a, b) => (a.estado === 'pendiente' ? 0 : 1) - (b.estado === 'pendiente' ? 0 : 1)), np = a => a.filter(r => r.estado === 'pendiente').length;
-  const sIn = S('proveedor'), sPr = S('prov-prod'), sFo = S('prov-foto'), sBa = S('prov-baja');
+  const sIn = S('proveedor'), sPr = S('prov-prod'), sFo = S('prov-foto'), sBa = S('prov-baja'), sEd = S('prov-edit'), sPf = S('prov-perfil');
   return `<h3>Proveedores en la página</h3>
     <label class="chk"><input type="checkbox" id="pvc-on" ${c.activo ? 'checked' : ''}> Mostrar el menú «Proveedores» en la página</label>
     <label class="fld"><span>Texto que lee el proveedor (cómo funciona). Puedes cambiarlo o dejarlo vacío para quitarlo.</span><textarea id="pvc-txt" style="min-height:200px">${esc(c.texto)}</textarea></label>
-    <div class="row3"><label class="fld"><span>Días de prueba gratis</span><input id="pvc-dias" type="number" min="0" value="${esc(c.dias)}" inputmode="numeric"></label><label class="fld"><span>Cuota mensual (CUP)</span><input id="pvc-cuota" type="number" min="0" value="${esc(c.cuota)}" inputmode="numeric"></label><label class="fld"><span>WhatsApp que recibe todo</span><select id="pvc-wa">${waOpts(c.waId)}</select></label></div>
+    <div class="row3"><label class="fld"><span>Días de prueba gratis (0 = paga desde el inicio)</span><input id="pvc-dias" type="number" min="0" value="${esc(c.dias)}" inputmode="numeric"></label><label class="fld"><span>Cuota mensual (CUP)</span><input id="pvc-cuota" type="number" min="0" value="${esc(c.cuota)}" inputmode="numeric"></label><label class="fld"><span>WhatsApp que recibe todo</span><select id="pvc-wa">${waOpts(c.waId)}</select></label></div>
     <button class="btn pri" data-act="pvc-save">Guardar</button>
     ${SBM ? '' : '<p class="note">Las solicitudes, los productos y las bajas de proveedores necesitan Supabase (pestaña Conexión). Sin Supabase solo llegan por WhatsApp.</p>'}
     ${venc.length ? `<div class="alerta-av">⏰ ${venc.length} proveedor(es) con el tiempo terminado: ${venc.map(p => esc(p.nombre)).join(', ')}</div>` : ''}
     <h3>Proveedores (${P.length})</h3>${P.map(pvRow).join('') || '<p class="note">Todavía no hay proveedores aprobados.</p>'}
     <h3>Solicitudes para ser proveedor (${np(sIn)} pendientes)</h3>${sIn.map(pvsHTML).join('') || '<p class="note">No hay solicitudes.</p>'}
     <h3>Productos por aprobar (${np(sPr)})</h3>${sPr.map(ppHTML).join('') || '<p class="note">No hay productos pendientes.</p>'}
+    <h3>Cambios de productos por aprobar (${np(sEd)})</h3>${sEd.map(peHTML).join('') || '<p class="note">No hay cambios pendientes.</p>'}
+    <h3>Cambios de perfil por aprobar (${np(sPf)})</h3>${sPf.map(ppfHTML).join('') || '<p class="note">No hay cambios de perfil pendientes.</p>'}
     <h3>Fotos de perfil por aprobar (${np(sFo)})</h3>${sFo.map(pfoHTML).join('') || '<p class="note">No hay fotos pendientes.</p>'}
     <h3>Bajas solicitadas (${np(sBa)})</h3>${sBa.map(pbHTML).join('') || '<p class="note">Nadie ha pedido la baja.</p>'}`;
 };
@@ -2435,7 +2494,7 @@ function admAvisos() {
 function admNavRender() {
   const cnt = a => a.filter(r => r.estado === 'pendiente').length, T = r => r.tipo;
   const sol = cnt(REG.filter(r => solK(r, 'venta'))), pend = cnt(REG.filter(r => T(r) === 'pedido')), enc = cnt(REG.filter(r => T(r) === 'encargo')), af = cnt(REG.filter(r => solK(r, 'afiliado')));
-  const pv = ['proveedor', 'prov-prod', 'prov-foto', 'prov-baja'].reduce((s, k) => s + cnt(REG.filter(r => solK(r, k))), 0) + (D.proveedores || []).filter(p => provEst(p) === 'vencido').length;
+  const pv = ['proveedor', 'prov-prod', 'prov-foto', 'prov-baja', 'prov-edit', 'prov-perfil'].reduce((s, k) => s + cnt(REG.filter(r => solK(r, k))), 0) + (D.proveedores || []).filter(p => provEst(p) === 'vencido').length;
   const B = { pedidos: pend, solicitudes: sol, encargos: enc, afiliados: af, proveedores: pv };
   $('#admNav').innerHTML = ADM_TABS.map(([k, n]) => `<button class="${admTab === k ? 'on' : ''}" data-act="adm-tab" data-id="${k}">${n}${B[k] ? `<b class="cn">${B[k]}</b>` : ''}</button>`).join('');
 }
@@ -2509,6 +2568,11 @@ async function nuevoClick(a, el, id, ev) {
     case 'pv-prod-ok': provProdOk(el); break;
     case 'pv-salir': PVS = null; localStorage.removeItem('tem_pv'); closeModal(el.closest('.ov')); toast('Saliste de tu cuenta', 'ok'); break;
     case 'pv-baja': provBaja(el); break;
+    case 'pv-zoom': { const pz = provDe(id); if (pz && pz.foto) abrirZoom([pz.foto], 0); break; }
+    case 'pv-perfil': pvFormPerfil(); break;
+    case 'pv-perfil-ok': provPerfilOk(el); break;
+    case 'pv-edit': pvFormEdit(id); break;
+    case 'pv-edit-ok': provEditOk(el, id); break;
     /* ----- afiliados (panel) ----- */
     case 'afc-save': await acc(d => { d.config.afil = { activo: $('#afc-on').checked, texto: $('#afc-txt').value.trim(), waId: $('#afc-wa').value }; }, 'Programa guardado'); break;
     case 'afs-ap': {
@@ -2518,7 +2582,7 @@ async function nuevoClick(a, el, id, ev) {
       try { await rpc('admin_insertar_registro', { p_clave: ADMIN.clave, p_tipo: 'afiliado', p_estado: 'confirmado', p_datos: f }); await rpc('admin_estado', { p_clave: ADMIN.clave, p_id: +id, p_estado: 'aprobada' }); await cargarReg(); admRender(); toast('Afiliado aprobado: ' + f.codigo, 'ok'); } catch (e) { toast(e.message, 'err'); }
       break;
     }
-    case 'afs-re': case 'pvs-re': case 'pp-re': case 'pfo-re': {
+    case 'afs-re': case 'pvs-re': case 'pp-re': case 'pfo-re': case 'pe-re': case 'ppf-re': {
       if (!confirm('¿Rechazar esta solicitud?')) break;
       try { await rpc('admin_estado', { p_clave: ADMIN.clave, p_id: +id, p_estado: 'rechazada' }); await cargarReg(); admRender(); toast('Rechazada', 'ok'); } catch (e) { toast(e.message, 'err'); }
       break;
@@ -2538,7 +2602,8 @@ async function nuevoClick(a, el, id, ev) {
       await cargarReg(); admRender(); accesoProv(prov, pin, d); break;
     }
     case 'pv-pago': { const m = +prompt('¿Cuántos meses pagó? (1 mes = 30 días)', '1'); if (!(m > 0)) break; await acc(d => { const p = (d.proveedores || []).find(x => x.id === id); if (!p) return; p.estado = 'activo'; p.vence = Math.max(Date.now(), p.vence || 0) + Math.round(m * 30) * DIA; }, 'Pago registrado'); admRender(); break; }
-    case 'pv-gratis': { const r = prompt('¿Por cuántos días lo dejas gratis?\n(Déjalo vacío para que sea gratis sin límite de tiempo)', ''); if (r === null) break; const dd = Math.round(+r) || 0; await acc(d => { const p = (d.proveedores || []).find(x => x.id === id); if (!p) return; p.estado = 'gratis'; p.vence = dd > 0 ? Date.now() + dd * DIA : 0; }, 'Proveedor gratis'); admRender(); break; }
+    case 'pv-libre': { await acc(d => { const p = (d.proveedores || []).find(x => x.id === id); if (!p) return; p.estado = 'gratis'; p.vence = 0; }, 'Gratis sin límite de tiempo'); admRender(); break; }
+    case 'pv-gratis': { const r = prompt('¿Cuántos días gratis le quedan? Cuando se acaben tendrá que pagar ' + fmt(D.config.prov.cuota) + ' CUP al mes.', String(D.config.prov.dias || 7)); if (r === null) break; const dd = Math.round(+r) || 0; if (dd <= 0) { toast('Escribe un número de días mayor que 0', 'err'); break; } await acc(d => { const p = (d.proveedores || []).find(x => x.id === id); if (!p) return; p.estado = 'gratis'; p.vence = dd > 0 ? Date.now() + dd * DIA : 0; }, 'Tiempo gratis puesto'); admRender(); break; }
     case 'pv-pin': { const p = provDe(id); if (!p) break; const pin = nuevoPin(), h = await sha256(p.codigo + ':' + pin); if (await acc(d => { const x = (d.proveedores || []).find(y => y.id === id); if (x) x.pin = h; }, 'PIN cambiado')) accesoProv(p, pin); break; }
     case 'pv-nom': { const p = provDe(id); if (!p) break; const n = prompt('Nombre que ve el público:', p.nombre); if (n === null || !n.trim()) break; await acc(d => { const x = (d.proveedores || []).find(y => y.id === id); if (x) x.nombre = n.trim(); }, 'Nombre cambiado'); admRender(); break; }
     case 'pv-del': await provEliminar(id); break;
@@ -2551,6 +2616,22 @@ async function nuevoClick(a, el, id, ev) {
       if (D.categorias.some(c => c.id === pr.categoria)) pre.categoria = pr.categoria;
       if (pr.domicilio && typeof pr.domicilio === 'object') pre.domicilio = { activo: !!pr.domicilio.activo, tiempo: '', costo: 0 };
       formProd(null, pre); break;
+    }
+    case 'pe-ap': {
+      const r = REG.find(x => String(x.id) === String(id)); if (!r) break; const d = r.datos || {}, pr = d.producto || {}, m = D.productos.find(x => x.id === d.pid);
+      if (!m || m.proveedor !== d.pv) { toast('Ese producto ya no existe o no es de ese proveedor', 'err'); break; }
+      const pre = { nombre: pr.nombre || m.nombre, descripcion: pr.descripcion || '', calidad: CALIDADES[pr.calidad] ? pr.calidad : m.calidad, usado: !!pr.usado, precio: +pr.precio >= 0 ? +pr.precio : m.precio, __sol: r.id, __edit: 1 };
+      if (pr.cantidad !== undefined) pre.cantidad = Math.max(0, Math.floor(+pr.cantidad || 0));
+      if (pr.domicilio && typeof pr.domicilio === 'object') pre.domicilio = { activo: !!pr.domicilio.activo, tiempo: String(pr.domicilio.tiempo || ''), costo: +pr.domicilio.costo || 0 };
+      const nuevas = (d.imagenes || []).filter(okImg).slice(0, 4); if (nuevas.length) pre.imagenes = nuevas;
+      formProd(d.pid, pre); break;
+    }
+    case 'ppf-ap': {
+      const r = REG.find(x => String(x.id) === String(id)); if (!r) break; const d = r.datos || {}, p = provDe(d.pv);
+      if (!p) { toast('Ese proveedor ya no existe', 'err'); break; }
+      const nom = String(d.nombre || '').trim().slice(0, 60), desc = String(d.desc || '').trim().slice(0, 300); if (!nom) { toast('Nombre no válido', 'err'); break; }
+      try { await mutar(dd => { const x = (dd.proveedores || []).find(y => y.id === d.pv); if (x) { x.nombre = nom; x.desc = desc; } }); await rpc('admin_estado', { p_clave: ADMIN.clave, p_id: +id, p_estado: 'aprobada' }); await cargarReg(); admRender(); toast('Perfil actualizado', 'ok'); } catch (e) { toast(e.message, 'err'); }
+      break;
     }
     case 'pfo-ap': {
       const r = REG.find(x => String(x.id) === String(id)); if (!r) break; const d = r.datos || {}, p = provDe(d.pv);
