@@ -568,7 +568,7 @@ const DEF = {
     heroTitulo: 'Centro Market',
     heroTexto: 'Compra, vende o empeña lo que tengas. Cada artículo lo revisa el administrador antes de publicarse.',
     whatsapp: CFG.WA,
-    comision: 5,
+    comision: 0,
     moneda: 'CUP',
     aviso: '🔥 Rebajas esta semana · Domicilio disponible en Meneses · Escríbenos por WhatsApp',
     footer: 'Meneses, Yaguajay · Atención por WhatsApp',
@@ -622,6 +622,7 @@ function norm(d) {
     if (c.heroTitulo === 'Tu Empeño Meneses') c.heroTitulo = 'Centro Market';
     if (c.ayudaTexto === 'Hola, necesito ayuda con la tienda Tu Empeño Meneses.') c.ayudaTexto = 'Hola, necesito ayuda con la tienda Centro Market.';
   }
+  if (!c.mig3) { c.mig3 = 1; if (+c.comision === 5) c.comision = 0; } // una sola vez: se quita la comisión del 5%
   d.categorias = d.categorias || clone(DEF.categorias); d.productos = d.productos || []; d.botones = d.botones || []; d.ventas = d.ventas || []; d.proveedores = d.proveedores || []; d.rev = d.rev || 0; return d;
 }
 
@@ -863,10 +864,12 @@ function renderStatic() {
   const h1 = $('#hTitulo'); h1.setAttribute('aria-label', c.heroTitulo);
   if (c.tituloAnim) { h1.className = 'rainbow wave'; h1.innerHTML = letras(c.heroTitulo); } else { h1.className = ''; h1.textContent = c.heroTitulo; }
   $('#hTexto').textContent = c.heroTexto;
-  $('#stamp').innerHTML = `<b>${esc(c.comision)}%</b>de comisión<br>para el administrador`;
-  $('#comiNote').textContent = `Por cada venta realizada a través de la tienda, el administrador cobra ${c.comision}% de comisión.`;
+  const hayCom = +c.comision > 0;
+  $('#stamp').style.display = hayCom ? '' : 'none';
+  $('#stamp').innerHTML = hayCom ? `<b>${esc(c.comision)}%</b>de comisión<br>para el administrador` : '';
+  $('#comiNote').textContent = hayCom ? `Por cada venta realizada a través de la tienda, el administrador cobra ${c.comision}% de comisión.` : '';
   $('#fNombre').textContent = c.nombre; $('#fLema').textContent = c.lema; $('#fTexto').textContent = c.footer;
-  $('#fComi').textContent = `${c.comision}% de comisión para el administrador · Precios en CUP y USD`;
+  $('#fComi').textContent = hayCom ? `${c.comision}% de comisión para el administrador · Precios en CUP y USD` : 'Precios en CUP y USD';
   const tk = $('#ticker');
   if (S.aviso && c.aviso) { tk.hidden = false; tk.innerHTML = `<div class="tk-in">${Array(8).fill(`<span>${esc(c.aviso)}</span>`).join('')}</div>`; } else tk.hidden = true;
   $('#bVender').hidden = !S.vender; $('#bEncargo').hidden = !S.encargo; $('#bBuscar').hidden = !S.buscar; if (!S.buscar) $('#sbar').hidden = true;
@@ -982,7 +985,7 @@ function cartHTML() {
     <div id="cf-tarj">${CF.pago === 'transferencia' ? tarjetaHTML() : ''}</div>
     <label class="fld"><span>Nota para el administrador (opcional)</span><textarea id="cf-nota" style="min-height:60px">${esc(CF.nota)}</textarea></label>
     ${telSelHTML()}
-    <p class="note">${esc(D.config.comision)}% de comisión para el administrador. La entrega y el pago se coordinan por WhatsApp.</p>
+    <p class="note">${+D.config.comision > 0 ? esc(D.config.comision) + '% de comisión para el administrador. ' : ''}La entrega y el pago se coordinan por WhatsApp.</p>
     <button class="btn wa block" data-act="comprar">Comprar por WhatsApp</button>${mis}`;
 }
 function abrirCarrito() { if (CM) return; CM = openModal(cartHTML(), 'drawer'); }
@@ -1052,7 +1055,7 @@ let DQ = 1;
 function formVender() {
   const c = D.config;
   openModal(`<button class="x" data-act="cerrar" aria-label="Cerrar">✕</button><h2>Quiero vender o empeñar</h2>
-    <p class="note">${SBM ? 'Tu solicitud le llega al administrador, que la revisa y te contacta por WhatsApp.' : 'Se abrirá WhatsApp con tu mensaje listo.'} Las fotos puedes enviarlas por WhatsApp. Por cada venta, el administrador cobra ${esc(c.comision)}% de comisión.</p>
+    <p class="note">${SBM ? 'Tu solicitud le llega al administrador, que la revisa y te contacta por WhatsApp.' : 'Se abrirá WhatsApp con tu mensaje listo.'} Las fotos puedes enviarlas por WhatsApp.${+c.comision > 0 ? ' Por cada venta, el administrador cobra ' + esc(c.comision) + '% de comisión.' : ''}</p>
     <div class="row2"><label class="fld"><span>¿Qué quieres hacer?</span><select id="v-tipo"><option value="vender">Vender</option><option value="empeñar">Empeñar</option></select></label>
     <label class="fld"><span>Cantidad</span><input id="v-cant" type="number" min="1" value="1"></label></div>
     <label class="fld"><span>Artículo</span><input id="v-nom" placeholder="Ej: Ventilador de pedestal"></label>
@@ -1076,7 +1079,7 @@ async function enviarVender(btn) {
   if (d.danado) t += `• Dañado/defectuoso: ${d.defecto || 'sí'}\n`;
   if (d.precio) t += `• Precio que pido: ${fmt(d.precio)} CUP\n`;
   if (d.vendedor) t += `• Nombre: ${d.vendedor}\n`; if (d.tel) t += `• Teléfono: ${d.tel}\n`;
-  t += `\nEntiendo que el administrador cobra ${c.comision}% de comisión. Te mando las fotos por aquí.`;
+  t += +c.comision > 0 ? `\nEntiendo que el administrador cobra ${c.comision}% de comisión. Te mando las fotos por aquí.` : `\nTe mando las fotos por aquí.`;
   const ov = btn.closest('.ov');
   if (!SBM) { closeModal(ov); const u = waLink(t); window.open(u, '_blank') || (location.href = u); return; }
   btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Enviando…';
@@ -1218,7 +1221,9 @@ const VIEWS = {
     const c = D.config, m = esc(c.moneda);
     const ped = REG.filter(r => r.tipo === 'pedido'), conf = ped.filter(r => r.estado === 'confirmado'), pen = ped.filter(r => r.estado === 'pendiente'), vivos = ped.filter(r => r.estado !== 'cancelado');
     const sum = a => a.reduce((s, r) => s + (+(r.datos || {}).total || 0), 0);
-    const vend = sum(conf), gan = vend * c.comision / 100;
+    const vend = sum(conf), esProv = i => { const pr = D.productos.find(x => x.id === i.id); return !!(pr && pr.proveedor); };
+    const base = conf.reduce((s, r) => s + ((r.datos || {}).items || []).filter(i => !esProv(i)).reduce((t, i) => t + (+i.cant || 0) * (+i.precio || 0), 0), 0);
+    const gan = base * (+c.comision || 0) / 100;
     const inv = D.productos.filter(p => !esServ(p)).reduce((s, p) => s + precioAct(p) * (+p.cantidad || 0), 0);
     const activos = D.productos.filter(p => !p.oculto && (esServ(p) || (+p.cantidad || 0) > 0)).length;
     const agot = D.productos.filter(p => !esServ(p) && (+p.cantidad || 0) <= 0).length;
@@ -1231,7 +1236,7 @@ const VIEWS = {
     const top = Object.entries(tp).sort((a, b) => b[1] - a[1]).slice(0, 5), tmx = top.length ? top[0][1] : 1;
     const cats = Object.entries(tc).sort((a, b) => b[1] - a[1]).slice(0, 6), cmx = cats.length ? cats[0][1] : 1;
     return `<div class="stats">
-      <div class="st hi"><small>Tu ganancia (${esc(c.comision)}%)</small><b>${fmt(gan)} ${m}</b><small>≈ $${fmtUsd(gan)} USD</small></div>
+      ${+c.comision > 0 ? `<div class="st hi"><small>Tu ganancia (${esc(c.comision)}%)</small><b>${fmt(gan)} ${m}</b><small>≈ $${fmtUsd(gan)} USD</small></div>` : ''}
       <div class="st"><small>Ventas confirmadas</small><b>${fmt(vend)} ${m}</b></div>
       <div class="st"><small>Por confirmar</small><b>${fmt(sum(pen))} ${m}</b></div>
       <div class="st"><small>Pedidos (${pen.length} pendientes)</small><b>${ped.length}</b></div>
@@ -1293,7 +1298,7 @@ const VIEWS = {
       <label class="fld"><span>Título principal</span><input id="pg-ht" value="${esc(c.heroTitulo)}"></label><label class="fld"><span>Pie de página</span><input id="pg-footer" value="${esc(c.footer)}"></label></div>
       <label class="fld"><span>Texto principal</span><textarea id="pg-htx">${esc(c.heroTexto)}</textarea></label>
       <label class="fld"><span>Letrero que se desplaza (déjalo vacío para quitarlo)</span><input id="pg-aviso" value="${esc(c.aviso)}"></label>
-      <div class="row3"><label class="fld"><span>Comisión (%)</span><input id="pg-com" type="number" min="0" max="100" value="${esc(c.comision)}"></label></div>
+      <div class="row3"><label class="fld"><span>Comisión (%) · 0 = sin comisión (no se muestra en la página)</span><input id="pg-com" type="number" min="0" max="100" value="${esc(c.comision)}"></label></div>
       <label class="fld"><span>Mensaje del botón de ayuda</span><input id="pg-ayuda" value="${esc(c.ayudaTexto)}"></label>
       <h3>Qué se muestra</h3>${ck('pg-s-aviso', S.aviso, 'Letrero que se desplaza')}${ck('pg-s-botones', S.botones, 'Botones personalizados')}${ck('pg-s-vender', S.vender, 'Botón «Quiero vender o empeñar»')}${ck('pg-s-encargo', S.encargo, 'Botón «Pedido a gusto»')}${ck('pg-s-buscar', S.buscar, 'Botón de búsqueda')}${ck('pg-ago', c.mostrarAgotados !== false, 'Mostrar los productos agotados con el letrero rojo «Agotado»')}<label class="fld"><span>Poner «Casi agotado» cuando queden esta cantidad o menos (con 1 sale «Última unidad»)</span><input id="pg-casi" type="number" min="2" value="${esc(c.casiAgotado)}" inputmode="numeric"></label>
       <h3>Tema y colores</h3>
