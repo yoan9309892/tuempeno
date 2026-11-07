@@ -1333,7 +1333,8 @@ const VIEWS = {
       ${SBM ? `<h3>Administradores</h3><p class="note">Cada administrador entra con su propia contraseña. Las contraseñas se guardan cifradas en Supabase.</p><div id="admsList"><span class="spin"></span></div>
         <div class="row2"><label class="fld"><span>Nombre</span><input id="ad-n"></label><label class="fld"><span>Contraseña</span><input id="ad-p" type="password" autocomplete="new-password"></label></div><button class="btn sm ghost" data-act="adm-add">➕ Agregar administrador</button>`
         : '<h3>Administradores</h3><p class="note">Sin Supabase solo hay una contraseña, y está en el código de la página. Lo que realmente protege tus datos es el token de GitHub. Con Supabase puedes tener varios administradores con contraseña segura.</p>'}
-      <h3>Respaldo</h3><div class="tb"><button class="btn ghost" data-act="bk-exp">⬇ Descargar respaldo</button><label class="btn ghost">⬆ Restaurar respaldo<input id="bk-file" type="file" accept="application/json" hidden></label></div>`;
+      <h3>Respaldo</h3><div class="tb"><button class="btn ghost" data-act="bk-exp">⬇ Descargar respaldo</button><label class="btn ghost">⬆ Restaurar respaldo<input id="bk-file" type="file" accept="application/json" hidden></label></div>
+      <h3>Importar inventario</h3><p class="note">Sube de una vez los productos que armaste en tu inventario. Cada uno entra en su catálogo; los que ya existen se actualizan.</p><div class="tb"><label class="btn pri">📦 Importar del inventario<input id="inv-file" type="file" accept="application/json" hidden></label></div>`;
   }
 };
 function catRow(c) { return `<div class="ed" data-cid="${esc(c.id)}"><input class="cic" value="${esc(c.icono)}" maxlength="4" aria-label="Ícono"><input class="cnm" value="${esc(c.nombre)}" aria-label="Nombre"><span class="note">${D.productos.filter(p => p.categoria === c.id).length} prod.</span><button class="btn sm danger" data-act="cat-del" aria-label="Quitar catálogo">🗑</button></div>`; }
@@ -1520,8 +1521,30 @@ function admInput(t) {
   if (t.id === 'admq') { admQ = t.value; $('#plist').innerHTML = pList(); }
   else if (t.id === 'af-q') { $('#afList').innerHTML = afListHTML(t.value.trim()); }
 }
+async function importarInventario(f) {
+  if (!f) return;
+  let j; try { j = JSON.parse(await f.text()); } catch { return toast('Archivo no válido', 'err'); }
+  if (!j || j.tipo !== 'inventario-centro-market' || !Array.isArray(j.productos)) return toast('Ese archivo no es del inventario', 'err');
+  if (!confirm('Se subirán ' + j.productos.length + ' productos a la tienda (los que ya existan se actualizan). ¿Continuar?')) return;
+  toast('Subiendo fotos y productos… no cierres esta pantalla', 'ok');
+  try {
+    for (const p of j.productos) { const out = []; for (const m of (p.imagenes || [])) out.push(/^data:/.test(m) ? await ghSubir(m.split(',')[1]) : m); p.imagenes = out; }
+    await mutar(d => {
+      const cid = {};
+      (j.categorias || []).forEach(c => { let x = d.categorias.find(y => y.id === c.id || sinAc(y.nombre) === sinAc(c.nombre)); if (!x) { x = { id: c.id, nombre: c.nombre, icono: c.icono || '📦' }; d.categorias.push(x); } cid[c.id] = x.id; });
+      for (const p of j.productos) {
+        let x = d.productos.find(y => y.id === p.id);
+        if (!x) { x = { id: p.id, creado: Date.now(), vendidos: 0, rebaja: 0, precioAnterior: 0, usado: false, danado: false, defecto: '', mayor: { activo: false, precio: 0, minimo: 5 }, domicilio: { activo: true, tiempo: 'El mismo día', costo: 0 } }; d.productos.unshift(x); }
+        const ims = p.imagenes.length ? p.imagenes : (x.imagenes || []);
+        Object.assign(x, p, { categoria: cid[p.categoria] || p.categoria, imagenes: ims });
+      }
+    });
+    toast('✅ ' + j.productos.length + ' productos subidos a la tienda', 'ok'); admRender();
+  } catch (e) { toast(e.message, 'err'); }
+}
 async function admChange(t) {
-  if (t.id === 'admf') { admFiltro = t.value; $('#plist').innerHTML = pList(); }
+  if (t.id === 'inv-file') { await importarInventario(t.files[0]); t.value = ''; }
+  else if (t.id === 'admf') { admFiltro = t.value; $('#plist').innerHTML = pList(); }
   else if (t.id === 'vm-p') { const p = prod(t.value); if (p) $('#vm-pr').value = precioAct(p); }
   else if (t.id === 'pf-file') {
     for (const f of [...t.files]) {
